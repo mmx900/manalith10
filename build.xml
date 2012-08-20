@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="manalith" basedir="." default="update">
+	<property environment="env"/>
+
+    <!-- Local system paths -->
+	<property name="path.target" value="./manalith"/>
+	<property name="path.jsp" value="./pages"/>
+	<property name="path.resource" value="./conf"/>
+	<property name="path.src" value="./src/main/java"/>
+	<property name="path.lib" value="./lib"/>
+	<property name="path.tag" value="./tags"/>
+	<property name="path.tomcat" value="${env.CATALINA_HOME}"/>
+	<property name="path.tomcat.lib" value="${path.tomcat}/common/lib"/>
+	
+	<!-- DB Properties -->
+	<property name="db.url" value="jdbc:postgresql://localhost/manalith"/>
+	<property name="db.driver" value="org.postgresql.Driver"/>
+	<property name="db.userid" value="USERID"/>
+	<property name="db.password" value="PASSWD"/>
+
+	<!-- Project settings -->
+	<property name="project.title" value="Manalith / MainGate "/>
+	<property name="project.distname" value="manalith"/>
+	<property name="project.version" value="0.1"/>
+
+	<!-- classpath for Struts 1.1 -->
+	<path id="compile.classpath">
+        <pathelement path ="${path.lib}/asm.jar"/>
+        <pathelement path ="${path.lib}/asm-attrs.jar"/>
+        <pathelement path ="${path.lib}/antlr-2.7.5H3.jar"/>
+        <pathelement path ="${path.lib}/commons-beanutils.jar"/>
+        <pathelement path ="${path.lib}/commons-collections.jar"/>
+        <pathelement path ="${path.lib}/commons-dbcp-1.2.1.jar"/>
+        <pathelement path ="${path.lib}/commons-digester.jar"/>
+        <pathelement path ="${path.lib}/commons-validator.jar"/>
+        <pathelement path ="${path.lib}/commons-httpclient-2.0.2.jar"/>
+        <pathelement path ="${path.lib}/commons-lang-2.0.jar"/>
+        <pathelement path ="${path.lib}/commons-logging.jar"/>
+        <pathelement path ="${path.lib}/commons-pool-1.2.jar"/>
+        <pathelement path ="${path.lib}/commons-fileupload.jar"/>
+        <pathelement path ="${path.lib}/commons-fileupload-1.0.jar"/>
+        <pathelement path ="${path.lib}/cglib-2.1.2.jar"/>
+        <pathelement path ="${path.lib}/dom4j-1.6.jar"/>
+        <pathelement path ="${path.lib}/ehcache-1.1.jar"/>
+        <pathelement path ="${path.lib}/ejb3-persistence.jar"/>
+        <pathelement path ="${path.lib}/postgresql-8.0-311.jdbc3.jar"/>
+        <pathelement path ="${path.lib}/hibernate3.jar"/>
+        <pathelement path ="${path.lib}/hibernate-annotations.jar"/>
+        <pathelement path ="${path.lib}/jakarta-oro.jar"/>
+        <pathelement path ="${path.lib}/jstl.jar"/>
+        <pathelement path ="${path.lib}/jta-1_0_1B.jar"/>
+        <pathelement path ="${path.lib}/log4j-1.2.9.jar"/>
+        <pathelement path ="${path.lib}/myfaces-extensions.jar"/>
+        <pathelement path ="${path.lib}/struts.jar"/>
+        <pathelement path ="${path.lib}/struts-faces.jar"/>
+        <pathelement path ="${path.lib}/standard.jar"/>
+        <pathelement path ="${path.tomcat.lib}/servlet-api.jar"/>
+        <pathelement path ="${path.tomcat.lib}/jasper-runtime.jar"/>
+        <pathelement path ="${path.tomcat.lib}/jsp-api.jar"/>
+	</path>
+
+    <!-- Check timestamp on files -->
+    <target name="prepare">
+        <tstamp/>
+    </target>
+
+    <!-- Copy any resource or configuration files -->
+    <target name="resources">
+        <copy todir="${path.target}/WEB-INF" includeEmptyDirs="no">
+            <fileset dir="${path.resource}">
+            <patternset>
+                <include name="**/*.conf"/>
+                <include name="**/*.properties"/>
+                <include name="**/*.xml"/>
+                <include name="**/*.tld"/>
+            </patternset>
+            </fileset>
+        </copy>
+  	  	 <mkdir dir="${path.target}/WEB-INF/lib"/>
+        <copy todir="${path.target}/WEB-INF/lib" includeEmptyDirs="no">
+            <fileset dir="${path.lib}">
+            <patternset>
+                <include name="**/*.jar"/>
+            </patternset>
+            </fileset>
+        </copy>
+        <copy todir="${path.target}" includeEmptyDirs="no">
+            <fileset dir="${path.jsp}"/>
+        </copy>
+ 	  	 <mkdir dir="${path.target}/WEB-INF/tags"/>
+       <copy todir="${path.target}/WEB-INF/tags" includeEmptyDirs="no">
+           <fileset dir="${path.tag}">
+           <patternset>
+               <include name="**/*.tag"/>
+           </patternset>
+           </fileset>
+       </copy>
+    	
+    	
+	  	 <mkdir dir="${path.target}/blog/upload"/>
+	  	 <mkdir dir="${path.target}/blog/upload/article"/>
+	  	 <mkdir dir="${path.target}/blog/upload/title"/>
+	  	 <mkdir dir="${path.target}/blog/upload/background"/>
+    </target>
+
+    <!-- Normal build of application -->
+    <target name="compile" depends="prepare,resources">
+    	  <mkdir dir="${path.target}/WEB-INF/classes"/>
+        <javac srcdir="${path.src}" destdir="${path.target}/WEB-INF/classes" debug="yes">
+            <classpath refid="compile.classpath"/>
+        </javac>
+        <copy todir="${path.target}/WEB-INF/classes" includeEmptyDirs="no">
+            <fileset dir="${path.src}">
+            <patternset>
+                <include name="*.properties"/>
+                <include name="*.xml"/>
+            </patternset>
+            </fileset>
+        </copy>
+    </target>
+	
+	<!-- DB Initialize -->
+	<target name="dbinit">
+		<sql
+			driver="${db.driver}"
+			url="${db.url}"
+			userid="${db.userid}"
+			password="${db.password}"
+			src="dbinit.sql">
+        	<classpath refid="compile.classpath"/>
+		</sql>
+	</target>
+
+	<target name="dbclean">
+		<sql
+			driver="${db.driver}"
+			url="${db.url}"
+			userid="${db.userid}"
+			password="${db.password}"
+			src="dbclean.sql">
+        	<classpath refid="compile.classpath"/>
+		</sql>
+	</target>
+	
+    <!-- Remove classes directory for clean build -->
+    <target name="clean"
+      description="Prepare for clean build">
+      <delete dir="${path.target}"/>
+    </target>
+
+    <!-- Build entire project -->
+    <target name="project" depends="clean,prepare,compile"/>
+	
+	<!-- Update project -->
+	<target name="update" depends="prepare,compile">
+	</target>
+
+
+    <!-- Build project -->
+    <target name="all" depends="project"/>
+
+</project>

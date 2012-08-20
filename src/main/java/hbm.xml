@@ -1,0 +1,150 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<!-- annotation으로의 이전이 완료됨 -->
+    <class name="org.manalith.resource.VisitorLog" table="manalith_blog_log" lazy="false">
+
+        <id name="id" unsaved-value="null">
+            <column name="id" not-null="true"/>
+            <generator class="sequence">
+            		<param name="sequence">manalith_blog_log_id_seq</param>
+            </generator>
+        </id>
+
+        <property name="blogOwnerId" type="string">
+            <column name="blogOwnerId" sql-type="varchar(12)" not-null="true"/>
+        </property>
+
+        <property name="ip" type="org.manalith.db.datatype.InetType" />
+        <property name="agent" />
+        <property name="referer" />
+        <property name="date" />
+
+    </class>
+
+	<!-- annotation으로의 이전이 완료됨 -->
+    <class name="org.manalith.resource.Blog" table="manalith_blog" lazy="false">
+
+        <id name="idx" type="int" unsaved-value="null">
+            <column name="idx" not-null="true"/>
+            <generator class="sequence">
+            		<param name="sequence">manalith_blog_idx_seq</param>
+            </generator>
+        </id>
+        
+        <property name="template" type="org.manalith.db.datatype.TemplateType" not-null="true" />
+        <property name="title" />
+        <property name="description" />
+
+        <!--one-to-one name="owner" class="org.manalith.resource.User" property-ref="id" constrained="true" /-->
+        <property name="owner" type="string">
+            <column name="owner" sql-type="varchar(12)" not-null="true"/>
+        </property>
+        
+        <property name="created" />
+        <property name="totalArticleCount" />
+        <property name="pageSize" />
+        <property name="url" />
+        <property name="allowRSS" />
+        <property name="titleImage" />
+        <property name="backgroundImage" />
+
+    </class>
+
+	<!-- annotation으로의 이전이 완료되지 않음 -->
+    <class name="org.manalith.resource.Article" table="manalith_blog_article" lazy="false">
+
+        <id name="id" type="int" unsaved-value="null">
+            <column name="id" not-null="true"/>
+            <generator class="sequence">
+            		<param name="sequence">manalith_blog_article_id_seq</param>
+            </generator>
+        </id>
+
+        <property name="num" />
+        
+        <property name="blogOwnerId" type="string">
+            <column name="blogOwnerId" sql-type="varchar(12)" not-null="true"/>
+        </property>
+
+        <property name="title" />
+        
+        <many-to-one name="author" class="org.manalith.resource.User" property-ref="id" not-null="true" />
+        
+        <property name="category" />
+        <property name="date" />
+        <property name="contents" />
+        <property name="format" type="org.manalith.db.datatype.ArticleFormatType" not-null="true" />
+        <property name="totalCommentCount" />
+        <property name="totalTrackbackCount" />
+        
+        <!-- property name="comments" />
+        <property name="trackbacks" />
+        <property name="files" / -->
+
+    </class>
+
+	<!-- FIXME : 제대로 동작하지 않아 보류 -->
+    <!--class name="org.manalith.maingate.resource.RSSSource" table="manalith_maingate_rss_source" lazy="false">
+
+        <id name="id" unsaved-value="null">
+            <column name="id" not-null="true"/>
+            <generator class="native">
+            		<param name="sequence">manalith_maingate_rss_source_id_seq</param>
+            </generator>
+        </id>
+
+        <property name="title" />
+        <property name="description" />
+        <property name="weburl" />
+        <property name="rssurl" />
+        <property name="category" />
+        <property name="lastupdate" />
+        <property name="date" />
+
+    </class-->
+
+	<!-- annotation으로의 이전이 완료됨 -->
+    <class name="org.manalith.resource.User" table="manalith_member" lazy="false">
+
+        <id name="idx" unsaved-value="null">
+            <column name="idx" not-null="true"/>
+            <generator class="sequence">
+            		<param name="sequence">manalith_member_idx_seq</param>
+            </generator>
+        </id>
+
+        <property name="id" type="string">
+            <column name="id" sql-type="varchar(12)" not-null="true"/>
+        </property>
+
+        <property name="password" />
+        <property name="name" />
+        <property name="email" />
+        <property name="date" />
+
+    </class>
+    
+    
+	<!-- annotation으로의 이전이 완료됨 -->
+    <class name="org.manalith.resource.BlogAuthor" table="manalith_blog_author" lazy="false">
+    
+        <id name="id" unsaved-value="null">
+            <column name="id" not-null="true"/>
+            <generator class="sequence">
+            		<param name="sequence">manalith_blog_author_id_seq</param>
+            </generator>
+        </id>
+        
+        <many-to-one name="blogOwnerId" class="org.manalith.resource.Blog" property-ref="owner" not-null="true" />
+        
+        <many-to-one name="userId" class="org.manalith.resource.User" property-ref="id" not-null="true" />
+
+        <property name="date" />
+
+    </class>
+
+</hibernate-mapping>

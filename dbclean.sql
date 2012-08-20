@@ -1,0 +1,10 @@
+DROP TABLE manalith_blog_article_trackback;
+DROP TABLE manalith_blog_file;
+DROP TABLE manalith_blog_author;
+DROP TABLE manalith_blog_article_comment;
+DROP TABLE manalith_blog_article;
+DROP TABLE manalith_blog_bookmark;
+DROP TABLE manalith_blog;
+DROP TABLE manalith_member;
+DROP TABLE manalith_maingate_rss_item;
+DROP TABLE manalith_maingate_rss_source;

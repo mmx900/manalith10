@@ -1,0 +1,24 @@
+환경 설정
+1. apt-get install tomcat6 tomcat6-admin maven2
+
+개발 환경 설정
+1. 위의 사용 환경 설정을 따라 합니다.
+2. eclipse 를 설치합니다. 버전 이슈로 인해 apt가 아닌 eclipse.org에서 for J2EE Developer 바이너리를 받아 이용하시길 권합니다.
+3. $CATALINA_HOME/conf/tomcat-users.xml에 manager 유저와 manager-script 롤이 있는지 찾아보고 없으면 아래와 같이 추가합니다.
+(ubuntu 11.04의 경우 /etc/tomcat6/tomcat-users.conf)
+
+6.0.30 이전 버전은 manager 롤 :
+<tomcat-users>
+  <role rolename="manager"/>
+</tomcat-users>
+
+<tomcat-users>
+  <role rolename="manager-gui"/>
+  <role rolename="manager-script"/>
+  <user username="manalithx" password="manaadmin" roles="manager-gui,manager-script"/>
+</tomcat-users>
+
+4. 메이븐 설정파일인 settings.xml에 톰캣 manager 유저의 ID/비번 설정 후 ~/.m2/ 에 복사합니다.
+5. mvn tomcat:deploy
+
+3. eclipse - Window - Preferences - Server - Runtime Environment - Add 하여 Tomcat 설정

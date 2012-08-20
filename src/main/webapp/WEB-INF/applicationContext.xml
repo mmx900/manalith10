@@ -1,0 +1,27 @@
+<beans>
+	<!--
+	<bean name="/cust" class="control.CustomerAction"
+		singleton="false">
+		<property name="customerManager">
+			<ref bean="customerBizManager" />
+		</property>
+	</bean>
+	<bean id="customerBizManager"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref local="transactionManager" />
+		</property>
+		<property name="target">
+			<ref local="customerBizManagerTarget" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="create*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="*">PROPAGATION_REQUIRED,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+	-->
+</beans>

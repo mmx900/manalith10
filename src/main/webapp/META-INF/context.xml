@@ -1,0 +1,15 @@
+<Context>
+	<Resource name="jdbc/manalith"
+		auth="Container"
+		scope="Shareable"
+		type="javax.sql.DataSource"
+		factory="org.apache.commons.dbcp.BasicDataSourceFactory"
+		url="jdbc:postgresql://localhost/manalith"
+		driverClassName="org.postgresql.Driver"
+		username="manalith"
+		password="manaadmin"
+		maxWait="3000"
+		maxIdle="100"
+		maxActive="20"
+	/>
+</Context>

@@ -1,0 +1,129 @@
+BODY {
+	background-color: #000000;
+	font-family:UnJamoDotum,은 자모 돋움,Dotum,돋움;
+	margin: 0px;
+	padding: 0px;
+	width: 1000px;
+	font-size: 90%;
+	color: #ffe577;
+}
+INPUT {
+	border: 1px solid #f64c00;
+	color: #ffe577;
+	background-color: #000000;
+}
+TEXTAREA {
+	border: 1px solid #f64c00;
+	color: #ffe577;
+	background-color: #000000;
+}
+IMG {
+	border: 0px;
+}
+UL {
+	margin: 0px;
+}
+
+#login_form {
+	text-align: center;
+}
+
+#right {
+	/* left: 750px; */
+	width: 250px;
+	border: 0px solid #f64c00;
+	padding: 0px;
+	padding-top: 20px;
+}
+#right DIV{
+	margin: 15px;
+	padding: 5px;
+	border: 1px solid #f64c00;
+	color: #ffe577;
+	/*
+	opacity: 0.7;
+	*/
+}
+
+#right DIV DIV{
+	border: 0px;
+}
+
+#right DIV:hover{
+	opacity: 1.0;
+}
+
+#header {
+	text-align: center;
+	border: 1px solid #f64c00;
+	border-top: 4px solid #f64c00;
+	margin-left: 20px;
+	margin-right: 20px;
+	padding: 10px;
+	margin-bottom: 20px;
+	color: #ffe577;
+}
+
+#left {
+	vertical-align: top;
+	width: 700px;
+	/*
+	border-left: 2px dashed #f64c00;
+	border-right: 2px dashed #f64c00;
+	*/
+	margin: 0px;
+	margin-left: 30px;
+	padding: 0px;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	border-right: 1px solid #f64c00;
+}
+.article{
+	margin: 20px;
+	padding: 10px;
+	border: 1px solid #f64c00;
+	color: #ffe577;
+}
+
+.article .title{
+	font-size: 30px;
+}
+
+.article .comments,
+.article .trackbacks,
+.article .files{
+	display: none;
+}
+
+.article .comments .comment{
+	padding: 5px;
+}
+
+.article .comments .comment_form TEXTAREA{
+	width: 500px;
+	height: 100px;
+}
+
+
+#titleImage{
+	width: 200px;
+}
+
+#blogCalendar DIV{
+	margin: 0px;
+	padding: 0px;
+	border: 0px;
+}
+
+#banners{
+	text-align:center;
+}
+
+#copyright{
+	color: #f64c00;
+	text-align: center;
+}
+
+#pages{
+	text-align: center;
+}

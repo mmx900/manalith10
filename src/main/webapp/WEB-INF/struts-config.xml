@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE struts-config PUBLIC
+          "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN"
+          "http://jakarta.apache.org/struts/dtds/struts-config_1_2.dtd">
+
+<struts-config>
+
+<!-- ============================================ Data Source Configuration -->
+<!--data-sources>
+<data-source type="org.apache.commons.dbcp.BasicDataSource">
+    <set-property
+      property="driverClassName"
+      value="org.postgresql.Driver" />
+    <set-property
+      property="url"
+      value="jdbc:postgresql://localhost/setzer" />
+    <set-property
+      property="username"
+      value="setzer" />
+    <set-property
+      property="password"
+      value="PASSWORD" />
+    <set-property
+      property="maxActive"
+      value="10" />
+    <set-property
+      property="maxWait"
+      value="5000" />
+    <set-property
+      property="defaultAutoCommit"
+      value="false" />
+    <set-property
+      property="defaultReadOnly"
+      value="false" />
+    <set-property
+      property="validationQuery"
+      value="SELECT COUNT(*) FROM manalith_blog" />
+</data-source>
+</data-sources>
+-->
+
+<!-- ================================================ Form Bean Definitions -->
+
+    <form-beans>
+    	<form-bean name="rssSourceForm"
+    		type="org.apache.struts.action.DynaActionForm">
+    		<form-property name="title" type="java.lang.String" />
+    		<form-property name="description" type="java.lang.String" />
+    		<form-property name="webUrl" type="java.lang.String" />
+    		<form-property name="rssUrl" type="java.lang.String" />
+    		<form-property name="category" type="java.lang.String" />
+    	</form-bean>
+
+    	<form-bean name="passwordForm"
+    		type="org.apache.struts.action.DynaActionForm">
+    		<form-property name="password" type="java.lang.String" />
+    	</form-bean>
+
+    	<form-bean name="blogForm" type="org.manalith.form.BlogForm" />
+
+    	<form-bean name="blogAuthorForm"
+    		type="org.apache.struts.action.DynaActionForm">
+    		<form-property name="title" type="java.util.ArrayList" />
+    	</form-bean>
+
+    	<form-bean name="blogBookmarkForm"
+    		type="org.apache.struts.action.DynaActionForm">
+    		<form-property name="bookmarkId" type="java.lang.Integer" />
+    		<form-property name="category" type="java.lang.String" />
+    		<form-property name="title" type="java.lang.String" />
+    		<form-property name="url" type="java.lang.String" />
+    		<form-property name="rssUrl" type="java.lang.String" />
+    		<form-property name="imageUrl" type="java.lang.String" />
+    		<form-property name="description" type="java.lang.String" />
+    	</form-bean>
+
+    	<form-bean name="trackbackPingSendForm"
+    		type="org.apache.struts.action.DynaActionForm">
+    		<form-property name="articleId" type="java.lang.Integer" />
+    		<form-property name="url" type="java.lang.String" />
+    		<form-property name="encoding" type="java.lang.String" />
+    	</form-bean>
+
+    	<form-bean name="trackbackPingRecieveForm"
+    		type="org.apache.struts.action.DynaActionForm">
+    		<form-property name="title" type="java.lang.String" />
+    		<form-property name="blog_name" type="java.lang.String" />
+    		<form-property name="url" type="java.lang.String" />
+    		<form-property name="excerpt" type="java.lang.String" />
+    	</form-bean>
+
+    	<form-bean name="articleForm"
+    		type="org.manalith.form.ArticleForm" />
+
+    	<form-bean name="articleCommentForm"
+    		type="org.apache.struts.action.DynaActionForm">
+    		<form-property name="commentId" type="java.lang.Integer" />
+    		<form-property name="articleId" type="java.lang.Integer" />
+    		<form-property name="name" type="java.lang.String" />
+    		<form-property name="password" type="java.lang.String" />
+    		<form-property name="homepage" type="java.lang.String" />
+    		<form-property name="contents" type="java.lang.String" />
+    	</form-bean>
+
+    	<form-bean name="userForm"
+    		type="org.apache.struts.validator.DynaValidatorForm">
+    		<form-property name="id" type="java.lang.String" />
+    		<form-property name="name" type="java.lang.String" />
+    		<form-property name="password" type="java.lang.String" />
+    		<form-property name="email" type="java.lang.String" />
+    	</form-bean>
+
+    	<form-bean name="blogAuthorForm"
+    		type="org.apache.struts.action.DynaActionForm">
+    		<form-property name="userId" type="java.lang.String" />
+    		<form-property name="blogOwnerId" type="java.lang.String" />
+    	</form-bean>
+    </form-beans>
+
+
+<!-- ========================================= Global Exception Definitions -->
+
+    <global-exceptions>
+        <!-- sample exception handler
+        <exception
+            key="expired.password"
+            type="app.ExpiredPasswordException"
+            path="/changePassword.jsp"/>
+        end sample -->
+    </global-exceptions>
+
+
+<!-- =========================================== Global Forward Definitions -->
+
+    <global-forwards>
+        <forward
+            name="main"
+            path="/maingate.do"
+            redirect="true"/>
+    </global-forwards>
+
+
+<!-- =========================================== Action Mapping Definitions -->
+
+    <action-mappings>
+            <!-- Default "Welcome" action -->
+            <!-- Forwards to Welcome.jsp -->
+        <action
+            path="/preregister"
+            forward="/maingate/user/preregister.jsp"/>
+        <action
+            path="/register"
+            forward="/maingate/user/register.jsp"/>
+        <action
+        		path="/blog"
+        		type="org.manalith.action.BlogAction"
+        		parameter="method"
+        		name="blogForm"
+        		validate="false"
+        		scope="request">
+        		<forward name="main" path="/blog/main.jsp" />
+        		<forward name="rss" path="/blog/rss.jsp" />
+        		</action>
+        <action
+        		path="/blog/article"
+        		type="org.manalith.action.ArticleAction"
+        		parameter="method"
+        		name="articleForm"
+        		scope="request">
+        		<forward name="postForm" path="/blog/post.jsp" />
+        		</action>
+        <action
+        		path="/blog/comment"
+        		type="org.manalith.action.ArticleCommentAction"
+        		parameter="method"
+        		name="articleCommentForm"
+        		scope="request">
+        		<forward name="destroyForm" path="/blog/comment/destroy.jsp" />
+        		</action>
+        <action
+            path="/blog/trackbackPingForm"
+            forward="/blog/trackback/ping.jsp"/>
+        <action
+        		path="/blog/ping"
+        		type="org.manalith.action.TrackbackPingAction"
+        		name="trackbackPingSendForm"
+        		scope="request">
+        		<forward name="pingForm" path="/blog/trackback/ping.jsp" />
+        </action>
+        <action
+        		path="/blog/trackback"
+        		type="org.manalith.action.TrackbackAction"
+        		name="trackbackPingRecieveForm"
+        		scope="request">
+        		<forward name="result" path="/blog/trackback/result.jsp" />
+        		</action>
+        <action
+        		path="/blog/trackbackDelete"
+        		type="org.manalith.action.TrackbackDeleteAction"
+        		scope="request"/>
+        <action
+        		path="/blog/admin"
+        		type="org.manalith.admin.action.AdminAction"
+        		parameter="method"
+        		scope="request">
+        		<forward name="main" path="/blog/admin/main.jsp" />
+        		<forward name="articles" path="/blog/admin/articles.jsp" />
+        		<forward name="categories" path="/blog/admin/categories.jsp" />
+        		<forward name="options" path="/blog/admin/options.jsp" />
+        		<forward name="createForm" path="/blog/admin/create.jsp" />
+        		</action>
+        <action
+        		path="/blog/admin/author"
+        		type="org.manalith.admin.action.AuthorAction"
+        		parameter="method"
+        		name="blogAuthorForm"
+        		scope="request">
+        		<forward name="authors" path="/blog/admin/authors.jsp" />
+        		</action>
+        <action
+        		path="/blog/admin/bookmark"
+        		type="org.manalith.admin.action.BookmarkAction"
+        		name="blogBookmarkForm"
+        		scope="request">
+        		<forward name="bookmarks" path="/blog/admin/bookmarks.jsp" />
+        		</action>
+        <action
+        		path="/maingate"
+        		type="org.manalith.maingate.action.MainAction"
+        		scope="request">
+        		<forward name="main" path="/maingate/main.jsp" />
+        		</action>
+        <action
+        		path="/admin"
+        		type="org.manalith.maingate.action.AdminAction"
+        		parameter="method"
+        		scope="request">
+        		<forward name="menu" path="/maingate/admin/menu.jsp" />
+        		<forward name="options" path="/maingate/admin/options.jsp" />
+        		<forward name="users" path="/maingate/admin/users.jsp" />
+        		<forward name="rss" path="/maingate/admin/rss.jsp" />
+        		</action>
+        <action
+        		path="/adminAuth"
+        		type="org.manalith.maingate.action.AdminAuthAction"
+        		parameter="method"
+        		name="passwordForm"
+        		scope="request">
+        		<forward name="authForm" path="/maingate/admin/auth.jsp" />
+        		</action>
+        <action
+        		path="/user"
+        		type="org.manalith.maingate.action.UserAction"
+        		name="userForm"
+        		parameter="method"
+        		validate="false"
+        		scope="request">
+        		<forward name="addForm" path="/admin.do?method=users" />
+        		</action>
+        <action
+        		path="/rss"
+        		type="org.manalith.maingate.action.RSSAction"
+        		name="rssSourceForm"
+        		parameter="method"
+        		scope="request" />
+    </action-mappings>
+
+
+<!-- ============================================= Controller Configuration -->
+
+    <!--controller
+       processorClass="org.apache.struts.tiles.TilesRequestProcessor"/-->
+
+
+<!-- ======================================== Message Resources Definitions -->
+
+    <message-resources parameter="MessageResources"/>
+
+
+<!-- =============================================== Plug Ins Configuration -->
+
+  <!-- ======================================================= Tiles plugin -->
+  <!--
+     This plugin initialize Tiles definition factory. This later can takes some
+	 parameters explained here after. The plugin first read parameters from
+	 web.xml, thenoverload them with parameters defined here. All parameters
+	 are optional.
+     The plugin should be declared in each struts-config file.
+       - definitions-config: (optional)
+            Specify configuration file names. There can be several comma
+		    separated file names (default: ?? )
+       - moduleAware: (optional - struts1.1)
+            Specify if the Tiles definition factory is module aware. If true
+            (default), there will be one factory for each Struts module.
+			If false, there will be one common factory for all module. In this
+            later case, it is still needed to declare one plugin per module.
+            The factory will be initialized with parameters found in the first
+            initialized plugin (generally the one associated with the default
+            module).
+			  true : One factory per module. (default)
+			  false : one single shared factory for all modules
+	   - definitions-parser-validate: (optional)
+	        Specify if xml parser should validate the Tiles configuration file.
+			  true : validate. DTD should be specified in file header (default)
+			  false : no validation
+
+	  Paths found in Tiles definitions are relative to the main context.
+  -->
+
+    <!--plug-in className="org.apache.struts.tiles.TilesPlugin" -->
+
+      <!-- Path to XML definition file -->
+      <!--set-property property="definitions-config"
+                       value="/WEB-INF/tiles-defs.xml" /-->
+      <!-- Set Module-awareness to true -->
+      <!--set-property property="moduleAware" value="true" /-->
+    <!--/plug-in-->
+
+
+  <!-- =================================================== Validator plugin -->
+
+  <plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+    <set-property
+        property="pathnames"
+        value="/WEB-INF/validator-rules.xml,/WEB-INF/validation.xml"/>
+  </plug-in>
+
+</struts-config>
+

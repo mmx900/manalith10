@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE form-validation PUBLIC
+          "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.1.3//EN"
+          "http://jakarta.apache.org/commons/dtds/validator_1_1_3.dtd">
+
+<form-validation>
+	<global>
+		<!-- An example global constant
+			<constant>
+			<constant-name>postalCode</constant-name>
+			<constant-value>^\d{5}\d*$</constant-value>
+			</constant>
+			end example-->
+	</global>
+
+	<formset>
+		<form name="userForm">
+			<field property="id" depends="required">
+				<arg key="userForm.id" />
+			</field>
+			<field property="password" depends="required,mask">
+				<arg key="userForm.password" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>^[0-9a-zA-Z]*$</var-value>
+				</var>
+			</field>
+		</form>
+		<form name="blogForm">
+			<field property="title" depends="required">
+				<arg key="blogForm.title" />
+			</field>
+			<field property="description" depends="required">
+				<arg key="blogForm.description" />
+			</field>
+			<field property="template" depends="required">
+				<arg key="blogForm.template" />
+			</field>
+			<field property="owner" depends="required">
+				<arg key="blogForm.owner" />
+			</field>
+			<field property="url" depends="required">
+				<arg key="blogForm.url" />
+			</field>
+			<!--field
+				property="allowRSS"
+				depends="required">
+				<arg key="blogForm.allowRSS"/>
+				</field-->
+			<field property="pageSize" depends="required">
+				<arg key="blogForm.pageSize" />
+			</field>
+			<!--field
+				property="titleImage"
+				depends="required">
+				<arg key="blogForm.titleImage"/>
+				</field-->
+			<!--field
+				property="backgroundImage"
+				depends="required">
+				<arg key="blogForm.backgroundImage"/>
+				</field-->
+		</form>
+	</formset>
+
+</form-validation>
