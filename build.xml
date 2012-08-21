@@ -7,6 +7,7 @@
 	<property name="path.jsp" value="./pages"/>
 	<property name="path.resource" value="./conf"/>
 	<property name="path.src" value="./src/main/java"/>
+	<property name="path.db.schema" value="./src/main/sql/schema"/>
 	<property name="path.lib" value="./lib"/>
 	<property name="path.tag" value="./tags"/>
 	<property name="path.tomcat" value="${env.CATALINA_HOME}"/>
@@ -21,7 +22,7 @@
 	<!-- Project settings -->
 	<property name="project.title" value="Manalith / MainGate "/>
 	<property name="project.distname" value="manalith"/>
-	<property name="project.version" value="0.1"/>
+	<property name="project.version" value="0.9"/>
 
 	<!-- classpath for Struts 1.1 -->
 	<path id="compile.classpath">
@@ -126,7 +127,7 @@
 			url="${db.url}"
 			userid="${db.userid}"
 			password="${db.password}"
-			src="dbinit.sql">
+			src="${path.db.schema}/dbinit.sql">
         	<classpath refid="compile.classpath"/>
 		</sql>
 	</target>
@@ -137,7 +138,7 @@
 			url="${db.url}"
 			userid="${db.userid}"
 			password="${db.password}"
-			src="dbclean.sql">
+			src="${path.db.schema}/dbclean.sql">
         	<classpath refid="compile.classpath"/>
 		</sql>
 	</target>
