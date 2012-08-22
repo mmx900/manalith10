@@ -41,7 +41,9 @@ public class FileDAO {
 		} catch (SQLException ex) {
 			logger.error("SQLException: " + ex.getMessage()); 
 			logger.error("SQLState: " + ex.getSQLState()); 
-			logger.error("VendorError: " + ex.getErrorCode()); 
+			logger.error("VendorError: " + ex.getErrorCode());
+			logger.error("detail :");
+			logger.error(ex.getMessage(), ex); 
 		}
 	}
 	
