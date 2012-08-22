@@ -14,7 +14,7 @@
 	<property name="path.tomcat.lib" value="${path.tomcat}/common/lib"/>
 	
 	<!-- DB Properties -->
-	<property name="db.url" value="jdbc:postgresql://localhost/manalith"/>
+	<property name="db.url" value="jdbc:postgresql://localhost:5433/manalith10"/>
 	<property name="db.driver" value="org.postgresql.Driver"/>
 	<property name="db.userid" value="USERID"/>
 	<property name="db.password" value="PASSWD"/>
