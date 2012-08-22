@@ -26,20 +26,10 @@ Charset : UTF-8
 
 *** 시스템 ***
 다음의 프로그램들이 설치되어 있어야 합니다.
-Ant 1.6.2 (http://ant.apache.org)
-Sun's J2SE 1.5.0 (http://java.sun.com)
-Jakatra Tomcat 5.5.9 (http://jakarta.apache.org)
-PostgreSQL 8.0.1 (http://postgresql.org)
-
-*** 라이브러리 ***
-다음 라이브러리들을 
-	JAR 파일은 $MANALITH_HOME/lib 디렉토리나 $TOMCAT_HOME/common/lib 디렉토리에 넣습니다.
-	TLD, XML 파일은 $MANALITH_HOME/conf 디렉토리에 넣습니다.(함께 배포되는 파일을 덮어쓰지 않도록 합니다.)
-jakarta-struts-1.2.7 : $STRUTS/lib/* (http://struts.apache.org)
-postgresql-8.0-311.jdbc3.jar (http://jdbc.postgresql.org, http://jdbc.postgresql.org/download/postgresql-8.0-311.jdbc3.jar)
-log4j-1.2.4.jar (http://jakarta.apache.org/log4j)
-jstl.jar, standard.jar (http://jakarta.apache.org/taglibs)
-hibernate3.jar (http://www.hibernate.org)
+Maven 3 (http://maven.apache.org)
+JDK 1.7 (http://java.sun.com)
+Tomcat 7 (http://jakarta.apache.org)
+PostgreSQL 9 (http://postgresql.org)
 
 다음의 라이브러리들은 manalith와 함께 배포됩니다.
 FCKeditor 2.0 (http://www.fckeditor.net)
@@ -48,7 +38,7 @@ jscalendar 1.0 (http://jscalendar.sf.net)
 tem9p 0.001 (http://tem9p.kldp.net)
 
 ** 설치 과정 **
-1. 프로젝트 홈페이지(manalith.kldp.net)에서 manalith_VER.tgz를 다운받습니다.
+1. 프로젝트 홈페이지(github.com/mmx900/manalith10)에서 manalith_VER.tgz를 다운받습니다.
 2. 적절한 곳에 압축을 풉니다. (tar xvzf manalith_VER.tgz)
 3. 필요한 라이브러리들을 먼저 설치한 다음, build.xml의 패스와 클래스패스, DB 등록정보 등을 수정합니다.
 4. conf/maingate.properties를 열어 admin.password와 url을 변경합니다.
@@ -99,29 +89,6 @@ tem9p 0.001 (http://tem9p.kldp.net)
 - TatterTools 등의 cp949 기반 블로그로부터 트랙백을 받으면 본문 내용이 깨집니다.
 
 ** 개발 환경 **
-WTP 0.7 All-In-One
-Sysdeo Tomcat Plugin 3.1 beta
-
-** 릴리즈 노트 **
-0.2.1 - 20050925
-의존성 변경 사항 :
-	Struts의 버전이 1.2.4에서 1.2.7로 변경
-	IE7의 버전이 0.7.3에서 0.8로 변경
-	JDK의 버전이 1.4.2에서 1.5.0으로 변경
-	FCKeditor의 버전이 2.0 rc3에서 2.0으로 변경
-개선 사항 :
-	default 스킨의 버그 수정
-	구조 개선
-	잡다한 버그 수정
-
-0.2 '무념' - 20050622
-의존성 사항 :
-	Hibernate 3 부분 적용
-개선 사항 :
-	페이징 버그 해결
-	달력 지원 향상 / 월별 게시물 목록 출력 지원
-	잡다한 버그 수정
-
-0.1 '해동시간' - 20050502
-kldp.net에 프로젝트 등록
-사용 가능한 첫번째 배포본 릴리즈
+Eclipse Juno J2EE
+OpenJDK 1.7.0_03
+PostgreSQL 9.1.4
