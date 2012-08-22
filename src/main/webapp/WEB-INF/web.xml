@@ -35,7 +35,7 @@
 	<servlet>
 		<servlet-name>ConnectionFactory</servlet-name>
 		<servlet-class>org.manalith.db.ConnectionFactory</servlet-class>
-		<load-on-startup />
+		<load-on-startup>3</load-on-startup>
 	</servlet>
 
 	<servlet>
@@ -43,7 +43,7 @@
 		<servlet-class>
 			org.manalith.maingate.model.dao.MaingateManager
 		</servlet-class>
-		<load-on-startup />
+		<load-on-startup>4</load-on-startup>
 	</servlet>
 
 	<servlet>
