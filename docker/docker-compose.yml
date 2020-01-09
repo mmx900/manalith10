@@ -1,0 +1,10 @@
+version: "2"
+services:
+  db:
+    image: "postgres:9.4"
+    ports:
+     - "5432:5432"
+    environment:
+     - "POSTGRES_DB=manalith10"
+     - "POSTGRES_USER=manalith10"
+     - "POSTGRES_PASSWORD=manaadmin"

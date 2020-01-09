@@ -10,7 +10,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<database.hostname>localhost</database.hostname>
-		<database.port>5433</database.port>
+		<database.port>5432</database.port>
 		<database.name>manalith10</database.name>
 		<database.username>manalith10</database.username>
 		<database.password>manaadmin</database.password>

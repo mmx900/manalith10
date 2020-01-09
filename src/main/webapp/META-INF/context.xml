@@ -4,7 +4,7 @@
 		scope="Shareable"
 		type="javax.sql.DataSource"
 		factory="org.apache.commons.dbcp.BasicDataSourceFactory"
-		url="jdbc:postgresql://localhost/manalith"
+		url="jdbc:postgresql://localhost:5432/manalith"
 		driverClassName="org.postgresql.Driver"
 		username="manalith"
 		password="manaadmin"
