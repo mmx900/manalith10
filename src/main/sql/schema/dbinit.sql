@@ -1,4 +1,4 @@
-CREATE TABLE manalith_maingate_rss_source(
+CREATE TABLE IF NOT EXISTS manalith_maingate_rss_source(
 	id SERIAL PRIMARY KEY NOT NULL,
 	title TEXT NOT NULL,
 	description TEXT NOT NULL,
@@ -9,7 +9,7 @@ CREATE TABLE manalith_maingate_rss_source(
 	date TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
-CREATE TABLE manalith_maingate_rss_item(
+CREATE TABLE IF NOT EXISTS manalith_maingate_rss_item(
 	id SERIAL PRIMARY KEY NOT NULL,
 	source INT NOT NULL REFERENCES manalith_maingate_rss_source(id),
 	rssVersion TEXT NULL,
@@ -28,7 +28,7 @@ CREATE TABLE manalith_maingate_rss_item(
 	itemLink TEXT NULL
 );
 
-CREATE TABLE manalith_member(
+CREATE TABLE IF NOT EXISTS manalith_member(
 	idx SERIAL NOT NULL,
 	id VARCHAR(12) PRIMARY KEY NOT NULL,
 	password TEXT NOT NULL,
@@ -37,7 +37,7 @@ CREATE TABLE manalith_member(
 	date TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
-CREATE TABLE manalith_blog(
+CREATE TABLE IF NOT EXISTS manalith_blog(
 	idx SERIAL NOT NULL,
 	title TEXT NOT NULL,
 	description TEXT NOT NULL,
@@ -52,7 +52,7 @@ CREATE TABLE manalith_blog(
 	backgroundImage TEXT NULL
 );
 
-CREATE TABLE manalith_blog_article(
+CREATE TABLE IF NOT EXISTS manalith_blog_article(
 	id SERIAL NOT NULL PRIMARY KEY,
 	num INT NOT NULL,
 	blogOwnerId VARCHAR(12) NOT NULL REFERENCES manalith_blog(owner),
@@ -66,7 +66,7 @@ CREATE TABLE manalith_blog_article(
 	totalTrackbackCount int NOT NULL DEFAULT 0
 );
 
-CREATE TABLE manalith_blog_article_comment(
+CREATE TABLE IF NOT EXISTS manalith_blog_article_comment(
 	id SERIAL NOT NULL PRIMARY KEY,
 	blogOwnerId TEXT NOT NULL REFERENCES manalith_member(id),
 	articleId INT NOT NULL REFERENCES manalith_blog_article(id),
@@ -78,14 +78,14 @@ CREATE TABLE manalith_blog_article_comment(
 	inetAddress inet NOT NULL
 );
 
-CREATE TABLE manalith_blog_author(
+CREATE TABLE IF NOT EXISTS manalith_blog_author(
 	id SERIAL NOT NULL PRIMARY KEY,
 	blogOwnerId VARCHAR(12) NOT NULL REFERENCES manalith_blog(owner),
 	userId VARCHAR(12) NOT NULL REFERENCES manalith_member(id),
 	date TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
-CREATE TABLE manalith_blog_file(
+CREATE TABLE IF NOT EXISTS manalith_blog_file(
 	id SERIAL NOT NULL PRIMARY KEY,
 	blogOwnerId VARCHAR(12) NOT NULL REFERENCES manalith_member(id),
 	articleId INT NOT NULL DEFAULT 0,
@@ -94,7 +94,7 @@ CREATE TABLE manalith_blog_file(
 	date TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
-CREATE TABLE manalith_blog_article_trackback(
+CREATE TABLE IF NOT EXISTS manalith_blog_article_trackback(
 	id SERIAL NOT NULL PRIMARY KEY,
 	blogOwnerId VARCHAR(12) NOT NULL REFERENCES manalith_member(id),
 	articleId INT NOT NULL REFERENCES manalith_blog_article(id),
@@ -106,7 +106,7 @@ CREATE TABLE manalith_blog_article_trackback(
 	inetAddress INET NOT NULL
 );
 
-CREATE TABLE manalith_blog_bookmark(
+CREATE TABLE IF NOT EXISTS manalith_blog_bookmark(
 	id SERIAL NOT NULL PRIMARY KEY,
 	blogOwnerId VARCHAR(12) NOT NULL REFERENCES manalith_member(id),
 	category TEXT NOT NULL,
@@ -118,7 +118,7 @@ CREATE TABLE manalith_blog_bookmark(
 	date TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
-CREATE TABLE manalith_blog_log(
+CREATE TABLE IF NOT EXISTS manalith_blog_log(
 	id SERIAL NOT NULL PRIMARY KEY,
 	blogOwnerId VARCHAR(12) NOT NULL REFERENCES manalith_member(id),
 	ip INET NULL,

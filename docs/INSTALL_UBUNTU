@@ -15,7 +15,7 @@
 
 4. 메이븐 설정파일인 settings.xml에 톰캣 manager 유저의 ID/비번 설정 후 ~/.m2/ 에 복사합니다.
 
-5. pom.xml의 DB 정보를 수정 후 mvn sql설치 명령어
+5. pom.xml의 DB 정보를 수정
 
 6. src/main/webapp/META-INF/context.xml 의 DB 정보를 수정
 
