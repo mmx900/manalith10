@@ -10,8 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import org.apache.log4j.Logger;
 import org.manalith.resource.Template;
 
 
@@ -20,7 +21,7 @@ import org.manalith.resource.Template;
  */
 public class TemplateDAO {
 	private static TemplateDAO manager = null;
-	private static Logger logger = Logger.getLogger(TemplateDAO.class);
+	private static Logger logger = LoggerFactory.getLogger(TemplateDAO.class);
 	private static String BLOG_TEMPLATE_PATH = "blog/templates/";
 	private static String BLOG_TEMPLATE_PROPERTIES = "template.properties";
 	

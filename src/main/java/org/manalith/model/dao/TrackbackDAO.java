@@ -26,12 +26,14 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
-import org.apache.log4j.Logger;
+import org.postgresql.util.PGobject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.manalith.db.ConnectionFactory;
 import org.manalith.resource.Article;
 import org.manalith.resource.ArticleTrackback;
 import org.manalith.resource.Blog;
-import org.postgresql.util.PGobject;
 
 
 /**
@@ -40,7 +42,7 @@ import org.postgresql.util.PGobject;
 public class TrackbackDAO {
 	private Connection conn;
 	private static TrackbackDAO manager = null;
-	private static Logger logger = Logger.getLogger(TrackbackDAO.class);
+	private static Logger logger = LoggerFactory.getLogger(TrackbackDAO.class);
 	
 	private TrackbackDAO() {
 		try {
@@ -96,7 +98,7 @@ public class TrackbackDAO {
 		logger.error(blogInfo.getTitle());
 		//logger.error(post.getRequestBodyAsString());
 		//logger.error(post.getResponseBodyAsString());
-		logger.error(response.getStatusLine());
+		logger.error(response.getStatusLine().toString());
 		EntityUtils.consume(entity);
 		result = 0;
 		}finally{
@@ -324,13 +326,13 @@ public class TrackbackDAO {
 			
 			this.increaseTrackbackCount(trackback.getArticleId());
 		}catch(SQLException e){
-			logger.error(e);
+			logger.error(e.getMessage(), e);
 		}finally{
 			if (pstmt != null) {
 				try {
 					pstmt.close(); 
 				} catch (SQLException e) {
-					logger.error(e);
+					logger.error(e.getMessage(), e);
 				}
 				pstmt = null; 
 			} 
@@ -352,13 +354,13 @@ public class TrackbackDAO {
 			
 			this.decreaseTrackbackCount(articleId);
 		}catch(SQLException e){
-			logger.error(e);
+			logger.error(e.getMessage(), e);
 		}finally{
 			if (pstmt != null) {
 				try {
 					pstmt.close(); 
 				} catch (SQLException e) {
-					logger.error(e);
+					logger.error(e.getMessage(), e);
 				}
 				pstmt = null; 
 			} 
@@ -380,13 +382,13 @@ public class TrackbackDAO {
 			
 			this.decreaseTrackbackCount(articleId);
 		}catch(SQLException e){
-			logger.error(e);
+			logger.error(e.getMessage(), e);
 		}finally{
 			if (pstmt != null) {
 				try {
 					pstmt.close(); 
 				} catch (SQLException e) {
-					logger.error(e);
+					logger.error(e.getMessage(), e);
 				}
 				pstmt = null; 
 			} 

@@ -10,9 +10,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.manalith.db.ConnectionFactory;
 import org.manalith.db.HibernateUtil;
 import org.manalith.exception.ExistAuthorException;
@@ -26,7 +28,7 @@ import org.manalith.resource.User;
 public class BlogAuthorDAO {
 	private Connection conn;
 	private static BlogAuthorDAO manager = null;
-	private static Logger logger = Logger.getLogger(BlogAuthorDAO.class);
+	private static Logger logger = LoggerFactory.getLogger(BlogAuthorDAO.class);
 	
 	private BlogAuthorDAO(){
 		try {
@@ -107,7 +109,7 @@ public class BlogAuthorDAO {
 			.executeUpdate();
 			
 		}catch(HibernateException e){
-			logger.error(e);
+			logger.error(e.getMessage(), e);
 		}finally{
 			HibernateUtil.closeSession();
 		}
@@ -125,7 +127,7 @@ public class BlogAuthorDAO {
 		 .list();
 		 
 		 }catch(HibernateException e){
-		 logger.error(e);
+		 logger.error(e.getMessage(), e);
 		 }finally{
 		 HibernateUtil.closeSession();
 		 }
@@ -194,7 +196,7 @@ public class BlogAuthorDAO {
 			.executeUpdate();
 			
 		}catch(HibernateException e){
-			logger.error(e);
+			logger.error(e.getMessage(), e);
 		}finally{
 			HibernateUtil.closeSession();
 		}

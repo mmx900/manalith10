@@ -10,8 +10,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import org.apache.log4j.Logger;
 import org.manalith.db.ConnectionFactory;
 import org.manalith.resource.BlogBookmark;
 
@@ -22,7 +23,7 @@ import org.manalith.resource.BlogBookmark;
 public class BlogBookmarkDAO {
 	private Connection conn;
 	private static BlogBookmarkDAO manager = null;
-	private static Logger logger = Logger.getLogger(BlogBookmarkDAO.class);
+	private static Logger logger = LoggerFactory.getLogger(BlogBookmarkDAO.class);
 	
 	private BlogBookmarkDAO(){
 		try {

@@ -3,10 +3,12 @@
  */
 package org.manalith.model.dao;
 
-import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.manalith.db.HibernateUtil;
 import org.manalith.resource.VisitorLog;
 
@@ -15,7 +17,7 @@ import org.manalith.resource.VisitorLog;
  */
 public class VisitorLogDAO {
     private static VisitorLogDAO manager;
-    private static Logger logger = Logger.getLogger(VisitorLogDAO.class);
+    private static Logger logger = LoggerFactory.getLogger(VisitorLogDAO.class);
     
     private VisitorLogDAO(){
     }
@@ -37,7 +39,7 @@ public class VisitorLogDAO {
 	        tx.commit();
         }catch(HibernateException e){
             if(tx != null) tx.rollback();
-            logger.error(e);
+            logger.error(e.getMessage(), e);
         }finally{
             HibernateUtil.closeSession();
         }

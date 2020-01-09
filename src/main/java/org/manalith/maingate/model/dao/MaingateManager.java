@@ -10,7 +10,9 @@ import java.util.Properties;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.manalith.maingate.resource.MaingateOption;
 import org.manalith.model.dao.FileDAO;
 
@@ -19,7 +21,7 @@ import org.manalith.model.dao.FileDAO;
  * @author setzer
  */
 public class MaingateManager extends HttpServlet{
-	private static Logger logger = Logger.getLogger(MaingateManager.class);
+	private static Logger logger = LoggerFactory.getLogger(MaingateManager.class);
 	private static MaingateManager instance = null;
 	private static MaingateOption option = null;
 	
@@ -28,7 +30,7 @@ public class MaingateManager extends HttpServlet{
 		 try{
 		 this.init();
 		 }catch(ServletException e){
-		 logger.error(e);
+		 logger.error(e.getMessage(), e);
 		 }
 		 */
 	}

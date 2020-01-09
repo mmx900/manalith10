@@ -10,8 +10,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import org.apache.log4j.Logger;
 import org.manalith.db.ConnectionFactory;
 import org.manalith.maingate.resource.RSSSource;
 
@@ -22,7 +23,7 @@ import org.manalith.maingate.resource.RSSSource;
 public class RSSSourceDAO {
 	private Connection conn;
 	private static RSSSourceDAO manager;
-	private static Logger logger = Logger.getLogger(RSSSourceDAO.class);
+	private static Logger logger = LoggerFactory.getLogger(RSSSourceDAO.class);
 	
 	private RSSSourceDAO(){
 		try {

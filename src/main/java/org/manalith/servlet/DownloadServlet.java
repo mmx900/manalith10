@@ -15,14 +15,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author setzer
  */
 public class DownloadServlet extends HttpServlet {
-    Logger logger = Logger.getLogger(DownloadServlet.class);
+    Logger logger = LoggerFactory.getLogger(DownloadServlet.class);
     private static final String UPLOAD_PATH = "/blog/upload/"; //FIXME UPLOAD_PATH를 property로
     
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException{
@@ -68,13 +68,13 @@ public class DownloadServlet extends HttpServlet {
 	            throw new ServletException("파일을 찾을 수 없습니다.");
 	        }
         }catch(IOException e){
-            logger.error(e);
+            logger.error(e.getMessage(), e);
         }finally{
             try{
 	            if(inputStream != null) inputStream.close();
 	            if(outputStream != null) outputStream.close();
             }catch(IOException e){
-                logger.error(e);
+                logger.error(e.getMessage(), e);
             }
         }
     }

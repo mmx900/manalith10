@@ -11,11 +11,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.postgresql.util.PGobject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import org.apache.log4j.Logger;
 import org.manalith.db.ConnectionFactory;
 import org.manalith.resource.ArticleComment;
-import org.postgresql.util.PGobject;
 
 /**
  * @author setzer
@@ -23,8 +24,7 @@ import org.postgresql.util.PGobject;
 public class ArticleCommentDAO {
 	private Connection conn;
 	private static ArticleCommentDAO manager = null;
-	private static Logger logger = Logger
-	.getLogger(ArticleCommentDAO.class);
+	private static Logger logger = LoggerFactory.getLogger(ArticleCommentDAO.class);
 	
 	private ArticleCommentDAO() {
 		try {

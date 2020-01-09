@@ -11,19 +11,20 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.DynaActionForm;
 import org.apache.struts.actions.DispatchAction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
  * @author setzer
  */
 public class AdminAuthAction extends DispatchAction{
-	private static Logger logger = Logger.getLogger(AdminAuthAction.class);
+	private static Logger logger = LoggerFactory.getLogger(AdminAuthAction.class);
 	
 	public ActionForward execute(
 			ActionMapping mapping,

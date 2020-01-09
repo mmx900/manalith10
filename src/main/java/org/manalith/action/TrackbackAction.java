@@ -8,12 +8,14 @@ import javax.servlet.http.HttpServletResponse;
 
 
 import org.apache.commons.beanutils.PropertyUtils;
-import org.apache.log4j.Logger;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.DynaActionForm;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.manalith.model.dao.TrackbackDAO;
 import org.manalith.resource.ArticleTrackback;
 
@@ -23,7 +25,7 @@ import org.manalith.resource.ArticleTrackback;
  */
 public class TrackbackAction extends Action{
 	
-	private static Logger logger = Logger.getLogger(TrackbackAction.class);
+	private static Logger logger = LoggerFactory.getLogger(TrackbackAction.class);
 	
 	public ActionForward execute(
 			ActionMapping mapping,

@@ -13,11 +13,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.actions.DispatchAction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.manalith.form.ArticleForm;
 import org.manalith.maingate.model.dao.MaingateManager;
 import org.manalith.maingate.resource.MaingateOption;
@@ -38,7 +40,7 @@ import org.manalith.resource.User;
  * @author setzer
  */
 public class ArticleAction extends DispatchAction{
-	private static Logger logger = Logger.getLogger(ArticleAction.class);
+	private static Logger logger = LoggerFactory.getLogger(ArticleAction.class);
 	private String blogOwnerId = null;
 	
 	public ActionForward execute(

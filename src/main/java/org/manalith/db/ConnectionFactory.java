@@ -13,14 +13,15 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.sql.DataSource;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author setzer
  */
 public class ConnectionFactory extends HttpServlet{
 	private static DataSource datasource = null;
-	private static Logger logger = Logger.getLogger(ConnectionFactory.class);
+	private static Logger logger = LoggerFactory.getLogger(ConnectionFactory.class);
 	private static ConnectionFactory instance = null;
 	
 	public void init() throws ServletException{
@@ -30,7 +31,7 @@ public class ConnectionFactory extends HttpServlet{
 			Context envContext = (Context)initContext.lookup("java:/comp/env");
 			datasource = (DataSource)envContext.lookup("jdbc/manalith");
 		} catch (NamingException e) {
-			logger.error(e);
+			logger.error(e.getMessage(), e);
 		} 
 		instance = this;
 	}
@@ -39,7 +40,7 @@ public class ConnectionFactory extends HttpServlet{
 		try{
 			shutdownDataSource();
 		}catch(SQLException e){
-			logger.error(e);
+			logger.error(e.getMessage(), e);
 		}
 	}
 	

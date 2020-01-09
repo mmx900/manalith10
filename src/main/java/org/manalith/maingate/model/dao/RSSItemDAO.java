@@ -12,7 +12,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.manalith.db.ConnectionFactory;
 import org.manalith.maingate.resource.RSSSource;
 import org.manalith.maingate.resource.RSSSourceItem;
@@ -28,7 +30,7 @@ import org.manalith.util.rss.parser.RSSDOMParser;
 public class RSSItemDAO {
 	private Connection conn;
 	private static RSSItemDAO manager;
-	private static Logger logger = Logger.getLogger(RSSItemDAO.class);
+	private static Logger logger = LoggerFactory.getLogger(RSSItemDAO.class);
 	
 	private RSSItemDAO(){
 		try {
@@ -86,7 +88,7 @@ public class RSSItemDAO {
 				items.add(item);
 			}
 		}catch(SQLException e){
-			logger.error(e);
+			logger.error(e.getMessage(), e);
 		}finally{
 			if (rs != null) {
 				try {
@@ -149,7 +151,7 @@ public class RSSItemDAO {
 				items.add(item);
 			}
 		}catch(SQLException e){
-			logger.error(e);
+			logger.error(e.getMessage(), e);
 		}finally{
 			if (rs != null) {
 				try {
@@ -222,9 +224,9 @@ public class RSSItemDAO {
 					}
 				}
 			}catch(SQLException e){
-				logger.error(e);
+				logger.error(e.getMessage(), e);
 			}catch(NullPointerException e){
-				logger.error(e);
+				logger.error(e.getMessage(), e);
 			}finally{
 				if (pstmt != null) {
 					try {
@@ -252,7 +254,7 @@ public class RSSItemDAO {
 			pstmt = conn.prepareStatement(clearQuery.toString());
 			pstmt.executeUpdate();
 		}catch(SQLException e){
-			logger.error(e);
+			logger.error(e.getMessage(), e);
 		}finally{
 			if (pstmt != null) {
 				try {
@@ -276,7 +278,7 @@ public class RSSItemDAO {
 			pstmt.setInt(1,sourceId);
 			pstmt.executeUpdate();
 		}catch(SQLException e){
-			logger.error(e);
+			logger.error(e.getMessage(), e);
 		}finally{
 			if (pstmt != null) {
 				try {

@@ -73,7 +73,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 //import javax.servlet.UnavailableException;
 
 
@@ -107,7 +108,7 @@ import org.apache.log4j.Logger;
  */
 
 public class SetCharacterEncodingFilter implements Filter {
-	private static Logger logger = Logger.getLogger(SetCharacterEncodingFilter.class);
+	private static Logger logger = LoggerFactory.getLogger(SetCharacterEncodingFilter.class);
 	
 	
 	// ----------------------------------------------------- Instance Variables

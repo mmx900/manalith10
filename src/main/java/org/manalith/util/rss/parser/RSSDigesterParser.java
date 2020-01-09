@@ -6,16 +6,18 @@ package org.manalith.util.rss.parser;
 import java.io.IOException;
 
 import org.apache.commons.digester.Digester;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.xml.sax.SAXException;
+
 import org.manalith.util.rss.RSSChannelItemObject;
 import org.manalith.util.rss.RSSChannelObject;
 import org.manalith.util.rss.RSSObject;
-import org.xml.sax.SAXException;
 
 
 public class RSSDigesterParser implements RSSParser{
 	private static RSSDigesterParser util = null;
-	private static Logger logger = Logger.getLogger(RSSParser.class);
+	private static Logger logger = LoggerFactory.getLogger(RSSParser.class);
 	
 	private RSSDigesterParser(){}
 	public static RSSDigesterParser instance(){

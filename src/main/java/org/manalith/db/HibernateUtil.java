@@ -2,13 +2,14 @@
  * Created on 2005. 5. 4
  */
 package org.manalith.db;
-import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class HibernateUtil {
-	private static Logger log = Logger.getLogger(HibernateUtil.class);
+	private static Logger log = LoggerFactory.getLogger(HibernateUtil.class);
 	
 	private static final SessionFactory sessionFactory;
 	

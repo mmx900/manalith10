@@ -11,10 +11,12 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.manalith.db.HibernateUtil;
 import org.manalith.resource.Article;
 import org.manalith.resource.ArticleFormat;
@@ -30,7 +32,7 @@ import org.manalith.resource.calendar.Year;
  */
 public class ArticleDAO {
 	private static ArticleDAO manager = null;
-	private static Logger logger = Logger.getLogger(ArticleDAO.class);
+	private static Logger logger = LoggerFactory.getLogger(ArticleDAO.class);
 	
 	private ArticleDAO(){
 	}
@@ -69,7 +71,7 @@ public class ArticleDAO {
 			increaseArticleCount(article.getBlogOwnerId());
 		}catch(HibernateException e){
 			if(tx != null) tx.rollback();
-			logger.error(e);
+			logger.error(e.getMessage(), e);
 		}finally{
 			HibernateUtil.closeSession();
 		}
@@ -132,9 +134,9 @@ public class ArticleDAO {
 				}
 			}
 		}catch(SQLException e){
-			logger.error(e);
+			logger.error(e.getMessage(), e);
 		}catch(Exception e){
-			logger.error(e);
+			logger.error(e.getMessage(), e);
 			e.printStackTrace();
 		}finally {
 			if (rs != null) {
@@ -179,7 +181,7 @@ public class ArticleDAO {
 		 article.setFiles(FileDAO.instance().getConnectedFiles(article.getId()));
 		 }
 		 }catch(HibernateException e){
-		 logger.error(e);
+		 logger.error(e.getMessage(), e);
 		 }finally{
 		 HibernateUtil.closeSession();
 		 }
@@ -222,9 +224,9 @@ public class ArticleDAO {
 				article.setFiles(FileDAO.instance().getConnectedFiles(article.getId()));
 			}
 		}catch(SQLException e){
-			logger.error(e);
+			logger.error(e.getMessage(), e);
 		}catch(Exception e){
-			logger.error(e);            
+			logger.error(e.getMessage(), e);
 		}finally {
 			if (rs != null) {
 				try {
@@ -274,7 +276,7 @@ public class ArticleDAO {
 				articles.set(i, article);
 			}
 		}catch(HibernateException e){
-			logger.error(e);
+			logger.error(e.getMessage(), e);
 		}finally{
 			HibernateUtil.closeSession();
 		}
@@ -310,7 +312,7 @@ public class ArticleDAO {
 				articles.set(i, article);
 			}
 		}catch(HibernateException e){
-			logger.error(e);
+			logger.error(e.getMessage(), e);
 		}finally{
 			HibernateUtil.closeSession();
 		}
@@ -343,7 +345,7 @@ public class ArticleDAO {
 				articles.set(i, article);
 			}
 		}catch(HibernateException e){
-			logger.error(e);
+			logger.error(e.getMessage(), e);
 		}finally{
 			HibernateUtil.closeSession();
 		}
@@ -372,7 +374,7 @@ public class ArticleDAO {
 				articles.set(i, article);
 			}
 		}catch(HibernateException e){
-			logger.error(e);
+			logger.error(e.getMessage(), e);
 		}finally{
 			HibernateUtil.closeSession();
 		}
@@ -414,7 +416,7 @@ public class ArticleDAO {
 				articles.set(i, article);
 			}
 		}catch(HibernateException e){
-			logger.error(e);
+			logger.error(e.getMessage(), e);
 		}finally{
 			HibernateUtil.closeSession();
 		}
@@ -450,7 +452,7 @@ public class ArticleDAO {
 				articles.set(i, article);
 			}
 		}catch(HibernateException e){
-			logger.error(e);
+			logger.error(e.getMessage(), e);
 		}finally{
 			HibernateUtil.closeSession();
 		}
@@ -486,7 +488,7 @@ public class ArticleDAO {
 				articles.set(i, article);
 			}
 		}catch(HibernateException e){
-			logger.error(e);
+			logger.error(e.getMessage(), e);
 		}finally{
 			HibernateUtil.closeSession();
 		}
@@ -575,7 +577,7 @@ public class ArticleDAO {
 			.executeUpdate();
 			
 		}catch(HibernateException e){
-			logger.error(e);
+			logger.error(e.getMessage(), e);
 		}finally{
 			HibernateUtil.closeSession();
 		}
@@ -598,7 +600,7 @@ public class ArticleDAO {
 			
 			decreaseArticleCount(blogOwnerId);
 		}catch(HibernateException e){
-			logger.error(e);
+			logger.error(e.getMessage(), e);
 		}finally{
 			HibernateUtil.closeSession();
 		}
@@ -620,7 +622,7 @@ public class ArticleDAO {
 			
 			restoreArticleCount(blogOwnerId);
 		}catch(HibernateException e){
-			logger.error(e);
+			logger.error(e.getMessage(), e);
 		}finally{
 			HibernateUtil.closeSession();
 		}
@@ -683,7 +685,7 @@ public class ArticleDAO {
 			.executeUpdate();
 			
 		}catch(HibernateException e){
-			logger.error(e);
+			logger.error(e.getMessage(), e);
 		}finally{
 			HibernateUtil.closeSession();
 		}
@@ -705,7 +707,7 @@ public class ArticleDAO {
 			.list();
 			
 		}catch(HibernateException e){
-			logger.error(e);
+			logger.error(e.getMessage(), e);
 		}finally{
 			HibernateUtil.closeSession();
 		}

@@ -15,8 +15,10 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.apache.struts.upload.FormFile;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.manalith.db.ConnectionFactory;
 import org.manalith.resource.ArticleFile;
 import org.manalith.resource.User;
@@ -29,7 +31,7 @@ public class FileDAO {
 	
 	private Connection conn;
 	private static FileDAO manager;
-	private static Logger logger = Logger.getLogger(FileDAO.class);
+	private static Logger logger = LoggerFactory.getLogger(FileDAO.class);
 	private static String ARTICLE_FILE_UPLOAD_PATH = "blog/upload/article/";
 	private static String BLOG_TITLE_IMAGE_PATH = "blog/upload/title/";
 	private static String BLOG_BACKGROUND_IMAGE_PATH = "blog/upload/background/";
@@ -74,7 +76,7 @@ public class FileDAO {
 			stream.close();
 			
 		}catch(Exception e){
-			logger.error(e);
+			logger.error(e.getMessage(), e);
 		}
 	}
 	
@@ -116,7 +118,7 @@ public class FileDAO {
 			writeFile(fileName, formFile, path);
 			
 		}catch(SQLException e){
-			logger.error(e);
+			logger.error(e.getMessage(), e);
 		}finally {
 			if (rs != null) {
 				try {
@@ -169,7 +171,7 @@ public class FileDAO {
 			pstmt.executeUpdate();
 			
 		}catch(SQLException e){
-			logger.error(e);
+			logger.error(e.getMessage(), e);
 		}finally {
 			if (rs != null) {
 				try {
@@ -230,7 +232,7 @@ public class FileDAO {
 			writeFile(fileName, formFile, path);
 			
 		}catch(SQLException e){
-			logger.error(e);
+			logger.error(e.getMessage(), e);
 		}finally {
 			if (rs != null) {
 				try {
@@ -283,7 +285,7 @@ public class FileDAO {
 			pstmt.executeUpdate();
 			
 		}catch(SQLException e){
-			logger.error(e);
+			logger.error(e.getMessage(), e);
 		}finally {
 			if (rs != null) {
 				try {
@@ -353,7 +355,7 @@ public class FileDAO {
 			fileNum = rs.getInt("id");
 			
 		}catch(SQLException e){
-			logger.error(e);
+			logger.error(e.getMessage(), e);
 		}finally {
 			if (rs != null) {
 				try {
@@ -391,7 +393,7 @@ public class FileDAO {
 				setConnectedFile(fileId[i], articleId);
 			}
 		}catch(NullPointerException e){
-			logger.error(e);
+			logger.error(e.getMessage(), e);
 		}
 	}
 	
@@ -410,7 +412,7 @@ public class FileDAO {
 			pstmt.setInt(2,fileId);
 			pstmt.executeUpdate();
 		}catch(SQLException e){
-			logger.error(e);
+			logger.error(e.getMessage(), e);
 		}finally {
 			if (pstmt != null) {
 				try {
@@ -447,7 +449,7 @@ public class FileDAO {
 				files.add(file);
 			}
 		}catch(SQLException e){
-			logger.error(e);
+			logger.error(e.getMessage(), e);
 		}finally {
 			if (rs != null) {
 				try {
@@ -493,7 +495,7 @@ public class FileDAO {
 				files.add(file);
 			}
 		}catch(SQLException e){
-			logger.error(e);
+			logger.error(e.getMessage(), e);
 		}finally {
 			if (rs != null) {
 				try {
@@ -551,7 +553,7 @@ public class FileDAO {
 			pstmt.setInt(1,fileId);
 			pstmt.executeUpdate();
 		}catch(SQLException e){
-			logger.error(e);
+			logger.error(e.getMessage(), e);
 		}finally {
 			if (pstmt != null) {
 				try {

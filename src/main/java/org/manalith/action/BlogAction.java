@@ -11,11 +11,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.actions.DispatchAction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.manalith.form.BlogForm;
 import org.manalith.maingate.model.dao.MaingateManager;
 import org.manalith.maingate.resource.MaingateOption;
@@ -28,7 +30,7 @@ import org.manalith.resource.VisitorLog;
  * @author setzer
  */
 public class BlogAction extends DispatchAction {
-	private static Logger logger = Logger.getLogger(BlogAction.class);
+	private static Logger logger = LoggerFactory.getLogger(BlogAction.class);
 	
 	private String blogOwnerId;
 	private String category;

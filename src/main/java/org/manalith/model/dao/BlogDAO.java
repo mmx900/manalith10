@@ -9,9 +9,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.manalith.db.ConnectionFactory;
 import org.manalith.db.HibernateUtil;
 import org.manalith.resource.Article;
@@ -26,7 +28,7 @@ public class BlogDAO {
 	
 	private Connection conn;
 	private static BlogDAO manager = null;
-	private static Logger logger = Logger.getLogger(BlogDAO.class);
+	private static Logger logger = LoggerFactory.getLogger(BlogDAO.class);
 	
 	private BlogDAO() {
 		try {
@@ -287,7 +289,7 @@ public class BlogDAO {
 			.executeUpdate();
 			
 		}catch(HibernateException e){
-			logger.error(e);
+			logger.error(e.getMessage(), e);
 		}finally{
 			HibernateUtil.closeSession();
 		}
@@ -313,7 +315,7 @@ public class BlogDAO {
 			.executeUpdate();
 			
 		}catch(HibernateException e){
-			logger.error(e);
+			logger.error(e.getMessage(), e);
 		}finally{
 			HibernateUtil.closeSession();
 		}
