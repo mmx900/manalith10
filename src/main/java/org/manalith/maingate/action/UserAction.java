@@ -16,8 +16,10 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.DynaActionForm;
 import org.apache.struts.actions.DispatchAction;
 import org.manalith.maingate.model.dao.MaingateManager;
+import org.manalith.model.BlogManager;
 import org.manalith.model.UserManager;
 import org.manalith.model.dao.UserDAO;
+import org.manalith.resource.Blog;
 import org.manalith.resource.User;
 
 /**
@@ -59,6 +61,15 @@ public class UserAction extends DispatchAction {
 				session.setAttribute("userId", user.getId());
 				session.setAttribute("userName", user.getName());
 			}
+
+			Blog blog = new Blog();
+			blog.setTitle("Untitled");
+			blog.setDescription("");
+			blog.setTemplate("default");
+			blog.setOwner(user);
+			blog.setUrl("http://localhost:8080");
+
+			BlogManager.instance().createBlog(blog, null, null);
 		} else {
 			String msg = "가입이 허용되지 않은 사이트입니다.";
 			throw new ServletException(msg);
