@@ -27,24 +27,25 @@ import org.manalith.resource.User;
 /**
  * @author setzer
  */
-public class MainAction extends Action{
+public class MainAction extends Action {
+
 	private static Logger logger = LoggerFactory.getLogger(MainAction.class);
-	
+
 	public ActionForward execute(
 			ActionMapping mapping,
 			ActionForm form,
 			HttpServletRequest request,
 			HttpServletResponse response)
-	throws Exception {
+			throws Exception {
 		List<User> users = UserDAO.instance().getUsers();
 		RSSItemDAO.instance().restoreFromSources();
 		List<RSSSourceItem> recentEntries = RSSItemDAO.instance().getItems(10);
 		MaingateOption option = MaingateManager.getOption();
-		
+
 		request.setAttribute("userList", users);
-		request.setAttribute("recentEntries",recentEntries);
-		request.setAttribute("option",option);
-		
+		request.setAttribute("recentEntries", recentEntries);
+		request.setAttribute("option", option);
+
 		return mapping.findForward("main");
 	}
 }

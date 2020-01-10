@@ -26,92 +26,94 @@ import org.manalith.util.EscapeUtil;
 
 
 public class BlogManager {
-	private BlogManager(){}
-	public static BlogManager instance(){
+	private BlogManager() {
+	}
+
+	public static BlogManager instance() {
 		return new BlogManager();
 	}
-	
+
 	/**
 	 * 새로운 블로그를 생성한다.
 	 */
-	public void createBlog(Blog blog, FormFile titleImage, FormFile backgroundImage) throws Exception{
+	public void createBlog(Blog blog, FormFile titleImage, FormFile backgroundImage) throws Exception {
 		BlogDAO.instance().createBlog(blog);
-		
-		if(titleImage != null){
-			FileDAO.instance().setBlogTitleImage(blog.getOwner(),titleImage);
+
+		if (titleImage != null) {
+			FileDAO.instance().setBlogTitleImage(blog.getOwner(), titleImage);
 		}
-		
-		if(backgroundImage != null){
-			FileDAO.instance().setBlogBackgroundImage(blog.getOwner(),backgroundImage);
+
+		if (backgroundImage != null) {
+			FileDAO.instance().setBlogBackgroundImage(blog.getOwner(), backgroundImage);
 		}
 	}
-	
+
 	/**
 	 * 블로그 정보를 업데이트한다.
 	 */
 	public void updateBlog(Blog blog, FormFile titleImage, FormFile backgroundImage) throws Exception {
 		BlogDAO.instance().updateBlogInfo(blog);
-		
-		if(titleImage != null && titleImage.getFileName().equals("")){
-			FileDAO.instance().setBlogTitleImage(blog.getOwner(),titleImage);
+
+		if (titleImage != null && titleImage.getFileName().equals("")) {
+			FileDAO.instance().setBlogTitleImage(blog.getOwner(), titleImage);
 		}
-		
-		if(backgroundImage != null && !backgroundImage.getFileName().equals("")){
-			FileDAO.instance().setBlogBackgroundImage(blog.getOwner(),backgroundImage);
+
+		if (backgroundImage != null && !backgroundImage.getFileName().equals("")) {
+			FileDAO.instance().setBlogBackgroundImage(blog.getOwner(), backgroundImage);
 		}
 	}
-	
+
 	/**
 	 * 블로그를 보여준다.
 	 */
 	public Blog showBlog(String blogOwnerId, String category, String author, int page, int articleId, Date date) throws Exception {
 		Blog blog = null;
 		BlogDAO bm = BlogDAO.instance();
-		
+
 		if (category != null)
 			blog = bm.getBlog(blogOwnerId, category);
-		else if(author != null)
+		else if (author != null)
 			blog = bm.getBlog(blogOwnerId, new User(author));
-		else if(page != 0){
+		else if (page != 0) {
 			blog = bm.getBlog(blogOwnerId, page);
-		}else if (articleId != 0){
+		} else if (articleId != 0) {
 			Article article = new Article();
 			article.setId(articleId);
 			blog = bm.getBlog(blogOwnerId, article);
-		}else if (date != null)
+		} else if (date != null)
 			blog = bm.getBlog(blogOwnerId, date);
 		else
-			blog = bm.getBlog(blogOwnerId,1);
-		
-		if(blog != null){
+			blog = bm.getBlog(blogOwnerId, 1);
+
+		if (blog != null) {
 			List<Article> articles = blog.getArticles();
 			Article article = null;
 			List<ArticleComment> comments = null;
 			ArticleComment comment = null;
-			
-			for(int i=0;i<articles.size();i++){
+
+			for (int i = 0; i < articles.size(); i++) {
 				article = articles.get(i);
-				
-				if(article.getFormat().toString().equals("text"))
+
+				if (article.getFormat().toString().equals("text"))
 					article.setContents(EscapeUtil.escapeHtml(article.getContents()));
-				
+
 				article.setContents(EscapeUtil.convertLineFeed(article.getContents()));
 				comments = article.getComments();
-				
-				for(int y=0;y<comments.size();y++){
+
+				for (int y = 0; y < comments.size(); y++) {
 					comment = (ArticleComment) comments.get(y);
 					comment.setContents(EscapeUtil.escapeHtml(comment.getContents()));
 					comment.setContents(EscapeUtil.convertLineFeed(comment.getContents()));
-					comments.set(y,comment);
+					comments.set(y, comment);
 				}
 				article.setComments(comments);
-				articles.set(i,article);
+				articles.set(i, article);
 			}
 			blog.setArticles(articles);
-			
+
 			blog.setCalendar(ArticleDAO.instance().getArticleCalendar(blogOwnerId));
 		}
-		
+
 		blog.setTemplate(
 				TemplateDAO.instance().getTemplate(
 						//FIXME 다른 방식으로 절대 경로 저장할 것
@@ -119,30 +121,30 @@ public class BlogManager {
 						blog.getTemplate().toString()
 				)
 		);
-		
+
 		return blog;
 	}
-	
+
 	/**
 	 * RSS를 보여준다.
 	 */
 	public Blog showRSS(String blogOwnerId) throws Exception {
 		Blog blog = BlogDAO.instance().getBlog(blogOwnerId);
-		if(blog.getAllowRSS() == false){
+		if (blog.getAllowRSS() == false) {
 			String msg = "RSS 구독이 금지된 블로그입니다.";
 			throw new ServletException(msg);
 		}
-		
+
 		List<Article> articles = blog.getArticles();
 		Article article = null;
-		
-		for(int i=0;i<articles.size();i++){
+
+		for (int i = 0; i < articles.size(); i++) {
 			article = articles.get(i);
 			article.setContents(EscapeUtil.escapeXml(article.getContents()));
-			articles.set(i,article);
+			articles.set(i, article);
 		}
 		blog.setArticles(articles);
-		
+
 		return blog;
 	}
 

@@ -25,7 +25,7 @@ import org.manalith.resource.User;
  */
 public class UserAction extends DispatchAction {
 	public ActionForward add(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
+							 HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		if (request.getSession().getAttribute("admin") == null) {
 			return new ActionForward("/adminAuth.do", true);
@@ -44,7 +44,7 @@ public class UserAction extends DispatchAction {
 	}
 
 	public ActionForward register(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
+								  HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		if (MaingateManager.getOption().isAllowRegister()
 				|| request.getSession().getAttribute("admin") != null) {
@@ -71,7 +71,7 @@ public class UserAction extends DispatchAction {
 	 * 아이디(uid)와 비밀번호(password)를 받아 사용자를 로그인한다.
 	 */
 	public ActionForward login(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
+							   HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaActionForm userForm = (DynaActionForm) form;
 		User user = new User();
@@ -89,7 +89,7 @@ public class UserAction extends DispatchAction {
 	}
 
 	public ActionForward logout(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
+								HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		request.getSession().invalidate();
 		return new ActionForward(request.getHeader("referer"), true);

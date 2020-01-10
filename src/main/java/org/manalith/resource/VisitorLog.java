@@ -63,8 +63,7 @@ public class VisitorLog {
 	}
 
 	/**
-	 * @param agent
-	 *            The agent to set.
+	 * @param agent The agent to set.
 	 */
 	public void setAgent(String agent) {
 		this.agent = agent;
@@ -78,8 +77,7 @@ public class VisitorLog {
 	}
 
 	/**
-	 * @param date
-	 *            The date to set.
+	 * @param date The date to set.
 	 */
 	public void setDate(Date date) {
 		this.date = date;
@@ -94,8 +92,7 @@ public class VisitorLog {
 	}
 
 	/**
-	 * @param ip
-	 *            The ip to set.
+	 * @param ip The ip to set.
 	 */
 	public void setIp(String ip) {
 		this.ip = ip;
@@ -109,8 +106,7 @@ public class VisitorLog {
 	}
 
 	/**
-	 * @param referer
-	 *            The referer to set.
+	 * @param referer The referer to set.
 	 */
 	public void setReferer(String referer) {
 		this.referer = referer;
@@ -125,8 +121,7 @@ public class VisitorLog {
 	}
 
 	/**
-	 * @param blogOwnerId
-	 *            The blogOwnerId to set.
+	 * @param blogOwnerId The blogOwnerId to set.
 	 */
 	public void setBlogOwnerId(String blogOwnerId) {
 		this.blogOwnerId = blogOwnerId;
@@ -135,14 +130,14 @@ public class VisitorLog {
 	/**
 	 * @return Returns the id.
 	 */
-	@Id @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_GEN")
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_GEN")
 	public int getId() {
 		return id;
 	}
 
 	/**
-	 * @param id
-	 *            The id to set.
+	 * @param id The id to set.
 	 */
 	public void setId(int id) {
 		this.id = id;

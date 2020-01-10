@@ -21,28 +21,28 @@ import org.manalith.resource.User;
 /**
  * @author setzer
  */
-public class AdminAction extends DispatchAction{
+public class AdminAction extends DispatchAction {
 	public ActionForward execute(
 			ActionMapping mapping,
 			ActionForm form,
 			HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		if(request.getSession().getAttribute("admin") == null){
-			return new ActionForward("/adminAuth.do",true);
-		}else if (! (request.getSession().getAttribute("admin").equals("true"))) {
-			return new ActionForward("/adminAuth.do",true);
+		if (request.getSession().getAttribute("admin") == null) {
+			return new ActionForward("/adminAuth.do", true);
+		} else if (!(request.getSession().getAttribute("admin").equals("true"))) {
+			return new ActionForward("/adminAuth.do", true);
 		}
-		
-		if (request.getParameter("method") == null){
+
+		if (request.getParameter("method") == null) {
 			return mapping.findForward("menu");
 		}
-		
+
 		return dispatchMethod(mapping, form, request, response, getMethodName(
 				mapping,
 				form,
 				request,
 				response,
-		"method"));
+				"method"));
 	}
 	
 	/*public ActionForward options(
@@ -55,30 +55,30 @@ public class AdminAction extends DispatchAction{
 	 
 	 return mapping.findForward("options");
 	 }*/
-	
+
 	public ActionForward users(
 			ActionMapping mapping,
 			ActionForm form,
 			HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		List<User> userList = UserDAO.instance().getUsers();
-		
+
 		request.setAttribute("userList", userList);
-		
+
 		return mapping.findForward("users");
 	}
-	
+
 	public ActionForward rss(
 			ActionMapping mapping,
 			ActionForm form,
 			HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		List<RSSSource> sources = RSSSourceDAO.instance().getSources();
-		request.setAttribute("sources",sources);
-		
+		request.setAttribute("sources", sources);
+
 		List<String> categories = RSSSourceDAO.instance().getCategories();
-		request.setAttribute("categories",categories);
-		
+		request.setAttribute("categories", categories);
+
 		return mapping.findForward("rss");
 	}
 	

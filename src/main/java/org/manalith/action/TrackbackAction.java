@@ -23,10 +23,10 @@ import org.manalith.resource.ArticleTrackback;
 /**
  * @author setzer
  */
-public class TrackbackAction extends Action{
-	
+public class TrackbackAction extends Action {
+
 	private static Logger logger = LoggerFactory.getLogger(TrackbackAction.class);
-	
+
 	public ActionForward execute(
 			ActionMapping mapping,
 			ActionForm form,
@@ -34,22 +34,21 @@ public class TrackbackAction extends Action{
 			HttpServletResponse response) throws Exception {
 		DynaActionForm trackbackForm = (DynaActionForm) form;
 		ArticleTrackback trackback = new ArticleTrackback();
-		PropertyUtils.copyProperties(trackback,trackbackForm);
-		
+		PropertyUtils.copyProperties(trackback, trackbackForm);
+
 		trackback.setBlogOwnerId(request.getParameter("id"));
 		trackback.setArticleId(Integer.parseInt(request.getParameter("articleId")));
 		trackback.setInetAddress(request.getRemoteHost());
-		
+
 		int error = TrackbackDAO.instance().recievePing(trackback);
 		String msg = null;
-		if(error == 1){
+		if (error == 1) {
 			msg = "Invalid Format";
 		}
-		
-		request.setAttribute("error",error+"");
-		request.setAttribute("msg",msg);
-		
+
+		request.setAttribute("error", error + "");
+		request.setAttribute("msg", msg);
+
 		return mapping.findForward("result");
 	}
-	
 }

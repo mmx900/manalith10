@@ -16,16 +16,15 @@ import org.slf4j.LoggerFactory;
 import org.manalith.maingate.resource.MaingateOption;
 import org.manalith.model.dao.FileDAO;
 
-
 /**
  * @author setzer
  */
-public class MaingateManager extends HttpServlet{
+public class MaingateManager extends HttpServlet {
 	private static Logger logger = LoggerFactory.getLogger(MaingateManager.class);
 	private static MaingateManager instance = null;
 	private static MaingateOption option = null;
-	
-	public MaingateManager(){
+
+	public MaingateManager() {
 		/*
 		 try{
 		 this.init();
@@ -34,30 +33,30 @@ public class MaingateManager extends HttpServlet{
 		 }
 		 */
 	}
-	
-	public void init() throws ServletException{
+
+	public void init() throws ServletException {
 		Properties props = new Properties();
-		try{
+		try {
 			//설정들을 가져온다
 			InputStream in = getServletContext().getResourceAsStream("/WEB-INF/maingate.properties");
 			props.load(in);
 			in.close();
-			
+
 			setOption(props);
-			
+
 			//컨텍스트 경로를 파일 매니저에 추가한다.
 			FileDAO.instance().setContextRootPath(getServletContext().getRealPath("/"));
-		}catch(IOException e){
+		} catch (IOException e) {
 			throw new ServletException(e);
 		}
 		instance = this;
 	}
-	
-	public static MaingateManager instance(){
+
+	public static MaingateManager instance() {
 		return instance;
 	}
-	
-	public static void setOption(Properties props) throws IOException{
+
+	public static void setOption(Properties props) throws IOException {
 		option = new MaingateOption();
 		option.setAllowRSS(Boolean.parseBoolean(props.getProperty("maingate.allowRSS")));
 		option.setAllowRegister(Boolean.parseBoolean(props.getProperty("maingate.allowRegister")));
@@ -65,8 +64,8 @@ public class MaingateManager extends HttpServlet{
 		option.setWideTitle(props.getProperty("maingate.wideTitle"));
 		option.setTemplate(props.getProperty("maingate.template"));
 	}
-	
-	public static MaingateOption getOption(){
+
+	public static MaingateOption getOption() {
 		return option;
 	}
 }

@@ -24,44 +24,44 @@ public class TemplateDAO {
 	private static Logger logger = LoggerFactory.getLogger(TemplateDAO.class);
 	private static String BLOG_TEMPLATE_PATH = "blog/templates/";
 	private static String BLOG_TEMPLATE_PROPERTIES = "template.properties";
-	
+
 	private TemplateDAO() {
 	}
-	
+
 	public static TemplateDAO instance() {
-		if(manager == null){
+		if (manager == null) {
 			manager = new TemplateDAO();
 		}
 		return manager;
 	}
-	
-	public static String[] listTemplates(String contextRealPath){
+
+	public static String[] listTemplates(String contextRealPath) {
 		String[] templates = new File(contextRealPath + BLOG_TEMPLATE_PATH).list();
 		return templates;
 	}
-	
-	public List<Template> getTemplates(String contextRealPath) throws Exception{
+
+	public List<Template> getTemplates(String contextRealPath) throws Exception {
 		List<Template> templates = new ArrayList<Template>();
 		String[] t = listTemplates(contextRealPath);
-		for(String template : t){
-			templates.add(getTemplate(contextRealPath,template));
+		for (String template : t) {
+			templates.add(getTemplate(contextRealPath, template));
 		}
 		return templates;
 	}
-	
-	public Template getTemplate(String contextRealPath, String templateName) throws Exception{
+
+	public Template getTemplate(String contextRealPath, String templateName) throws Exception {
 		Template t = new Template(templateName);
 		String templatePath = contextRealPath + BLOG_TEMPLATE_PATH + templateName + "/";
 		File templateDirectory = new File(templatePath);
 		File templateInfo = new File(templatePath + BLOG_TEMPLATE_PROPERTIES);
-		
-		if(templateDirectory.exists() && templateDirectory.isDirectory()){
-			if(templateInfo.exists() && templateInfo.canRead()){
-				InputStream in = new FileInputStream(templateInfo); 
+
+		if (templateDirectory.exists() && templateDirectory.isDirectory()) {
+			if (templateInfo.exists() && templateInfo.canRead()) {
+				InputStream in = new FileInputStream(templateInfo);
 				Properties props = new Properties();
 				props.load(in);
 				in.close();
-				
+
 				t.setFullName(props.getProperty("template.fullName"));
 				t.setAuthor(props.getProperty("template.author"));
 				t.setAuthorURL(props.getProperty("template.authorURL"));
@@ -72,10 +72,10 @@ public class TemplateDAO {
 				t.setTitleImageHeight(props.getProperty("template.titleImageHeight"));
 				t.setHasLoginPage(Boolean.parseBoolean(props.getProperty("template.hasLoginPage")));
 				t.setHasPostPage(Boolean.parseBoolean(props.getProperty("template.hasPostPage")));
-			}else{
+			} else {
 				//ignore
 			}
-		}else{
+		} else {
 			String msg = "템플릿을 찾을 수 없습니다.";
 			throw new Exception(msg);
 		}

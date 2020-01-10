@@ -21,7 +21,6 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.Type;
 
-
 /**
  * @author setzer
  */
@@ -60,8 +59,7 @@ public class Article {
 	}
 
 	/**
-	 * @param articleComment
-	 *            The articleComment to set.
+	 * @param articleComment The articleComment to set.
 	 */
 	public void setComments(List<ArticleComment> comments) {
 		this.comments = comments;
@@ -76,8 +74,7 @@ public class Article {
 	}
 
 	/**
-	 * @param articleTrackback
-	 *            The articleTrackback to set.
+	 * @param articleTrackback The articleTrackback to set.
 	 */
 	public void setTrackbacks(List<ArticleTrackback> trackbacks) {
 		this.trackbacks = trackbacks;
@@ -91,8 +88,7 @@ public class Article {
 	}
 
 	/**
-	 * @param category
-	 *            The category to set.
+	 * @param category The category to set.
 	 */
 	public void setCategory(String category) {
 		this.category = category;
@@ -106,8 +102,7 @@ public class Article {
 	}
 
 	/**
-	 * @param contents
-	 *            The contents to set.
+	 * @param contents The contents to set.
 	 */
 	public void setContents(String contents) {
 		this.contents = contents;
@@ -121,8 +116,7 @@ public class Article {
 	}
 
 	/**
-	 * @param date
-	 *            The date to set.
+	 * @param date The date to set.
 	 */
 	public void setDate(Date date) {
 		this.date = date;
@@ -137,8 +131,7 @@ public class Article {
 	}
 
 	/**
-	 * @param format
-	 *            The format to set.
+	 * @param format The format to set.
 	 */
 	public void setFormat(ArticleFormat format) {
 		this.format = format;
@@ -149,14 +142,13 @@ public class Article {
 	 */
 	//@ManyToOne(targetEntity=org.manalith.resource.User.class, fetch=FetchType.EAGER)
 	@ManyToOne
-	@JoinColumn(name="author", referencedColumnName="id")
+	@JoinColumn(name = "author", referencedColumnName = "id")
 	public User getAuthor() {
 		return author;
 	}
 
 	/**
-	 * @param owner
-	 *            The owner to set.
+	 * @param owner The owner to set.
 	 */
 	public void setAuthor(User author) {
 		this.author = author;
@@ -174,8 +166,7 @@ public class Article {
 	}
 
 	/**
-	 * @param title
-	 *            The title to set.
+	 * @param title The title to set.
 	 */
 	public void setTitle(String title) {
 		this.title = title;
@@ -189,8 +180,7 @@ public class Article {
 	}
 
 	/**
-	 * @param totalCommentCount
-	 *            The totalCommentCount to set.
+	 * @param totalCommentCount The totalCommentCount to set.
 	 */
 	public void setTotalCommentCount(int totalCommentCount) {
 		this.totalCommentCount = totalCommentCount;
@@ -204,8 +194,7 @@ public class Article {
 	}
 
 	/**
-	 * @param totalTrackbackCount
-	 *            The totalTrackbackCount to set.
+	 * @param totalTrackbackCount The totalTrackbackCount to set.
 	 */
 	public void setTotalTrackbackCount(int totalTrackbackCount) {
 		this.totalTrackbackCount = totalTrackbackCount;
@@ -214,14 +203,14 @@ public class Article {
 	/**
 	 * @return Returns the id.
 	 */
-	@Id  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_GEN")
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_GEN")
 	public int getId() {
 		return id;
 	}
 
 	/**
-	 * @param id
-	 *            The id to set.
+	 * @param id The id to set.
 	 */
 	public void setId(int id) {
 		this.id = id;
@@ -236,8 +225,7 @@ public class Article {
 	}
 
 	/**
-	 * @param blogOwnerId
-	 *            The blogOwnerId to set.
+	 * @param blogOwnerId The blogOwnerId to set.
 	 */
 	public void setBlogOwnerId(String blogOwnerId) {
 		this.blogOwnerId = blogOwnerId;
@@ -252,8 +240,7 @@ public class Article {
 	}
 
 	/**
-	 * @param files
-	 *            The files to set.
+	 * @param files The files to set.
 	 */
 	public void setFiles(List<ArticleFile> files) {
 		this.files = files;
@@ -291,8 +278,7 @@ public class Article {
 	}
 
 	/**
-	 * @param num
-	 *            The num to set.
+	 * @param num The num to set.
 	 */
 	public void setNum(int num) {
 		this.num = num;

@@ -9,10 +9,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class HibernateUtil {
+
 	private static Logger log = LoggerFactory.getLogger(HibernateUtil.class);
-	
+
 	private static final SessionFactory sessionFactory;
-	
+
 	static {
 		try {
 			// Create the SessionFactory
@@ -25,9 +26,9 @@ public class HibernateUtil {
 			throw new ExceptionInInitializerError(ex);
 		}
 	}
-	
+
 	public static final ThreadLocal session = new ThreadLocal();
-	
+
 	public static Session currentSession() {
 		Session s = (Session) session.get();
 		// Open a new Session, if this Thread has none yet
@@ -37,7 +38,7 @@ public class HibernateUtil {
 		}
 		return s;
 	}
-	
+
 	public static void closeSession() {
 		Session s = (Session) session.get();
 		if (s != null)

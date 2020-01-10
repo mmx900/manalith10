@@ -22,27 +22,27 @@ import org.manalith.resource.Blog;
 /**
  * @author setzer
  */
-public class TrackbackPingAction extends Action{
+public class TrackbackPingAction extends Action {
+
 	public ActionForward execute(
 			ActionMapping mapping,
 			ActionForm form,
 			HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		DynaActionForm commentForm = (DynaActionForm) form;
-		
-		int articleId = ((Integer)commentForm.get("articleId")).intValue();
+
+		int articleId = ((Integer) commentForm.get("articleId")).intValue();
 		Article article = null;
-		String url = (String)commentForm.get("url");
-		String encoding = (String)commentForm.get("encoding");
-		
+		String url = (String) commentForm.get("url");
+		String encoding = (String) commentForm.get("encoding");
+
 		Blog blogInfo = BlogDAO.instance().getBlogInfo(request.getParameter("id"));
-		
+
 		article = ArticleDAO.instance().getArticle(articleId);
-		
-		TrackbackDAO.instance().sendPing(blogInfo,article,url,encoding);
-		
+
+		TrackbackDAO.instance().sendPing(blogInfo, article, url, encoding);
+
 		//FIXME FIXME FIXME
 		return mapping.findForward("pingForm");
 	}
-	
 }

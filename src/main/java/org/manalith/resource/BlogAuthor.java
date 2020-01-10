@@ -31,14 +31,13 @@ public class BlogAuthor {
 	/**
 	 * @return Returns the blogOwnerId.
 	 */
-	@ManyToOne(targetEntity=org.manalith.resource.Blog.class)
+	@ManyToOne(targetEntity = org.manalith.resource.Blog.class)
 	public String getBlogOwnerId() {
 		return blogOwnerId;
 	}
 
 	/**
-	 * @param blogOwnerId
-	 *            The blogOwnerId to set.
+	 * @param blogOwnerId The blogOwnerId to set.
 	 */
 	public void setBlogOwnerId(String blogOwnerId) {
 		this.blogOwnerId = blogOwnerId;
@@ -47,14 +46,13 @@ public class BlogAuthor {
 	/**
 	 * @return Returns the id.
 	 */
-	@ManyToOne(targetEntity=org.manalith.resource.User.class)
+	@ManyToOne(targetEntity = org.manalith.resource.User.class)
 	public String getUserId() {
 		return userId;
 	}
 
 	/**
-	 * @param id
-	 *            The id to set.
+	 * @param id The id to set.
 	 */
 	public void setUserId(String id) {
 		this.userId = id;
@@ -68,8 +66,7 @@ public class BlogAuthor {
 	}
 
 	/**
-	 * @param date
-	 *            The date to set.
+	 * @param date The date to set.
 	 */
 	public void setDate(Date date) {
 		this.date = date;
@@ -78,14 +75,14 @@ public class BlogAuthor {
 	/**
 	 * @return Returns the id.
 	 */
-	@Id @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_GEN")
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_GEN")
 	public String getId() {
 		return id;
 	}
 
 	/**
-	 * @param id
-	 *            The id to set.
+	 * @param id The id to set.
 	 */
 	public void setId(String id) {
 		this.id = id;

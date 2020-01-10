@@ -30,15 +30,16 @@ import org.manalith.resource.VisitorLog;
  * @author setzer
  */
 public class BlogAction extends DispatchAction {
+
 	private static Logger logger = LoggerFactory.getLogger(BlogAction.class);
-	
+
 	private String blogOwnerId;
 	private String category;
 	private String author;
 	private int articleId;
 	private Date date;
 	private int page;
-	
+
 	//TODO : 예외처리
 	public ActionForward execute(
 			ActionMapping mapping,
@@ -52,37 +53,37 @@ public class BlogAction extends DispatchAction {
 		String date = request.getParameter("date");
 		String page = request.getParameter("page");
 
-		if(page != null){
-			try{
+		if (page != null) {
+			try {
 				this.page = Integer.parseInt(page);
-			}catch(NumberFormatException e){
+			} catch (NumberFormatException e) {
 				String msg = "페이지 번호가 잘못되었습니다.";
 				throw new ServletException(msg);
 			}
-		}		
-		if(articleId != null){
-			try{
+		}
+		if (articleId != null) {
+			try {
 				this.articleId = Integer.parseInt(articleId);
-			}catch(NumberFormatException e){
+			} catch (NumberFormatException e) {
 				String msg = "게시물 번호가 잘못되었습니다.";
 				throw new ServletException(msg);
 			}
 		}
-		if(date != null){
-			try{
+		if (date != null) {
+			try {
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 				this.date = sdf.parse(date);
-			}catch(ParseException e){
+			} catch (ParseException e) {
 				String msg = "날짜의 형식이 잘못되었습니다.";
 				throw new ServletException(msg);
 			}
 		}
-		
+
 		MaingateOption option = MaingateManager.getOption();
-		request.setAttribute("option",option);
-		
+		request.setAttribute("option", option);
+
 		if (request.getParameter("method") == null) {
-			return main(mapping,form,request,response);
+			return main(mapping, form, request, response);
 		} else {
 			return dispatchMethod(
 					mapping,
@@ -92,7 +93,7 @@ public class BlogAction extends DispatchAction {
 					getMethodName(mapping, form, request, response, "method"));
 		}
 	}
-	
+
 	public ActionForward main(
 			ActionMapping mapping,
 			ActionForm form,
@@ -100,34 +101,34 @@ public class BlogAction extends DispatchAction {
 			HttpServletResponse response) throws Exception {
 		BlogManager bm = BlogManager.instance();
 		Blog blog = bm.showBlog(blogOwnerId, category, author, page, articleId, date);
-		
+
 		VisitorLogManager.instance().addVisitLog(new VisitorLog(blogOwnerId, request));
 		//FIXME main 메서드가 두번씩 실행되는 문제(로그가 두번 기록됨)
-		
+
 		request.setAttribute("blog", blog);
-		
-		if(blog != null){
+
+		if (blog != null) {
 			request.setAttribute("recentArticles", bm.showRecentArticles(blogOwnerId, 5));
 			request.setAttribute("recentTrackbacks", bm.showRecentTrackbacks(blogOwnerId, 5));
 			request.setAttribute("recentComments", bm.showRecentComments(blogOwnerId, 5));
 			request.setAttribute("bookmarkCategories", bm.showBookmarkCategories(blogOwnerId));
 		}
-		
+
 		return mapping.findForward("main");
 	}
-	
+
 	public ActionForward rss(
 			ActionMapping mapping,
 			ActionForm form,
 			HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		Blog blog = BlogManager.instance().showRSS(blogOwnerId);
-		
+
 		request.setAttribute("blog", blog);
-		
+
 		return mapping.findForward("rss");
 	}
-	
+
 	//	 블로그 생성
 	public ActionForward create(
 			ActionMapping mapping,
@@ -136,7 +137,7 @@ public class BlogAction extends DispatchAction {
 			HttpServletResponse response) throws Exception {
 		BlogForm blogForm = (BlogForm) form;
 		Blog blog = new Blog();
-		
+
 		blog.setTitle(blogForm.getTitle());
 		blog.setDescription(blogForm.getDescription());
 		blog.setPageSize(blogForm.getPageSize());
@@ -144,12 +145,12 @@ public class BlogAction extends DispatchAction {
 		blog.setOwner(blogForm.getOwner());
 		blog.setUrl(blogForm.getUrl());
 		blog.setAllowRSS(blogForm.getAllowRSS());
-		
+
 		BlogManager.instance().createBlog(blog, blogForm.getTitleImage(), blogForm.getBackgroundImage());
-		
+
 		return new ActionForward("/blog.do?id=" + blogOwnerId, true);
 	}
-	
+
 	public ActionForward update(
 			ActionMapping mapping,
 			ActionForm form,
@@ -157,7 +158,7 @@ public class BlogAction extends DispatchAction {
 			HttpServletResponse response) throws Exception {
 		BlogForm blogForm = (BlogForm) form;
 		Blog blog = new Blog();
-		
+
 		blog.setTitle(blogForm.getTitle());
 		blog.setDescription(blogForm.getDescription());
 		blog.setPageSize(blogForm.getPageSize());
@@ -165,9 +166,9 @@ public class BlogAction extends DispatchAction {
 		blog.setOwner(blogForm.getOwner());
 		blog.setUrl(blogForm.getUrl());
 		blog.setAllowRSS(blogForm.getAllowRSS());
-		
+
 		BlogManager.instance().updateBlog(blog, blogForm.getTitleImage(), blogForm.getBackgroundImage());
-		
+
 		return new ActionForward("/blog.do?id=" + blogOwnerId, true);
 	}
 }

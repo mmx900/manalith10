@@ -51,8 +51,7 @@ public class User {
 	}
 
 	/**
-	 * @param id
-	 *            The id to set.
+	 * @param id The id to set.
 	 */
 	public void setId(String id) {
 		this.id = id;
@@ -66,8 +65,7 @@ public class User {
 	}
 
 	/**
-	 * @param name
-	 *            The name to set.
+	 * @param name The name to set.
 	 */
 	public void setName(String name) {
 		this.name = name;
@@ -81,8 +79,7 @@ public class User {
 	}
 
 	/**
-	 * @param password
-	 *            The password to set.
+	 * @param password The password to set.
 	 */
 	public void setPassword(String password) {
 		this.password = password;
@@ -96,8 +93,7 @@ public class User {
 	}
 
 	/**
-	 * @param email
-	 *            The email to set.
+	 * @param email The email to set.
 	 */
 	public void setEmail(String email) {
 		this.email = email;
@@ -106,14 +102,14 @@ public class User {
 	/**
 	 * @return Returns the idx.
 	 */
-	@Id @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_GEN")
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_GEN")
 	public int getIdx() {
 		return idx;
 	}
 
 	/**
-	 * @param idx
-	 *            The idx to set.
+	 * @param idx The idx to set.
 	 */
 	public void setIdx(int idx) {
 		this.idx = idx;
@@ -127,8 +123,7 @@ public class User {
 	}
 
 	/**
-	 * @param date
-	 *            The date to set.
+	 * @param date The date to set.
 	 */
 	public void setDate(Date date) {
 		this.date = date;

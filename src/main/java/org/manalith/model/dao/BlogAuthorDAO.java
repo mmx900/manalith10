@@ -29,93 +29,93 @@ public class BlogAuthorDAO {
 	private Connection conn;
 	private static BlogAuthorDAO manager = null;
 	private static Logger logger = LoggerFactory.getLogger(BlogAuthorDAO.class);
-	
-	private BlogAuthorDAO(){
+
+	private BlogAuthorDAO() {
 		try {
 			conn = ConnectionFactory.getConnection();
 		} catch (SQLException ex) {
-			logger.error("SQLException: " + ex.getMessage()); 
-			logger.error("SQLState: " + ex.getSQLState()); 
-			logger.error("VendorError: " + ex.getErrorCode()); 
+			logger.error("SQLException: " + ex.getMessage());
+			logger.error("SQLState: " + ex.getSQLState());
+			logger.error("VendorError: " + ex.getErrorCode());
 		}
 	}
-	
-	public static BlogAuthorDAO instance(){
-		if(manager == null){
+
+	public static BlogAuthorDAO instance() {
+		if (manager == null) {
 			manager = new BlogAuthorDAO();
 		}
 		return manager;
 	}
-	
-	public void addAuthor(BlogAuthor user) throws ExistAuthorException{
+
+	public void addAuthor(BlogAuthor user) throws ExistAuthorException {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		
+
 		StringBuffer sb1 = new StringBuffer();
 		sb1.append("SELECT userId FROM manalith_blog_author ");
 		sb1.append("WHERE blogOwnerId = ? AND userId = ?");
-		
+
 		StringBuffer sb2 = new StringBuffer();
 		sb2.append("INSERT INTO manalith_blog_author(blogOwnerId,userId) ");
 		sb2.append("VALUES(?,?)");
-		
-		try{
+
+		try {
 			pstmt = conn.prepareStatement(sb1.toString());
-			pstmt.setString(1,user.getBlogOwnerId());
-			pstmt.setString(2,user.getUserId());
+			pstmt.setString(1, user.getBlogOwnerId());
+			pstmt.setString(2, user.getUserId());
 			rs = pstmt.executeQuery();
-			
-			if(rs.next()){
+
+			if (rs.next()) {
 				throw new ExistAuthorException();
 			}
-			
+
 			pstmt = conn.prepareStatement(sb2.toString());
-			pstmt.setString(1,user.getBlogOwnerId());
-			pstmt.setString(2,user.getUserId());
-			
+			pstmt.setString(1, user.getBlogOwnerId());
+			pstmt.setString(2, user.getUserId());
+
 			pstmt.executeUpdate();
-		}catch(SQLException e){
+		} catch (SQLException e) {
 			logger.error(e.toString());
-		}catch(ClassCastException e){
+		} catch (ClassCastException e) {
 			logger.error(e.toString());
-		}finally {
+		} finally {
 			if (rs != null) {
 				try {
-					rs.close(); 
+					rs.close();
 				} catch (SQLException e) {
 					logger.error(e.toString());
 				}
-				rs = null; 
+				rs = null;
 			}
 			if (pstmt != null) {
 				try {
-					pstmt.close(); 
+					pstmt.close();
 				} catch (SQLException e) {
 					logger.error(e.toString());
 				}
-				pstmt = null; 
-			} 
+				pstmt = null;
+			}
 		}
 	}
-	
-	public void deleteAuthor(BlogAuthor user){
+
+	public void deleteAuthor(BlogAuthor user) {
 		Session session = HibernateUtil.currentSession();
-		
-		try{
+
+		try {
 			session.createQuery(
-			"delete BlogAuthor where blogOwnerId = ? and userId = ?")
-			.setString(0, user.getBlogOwnerId())
-			.setString(1, user.getUserId())
-			.executeUpdate();
-			
-		}catch(HibernateException e){
+					"delete BlogAuthor where blogOwnerId = ? and userId = ?")
+					.setString(0, user.getBlogOwnerId())
+					.setString(1, user.getUserId())
+					.executeUpdate();
+
+		} catch (HibernateException e) {
 			logger.error(e.getMessage(), e);
-		}finally{
+		} finally {
 			HibernateUtil.closeSession();
 		}
 	}
-	
-	public List getAuthors(String blogOwnerId){
+
+	public List getAuthors(String blogOwnerId) {
 		/*
 		 Session session = HibernateUtil.currentSession();
 		 List authors = null;
@@ -134,7 +134,7 @@ public class BlogAuthorDAO {
 		 
 		 return authors;
 		 */
-		
+
 		List authors = null;
 		User user = null;
 		ResultSet rs = null;
@@ -143,63 +143,62 @@ public class BlogAuthorDAO {
 		sb.append("SELECT a.userId,b.name,b.email FROM manalith_blog_author a ");
 		sb.append("INNER JOIN manalith_member b ON a.userId = b.id ");
 		sb.append("WHERE a.blogOwnerId=? ");
-		
-		try{
+
+		try {
 			pstmt = conn.prepareStatement(sb.toString());
-			
-			pstmt.setString(1,blogOwnerId);
-			
+
+			pstmt.setString(1, blogOwnerId);
+
 			rs = pstmt.executeQuery();
-			
+
 			authors = new ArrayList();
-			
-			while(rs.next()){
+
+			while (rs.next()) {
 				user = new User();
 				user.setId(rs.getString("userId"));
 				user.setEmail(rs.getString("email"));
 				user.setName(rs.getString("name"));
 				authors.add(user);
 			}
-			
-		}catch(SQLException e){
+
+		} catch (SQLException e) {
 			logger.error(e.toString());
-		}catch(ClassCastException e){
+		} catch (ClassCastException e) {
 			logger.error(e.toString());
-		}finally {
+		} finally {
 			if (rs != null) {
 				try {
-					rs.close(); 
+					rs.close();
 				} catch (SQLException e) {
 					logger.error(e.toString());
 				}
-				rs = null; 
+				rs = null;
 			}
 			if (pstmt != null) {
 				try {
-					pstmt.close(); 
+					pstmt.close();
 				} catch (SQLException e) {
 					logger.error(e.toString());
 				}
-				pstmt = null; 
-			} 
+				pstmt = null;
+			}
 		}
 		return authors;
 	}
-	
-	public void deleteAllAuthors(String blogOwnerId){
+
+	public void deleteAllAuthors(String blogOwnerId) {
 		Session session = HibernateUtil.currentSession();
-		
-		try{
+
+		try {
 			session.createQuery(
-			"delete BlogAuthor where blogOwnerId = ?")
-			.setString(0, blogOwnerId)
-			.executeUpdate();
-			
-		}catch(HibernateException e){
+					"delete BlogAuthor where blogOwnerId = ?")
+					.setString(0, blogOwnerId)
+					.executeUpdate();
+
+		} catch (HibernateException e) {
 			logger.error(e.getMessage(), e);
-		}finally{
+		} finally {
 			HibernateUtil.closeSession();
 		}
 	}
-	
 }

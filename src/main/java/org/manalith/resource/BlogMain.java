@@ -3,7 +3,6 @@
  */
 package org.manalith.resource;
 
-
 public class BlogMain extends Blog {
 
 }

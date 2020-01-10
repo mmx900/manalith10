@@ -24,48 +24,48 @@ import org.manalith.resource.User;
  * @author setzer
  */
 public class AuthorAction extends DispatchAction {
-	
+
 	private String blogOwnerId = null;
-	
+
 	public ActionForward execute(
 			ActionMapping mapping,
 			ActionForm form,
 			HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		blogOwnerId = request.getParameter("id");
-		
+
 		if (blogOwnerId == null) {
 			throw new ServletException("블로그의 ID가 지정되지 않았습니다.");
 		}
-		
+
 		if (!blogOwnerId.equals(request.getSession().getAttribute("userId"))) {
 			throw new ServletException("블로그의 소유주가 아닙니다.");
 		}
-		
+
 		if (request.getParameter("method") == null) {
 			return list(mapping, form, request, response);
 		}
-		
+
 		return dispatchMethod(mapping, form, request, response, getMethodName(
 				mapping,
 				form,
 				request,
 				response,
-		"method"));
+				"method"));
 	}
-	
+
 	public ActionForward list(
 			ActionMapping mapping,
 			ActionForm form,
 			HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		
+
 		request.setAttribute("authors", BlogAuthorDAO.instance()
 				.getAuthors(blogOwnerId));
-		
+
 		return mapping.findForward("authors");
 	}
-	
+
 	public ActionForward add(
 			ActionMapping mapping,
 			ActionForm form,
@@ -74,27 +74,27 @@ public class AuthorAction extends DispatchAction {
 		BlogAuthor author = new BlogAuthor();
 		author.setUserId(request.getParameter("authorId"));
 		author.setBlogOwnerId(blogOwnerId);
-		try{
+		try {
 			BlogAuthorDAO.instance().addAuthor(author);
-		}catch(ExistAuthorException e){
+		} catch (ExistAuthorException e) {
 			throw new ServletException("이미 등록이 되어 있습니다.");
 		}
-		
-		return new ActionForward("/blog/admin/author.do?id=" + blogOwnerId,true);
+
+		return new ActionForward("/blog/admin/author.do?id=" + blogOwnerId, true);
 	}
-	
+
 	public ActionForward search(
 			ActionMapping mapping,
 			ActionForm form,
 			HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		String keyword = request.getParameter("keyword");
-		List<User> users = UserDAO.instance().getMatchedUsersById(keyword,blogOwnerId);
-		request.setAttribute("users",users);
-		
-		return list(mapping,form,request,response);
-	} 
-	
+		List<User> users = UserDAO.instance().getMatchedUsersById(keyword, blogOwnerId);
+		request.setAttribute("users", users);
+
+		return list(mapping, form, request, response);
+	}
+
 	public ActionForward delete(
 			ActionMapping mapping,
 			ActionForm form,
@@ -104,7 +104,7 @@ public class AuthorAction extends DispatchAction {
 		author.setUserId(request.getParameter("authorId"));
 		author.setBlogOwnerId(blogOwnerId);
 		BlogAuthorDAO.instance().deleteAuthor(author);
-		
-		return new ActionForward("/blog/admin/author.do?id=" + blogOwnerId,true);
+
+		return new ActionForward("/blog/admin/author.do?id=" + blogOwnerId, true);
 	}
 }

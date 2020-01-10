@@ -11,19 +11,20 @@ import java.util.List;
  * @author setzer
  */
 public class BlogCalendar {
+
     private List<Year> years = null;
-    
-    public void add(Year year){
-        if(years == null) years = new ArrayList<Year>();
+
+    public void add(Year year) {
+        if (years == null) years = new ArrayList<Year>();
         years.add(year);
         Collections.sort(years);
     }
-    
-    public Year get(int i){
+
+    public Year get(int i) {
         return (Year) years.get(i);
     }
-    
-    public List<Year> getYears(){
+
+    public List<Year> getYears() {
         return years;
     }
 }

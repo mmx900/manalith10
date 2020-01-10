@@ -43,7 +43,7 @@ public class BookmarkAction extends DispatchAction {
         if (request.getParameter("method") == null) {
             return list(mapping, form, request, response);
         }
-        
+
         return dispatchMethod(mapping, form, request, response, getMethodName(
                 mapping,
                 form,
@@ -51,7 +51,7 @@ public class BookmarkAction extends DispatchAction {
                 response,
                 "method"));
     }
-    
+
     public ActionForward list(
             ActionMapping mapping,
             ActionForm form,
@@ -60,13 +60,13 @@ public class BookmarkAction extends DispatchAction {
 
         request.setAttribute("bookmarks", BlogBookmarkDAO.instance()
                 .getBookmarks(blogOwnerId));
-        
+
         request.setAttribute("categories", BlogBookmarkDAO.instance()
                 .getCategories(blogOwnerId));
 
         return mapping.findForward("bookmarks");
     }
-    
+
     public ActionForward create(
             ActionMapping mapping,
             ActionForm form,
@@ -74,23 +74,23 @@ public class BookmarkAction extends DispatchAction {
             HttpServletResponse response) throws Exception {
         DynaActionForm bForm = (DynaActionForm) form;
         BlogBookmark b = new BlogBookmark();
-        PropertyUtils.copyProperties(b,bForm);
+        PropertyUtils.copyProperties(b, bForm);
         b.setBlogOwnerId(blogOwnerId);
-        
+
         BlogBookmarkDAO.instance().createBookmark(b);
 
-        return new ActionForward("/blog/admin/bookmark.do?id=" + blogOwnerId,true);
+        return new ActionForward("/blog/admin/bookmark.do?id=" + blogOwnerId, true);
     }
-    
+
     public ActionForward destroy(
             ActionMapping mapping,
             ActionForm form,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
         int id = Integer.parseInt(new String(request.getParameter("bookmarkId")));
-        
+
         BlogBookmarkDAO.instance().destroyBookmark(id);
 
-        return new ActionForward("/blog/admin/bookmark.do?id=" + blogOwnerId,true);
+        return new ActionForward("/blog/admin/bookmark.do?id=" + blogOwnerId, true);
     }
 }

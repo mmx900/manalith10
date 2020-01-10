@@ -17,19 +17,19 @@ import org.manalith.model.dao.TrackbackDAO;
 /**
  * @author setzer
  */
-public class TrackbackDeleteAction extends Action{
+public class TrackbackDeleteAction extends Action {
+
 	public ActionForward execute(
 			ActionMapping mapping,
 			ActionForm form,
 			HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		
+
 		TrackbackDAO.instance().deleteTrackback(
 				Integer.parseInt(request.getParameter("articleId")),
 				Integer.parseInt(request.getParameter("trackbackId")));
-		
-		
-		return new ActionForward("/blog.do?id=" + request.getParameter("id"),true);
+
+
+		return new ActionForward("/blog.do?id=" + request.getParameter("id"), true);
 	}
-	
 }

@@ -63,8 +63,7 @@ public class Blog {
 	}
 
 	/**
-	 * @param articles
-	 *            The articles to set.
+	 * @param articles The articles to set.
 	 */
 	public void setArticles(List<Article> articles) {
 		this.articles = articles;
@@ -79,8 +78,7 @@ public class Blog {
 	}
 
 	/**
-	 * @param bookmarks
-	 *            The bookmarks to set.
+	 * @param bookmarks The bookmarks to set.
 	 */
 	public void setBookmarks(List<BlogBookmark> bookmarks) {
 		this.bookmarks = bookmarks;
@@ -95,8 +93,7 @@ public class Blog {
 	}
 
 	/**
-	 * @param categories
-	 *            The categories to set.
+	 * @param categories The categories to set.
 	 */
 	public void setCategories(List categories) {
 		this.categories = categories;
@@ -110,8 +107,7 @@ public class Blog {
 	}
 
 	/**
-	 * @param currentPage
-	 *            The currentPage to set.
+	 * @param currentPage The currentPage to set.
 	 */
 	public void setCurrentPage(int currentPage) {
 		this.currentPage = currentPage;
@@ -125,8 +121,7 @@ public class Blog {
 	}
 
 	/**
-	 * @param describe
-	 *            The description to set.
+	 * @param describe The description to set.
 	 */
 	public void setDescription(String description) {
 		this.description = description;
@@ -142,8 +137,7 @@ public class Blog {
 	}
 
 	/**
-	 * @param owner
-	 *            The owner to set.
+	 * @param owner The owner to set.
 	 */
 	public void setOwner(User owner) {
 		this.owner = owner;
@@ -161,8 +155,7 @@ public class Blog {
 	}
 
 	/**
-	 * @param pageSize
-	 *            The pageSize to set.
+	 * @param pageSize The pageSize to set.
 	 */
 	public void setPageSize(int pageSize) {
 		this.pageSize = pageSize;
@@ -172,14 +165,13 @@ public class Blog {
 	 * @return Returns the template.
 	 */
 	@Type(type = "org.manalith.db.datatype.TemplateType")
-	@Column(nullable=false)
+	@Column(nullable = false)
 	public Template getTemplate() {
 		return template;
 	}
 
 	/**
-	 * @param template
-	 *            The template to set.
+	 * @param template The template to set.
 	 */
 	public void setTemplate(Template template) {
 		this.template = template;
@@ -197,8 +189,7 @@ public class Blog {
 	}
 
 	/**
-	 * @param title
-	 *            The title to set.
+	 * @param title The title to set.
 	 */
 	public void setTitle(String title) {
 		this.title = title;
@@ -212,8 +203,7 @@ public class Blog {
 	}
 
 	/**
-	 * @param totalArticleCount
-	 *            The totalArticleCount to set.
+	 * @param totalArticleCount The totalArticleCount to set.
 	 */
 	public void setTotalArticleCount(int totalArticleCount) {
 		this.totalArticleCount = totalArticleCount;
@@ -227,8 +217,7 @@ public class Blog {
 	}
 
 	/**
-	 * @param created
-	 *            The created to set.
+	 * @param created The created to set.
 	 */
 	public void setCreated(Date created) {
 		this.created = created;
@@ -242,8 +231,7 @@ public class Blog {
 	}
 
 	/**
-	 * @param url
-	 *            The url to set.
+	 * @param url The url to set.
 	 */
 	public void setUrl(String url) {
 		this.url = url;
@@ -258,8 +246,7 @@ public class Blog {
 	}
 
 	/**
-	 * @param authors
-	 *            The authors to set.
+	 * @param authors The authors to set.
 	 */
 	public void setAuthors(List authors) {
 		this.authors = authors;
@@ -267,6 +254,7 @@ public class Blog {
 
 	/**
 	 * hibernate mapping에서 isAllowRSS와 getAllowRSS가 각자 처리되어 Transient 처리합니다.
+	 *
 	 * @return Returns the allowRSS.
 	 */
 	@Transient
@@ -279,8 +267,7 @@ public class Blog {
 	}
 
 	/**
-	 * @param allowRSS
-	 *            The allowRSS to set.
+	 * @param allowRSS The allowRSS to set.
 	 */
 	public void setAllowRSS(boolean allowRSS) {
 		this.allowRSS = allowRSS;
@@ -294,8 +281,7 @@ public class Blog {
 	}
 
 	/**
-	 * @param backgroundImage
-	 *            The backgroundImage to set.
+	 * @param backgroundImage The backgroundImage to set.
 	 */
 	public void setBackgroundImage(String backgroundImage) {
 		this.backgroundImage = backgroundImage;
@@ -309,8 +295,7 @@ public class Blog {
 	}
 
 	/**
-	 * @param titleImage
-	 *            The titleImage to set.
+	 * @param titleImage The titleImage to set.
 	 */
 	public void setTitleImage(String titleImage) {
 		this.titleImage = titleImage;
@@ -325,8 +310,7 @@ public class Blog {
 	}
 
 	/**
-	 * @param calendar
-	 *            The calendar to set.
+	 * @param calendar The calendar to set.
 	 */
 	public void setCalendar(BlogCalendar calendar) {
 		this.calendar = calendar;
@@ -335,14 +319,14 @@ public class Blog {
 	/**
 	 * @return Returns the idx.
 	 */
-	@Id @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_GEN")
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_GEN")
 	public int getIdx() {
 		return idx;
 	}
 
 	/**
-	 * @param idx
-	 *            The idx to set.
+	 * @param idx The idx to set.
 	 */
 	public void setIdx(int idx) {
 		this.idx = idx;

@@ -7,8 +7,11 @@ import org.manalith.model.dao.FileDAO;
 
 
 public class FileManager {
-	private FileManager(){}
-	public static FileManager instance(){
+
+	private FileManager() {
+	}
+
+	public static FileManager instance() {
 		return new FileManager();
 	}
 

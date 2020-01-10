@@ -25,73 +25,73 @@ import org.manalith.resource.User;
  * @author setzer
  */
 public class BlogDAO {
-	
+
 	private Connection conn;
 	private static BlogDAO manager = null;
 	private static Logger logger = LoggerFactory.getLogger(BlogDAO.class);
-	
+
 	private BlogDAO() {
 		try {
 			conn = ConnectionFactory.getConnection();
 		} catch (SQLException ex) {
-			logger.error("SQLException: " + ex.getMessage()); 
-			logger.error("SQLState: " + ex.getSQLState()); 
-			logger.error("VendorError: " + ex.getErrorCode()); 
+			logger.error("SQLException: " + ex.getMessage());
+			logger.error("SQLState: " + ex.getSQLState());
+			logger.error("VendorError: " + ex.getErrorCode());
 		}
 	}
-	
+
 	public static BlogDAO instance() {
-		if(manager == null){
+		if (manager == null) {
 			manager = new BlogDAO();
 		}
 		return manager;
 	}
-	
+
 	public boolean isBlogOwner(User user) {
 		return isBlogOwner(user.getId());
 	}
-	
+
 	public boolean isBlogOwner(String userId) {
 		boolean result = false;
-		
+
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String sql = "SELECT title FROM manalith_blog WHERE owner=?";
-		
+
 		try {
 			pstmt = conn.prepareStatement(sql);
-			
+
 			pstmt.setString(1, userId);
-			
+
 			rs = pstmt.executeQuery();
-			
+
 			if (rs.next()) {
 				result = true;
 			}
 		} catch (SQLException e) {
 			logger.error(e.toString());
-		}finally {
+		} finally {
 			if (rs != null) {
 				try {
-					rs.close(); 
+					rs.close();
 				} catch (SQLException e) {
 					logger.error(e.toString());
 				}
-				rs = null; 
+				rs = null;
 			}
 			if (pstmt != null) {
 				try {
-					pstmt.close(); 
+					pstmt.close();
 				} catch (SQLException e) {
 					logger.error(e.toString());
 				}
-				pstmt = null; 
-			} 
+				pstmt = null;
+			}
 		}
-		
+
 		return result;
 	}
-	
+
 	//FIXME : getAuthors() 이후 루핑하여 manalith_blog_author에 집어넣으며,
 	// manalith_blog_category와 연결되어 있어야 한다.
 	public void createBlog(Blog blog) {
@@ -99,10 +99,10 @@ public class BlogDAO {
 		StringBuffer sb = new StringBuffer();
 		sb.append("INSERT INTO manalith_blog(title, description, template, owner, pageSize, url, allowRSS) ");
 		sb.append("VALUES(?,?,?,?,?,?,?)");
-		
+
 		try {
 			pstmt = conn.prepareStatement(sb.toString());
-			
+
 			pstmt.setString(1, blog.getTitle());
 			pstmt.setString(2, blog.getDescription());
 			pstmt.setString(3, blog.getTemplate().toString());
@@ -110,25 +110,25 @@ public class BlogDAO {
 			pstmt.setInt(5, blog.getPageSize());
 			pstmt.setString(6, blog.getUrl());
 			pstmt.setBoolean(7, blog.getAllowRSS());
-			
+
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			logger.error(e.toString());
-		}finally {
+		} finally {
 			if (pstmt != null) {
 				try {
-					pstmt.close(); 
+					pstmt.close();
 				} catch (SQLException e) {
 					logger.error(e.toString());
 				}
-				pstmt = null; 
-			} 
+				pstmt = null;
+			}
 		}
 	}
-	
+
 	public Blog getBlog(String userId) {
 		Blog blog = getBlogInfo(userId);
-		if(blog != null){
+		if (blog != null) {
 			ArticleDAO articleManager = ArticleDAO.instance();
 			BlogAuthorDAO authorManager = BlogAuthorDAO.instance();
 			BlogBookmarkDAO bookmarkManager = BlogBookmarkDAO.instance();
@@ -139,10 +139,10 @@ public class BlogDAO {
 		}
 		return blog;
 	}
-	
+
 	public Blog getBlog(String userId, String category) {
 		Blog blog = getBlogInfo(userId);
-		if(blog != null){
+		if (blog != null) {
 			ArticleDAO articleManager = ArticleDAO.instance();
 			BlogAuthorDAO authorManager = BlogAuthorDAO.instance();
 			BlogBookmarkDAO bookmarkManager = BlogBookmarkDAO.instance();
@@ -153,10 +153,10 @@ public class BlogDAO {
 		}
 		return blog;
 	}
-	
+
 	public Blog getBlog(String userId, int page) {
 		Blog blog = getBlogInfo(userId);
-		if(blog != null){
+		if (blog != null) {
 			ArticleDAO articleManager = ArticleDAO.instance();
 			BlogAuthorDAO authorManager = BlogAuthorDAO.instance();
 			BlogBookmarkDAO bookmarkManager = BlogBookmarkDAO.instance();
@@ -167,10 +167,10 @@ public class BlogDAO {
 		}
 		return blog;
 	}
-	
+
 	public Blog getBlog(String userId, Article article) {
 		Blog blog = getBlogInfo(userId);
-		if(blog != null){
+		if (blog != null) {
 			ArticleDAO articleManager = ArticleDAO.instance();
 			BlogAuthorDAO authorManager = BlogAuthorDAO.instance();
 			BlogBookmarkDAO bookmarkManager = BlogBookmarkDAO.instance();
@@ -181,10 +181,10 @@ public class BlogDAO {
 		}
 		return blog;
 	}
-	
+
 	public Blog getBlog(String userId, java.util.Date date) {
 		Blog blog = getBlogInfo(userId);
-		if(blog != null){
+		if (blog != null) {
 			ArticleDAO articleManager = ArticleDAO.instance();
 			BlogAuthorDAO authorManager = BlogAuthorDAO.instance();
 			BlogBookmarkDAO bookmarkManager = BlogBookmarkDAO.instance();
@@ -195,10 +195,10 @@ public class BlogDAO {
 		}
 		return blog;
 	}
-	
+
 	public Blog getBlog(String userId, User author) {
 		Blog blog = getBlogInfo(userId);
-		if(blog != null){
+		if (blog != null) {
 			ArticleDAO articleManager = ArticleDAO.instance();
 			BlogAuthorDAO authorManager = BlogAuthorDAO.instance();
 			BlogBookmarkDAO bookmarkManager = BlogBookmarkDAO.instance();
@@ -209,9 +209,10 @@ public class BlogDAO {
 		}
 		return blog;
 	}
-	
+
 	/**
 	 * 블로그의 정보를 가져옵니다.
+	 *
 	 * @param blogOwnerId
 	 * @return 가져온 블로그의 정보
 	 */
@@ -223,14 +224,14 @@ public class BlogDAO {
 		sb.append("SELECT title, description, template, created, totalArticleCount, pageSize, url, allowRSS, titleImage, backgroundImage ");
 		sb.append("FROM manalith_blog ");
 		sb.append("WHERE owner=?");
-		
+
 		try {
 			pstmt = conn.prepareStatement(sb.toString());
-			
+
 			pstmt.setString(1, blogOwnerId);
-			
+
 			rs = pstmt.executeQuery();
-			
+
 			if (rs.next()) {
 				blog = new Blog();
 				blog.setTitle(rs.getString("title"));
@@ -247,78 +248,79 @@ public class BlogDAO {
 			}
 		} catch (SQLException e) {
 			logger.error(e.toString());
-		}finally {
+		} finally {
 			if (rs != null) {
 				try {
-					rs.close(); 
+					rs.close();
 				} catch (SQLException e) {
 					logger.error(e.toString());
 				}
-				rs = null; 
+				rs = null;
 			}
 			if (pstmt != null) {
 				try {
-					pstmt.close(); 
+					pstmt.close();
 				} catch (SQLException e) {
 					logger.error(e.toString());
 				}
-				pstmt = null; 
-			} 
+				pstmt = null;
+			}
 		}
-		
+
 		return blog;
 	}
-	
+
 	/**
 	 * 블로그의 정보를 변경합니다.
+	 *
 	 * @param blog 변경할 블로그
 	 */
 	public void updateBlogInfo(Blog blog) {
 		Session session = HibernateUtil.currentSession();
-		
-		try{
+
+		try {
 			session.createQuery(
-			"update Blog set title = ?, description=?, template=?, pageSize=?, url=?, allowRSS=? where owner = ?")
-			.setString(0, blog.getTitle())
-			.setString(1, blog.getDescription())
-			.setString(2, blog.getTemplate().toString())
-			.setLong(3, blog.getPageSize())
-			.setString(4, blog.getUrl())
-			.setBoolean(5, blog.getAllowRSS())
-			.setString(6, blog.getOwner().toString())
-			.executeUpdate();
-			
-		}catch(HibernateException e){
+					"update Blog set title = ?, description=?, template=?, pageSize=?, url=?, allowRSS=? where owner = ?")
+					.setString(0, blog.getTitle())
+					.setString(1, blog.getDescription())
+					.setString(2, blog.getTemplate().toString())
+					.setLong(3, blog.getPageSize())
+					.setString(4, blog.getUrl())
+					.setBoolean(5, blog.getAllowRSS())
+					.setString(6, blog.getOwner().toString())
+					.executeUpdate();
+
+		} catch (HibernateException e) {
 			logger.error(e.getMessage(), e);
-		}finally{
+		} finally {
 			HibernateUtil.closeSession();
 		}
 	}
-	
+
 	/**
 	 * 블로그를 삭제합니다.
+	 *
 	 * @param blogOwnerId 삭제할 블로그의 ID
 	 */
 	//FIXME : 관련 테이블 행의 제거 : manalith_blog_category, manalith_blog_author 등
 	public void destroyBlog(String blogOwnerId) {
 		Session session = HibernateUtil.currentSession();
-		
-		try{
+
+		try {
 			session.createQuery(
-			"delete Article where blogOwnerId = ?")
-			.setString(0, blogOwnerId)
-			.executeUpdate();
-			
+					"delete Article where blogOwnerId = ?")
+					.setString(0, blogOwnerId)
+					.executeUpdate();
+
 			session.createQuery(
-			"delete Blog where owner = ?")
-			.setString(0, blogOwnerId)
-			.executeUpdate();
-			
-		}catch(HibernateException e){
+					"delete Blog where owner = ?")
+					.setString(0, blogOwnerId)
+					.executeUpdate();
+
+		} catch (HibernateException e) {
 			logger.error(e.getMessage(), e);
-		}finally{
+		} finally {
 			HibernateUtil.closeSession();
 		}
 	}
-	
 }

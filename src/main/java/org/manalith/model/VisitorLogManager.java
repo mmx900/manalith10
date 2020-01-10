@@ -8,11 +8,14 @@ import org.manalith.resource.VisitorLog;
 
 
 public class VisitorLogManager {
-	private VisitorLogManager(){}
-	public static VisitorLogManager instance(){
+
+	private VisitorLogManager() {
+	}
+
+	public static VisitorLogManager instance() {
 		return new VisitorLogManager();
 	}
-	
+
 
 	/**
 	 * 방문자 로그를 추가한다.
