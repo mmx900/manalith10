@@ -1,6 +1,3 @@
-/*
- * Created on 2005. 4. 21
- */
 package org.manalith.maingate.model.dao;
 
 import java.io.IOException;
@@ -16,9 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.manalith.maingate.resource.MaingateOption;
 import org.manalith.model.dao.FileDAO;
 
-/**
- * @author setzer
- */
 public class MaingateManager extends HttpServlet {
 	private static Logger logger = LoggerFactory.getLogger(MaingateManager.class);
 	private static MaingateManager instance = null;

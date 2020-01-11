@@ -1,12 +1,8 @@
-/*
- * Created on 2005. 4. 21
- */
 package org.manalith.maingate.action;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.struts.action.ActionForm;
@@ -17,10 +13,6 @@ import org.apache.struts.actions.DispatchAction;
 import org.manalith.maingate.model.dao.RSSSourceDAO;
 import org.manalith.maingate.resource.RSSSource;
 
-
-/**
- * @author setzer
- */
 public class RSSAction extends DispatchAction {
 
 	public ActionForward execute(

@@ -1,11 +1,7 @@
-/*
- * Created on 2005. 3. 31
- */
 package org.manalith.action;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.struts.action.Action;
@@ -19,10 +15,6 @@ import org.slf4j.LoggerFactory;
 import org.manalith.model.dao.TrackbackDAO;
 import org.manalith.resource.ArticleTrackback;
 
-
-/**
- * @author setzer
- */
 public class TrackbackAction extends Action {
 
 	private static Logger logger = LoggerFactory.getLogger(TrackbackAction.class);

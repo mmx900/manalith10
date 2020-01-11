@@ -1,6 +1,3 @@
-/*
- * Created on 2005. 3. 22
- */
 package org.manalith.maingate.action;
 
 import javax.servlet.ServletException;
@@ -22,9 +19,6 @@ import org.manalith.model.dao.UserDAO;
 import org.manalith.resource.Blog;
 import org.manalith.resource.User;
 
-/**
- * @author setzer
- */
 public class UserAction extends DispatchAction {
 	public ActionForward add(ActionMapping mapping, ActionForm form,
 							 HttpServletRequest request, HttpServletResponse response)

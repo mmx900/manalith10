@@ -1,6 +1,3 @@
-/*
- * Created on 2005. 4. 20
- */
 package org.manalith.maingate.action;
 
 import java.util.List;
@@ -17,10 +14,6 @@ import org.manalith.maingate.resource.RSSSource;
 import org.manalith.model.dao.UserDAO;
 import org.manalith.resource.User;
 
-
-/**
- * @author setzer
- */
 public class AdminAction extends DispatchAction {
 	public ActionForward execute(
 			ActionMapping mapping,

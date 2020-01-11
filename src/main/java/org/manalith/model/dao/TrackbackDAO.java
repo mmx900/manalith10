@@ -1,6 +1,3 @@
-/*
- * Created on 2005. 3. 31
- */
 package org.manalith.model.dao;
 
 import java.io.IOException;
@@ -35,10 +32,6 @@ import org.manalith.resource.Article;
 import org.manalith.resource.ArticleTrackback;
 import org.manalith.resource.Blog;
 
-
-/**
- * @author setzer
- */
 public class TrackbackDAO {
 	private Connection conn;
 	private static TrackbackDAO manager = null;

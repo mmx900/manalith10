@@ -1,6 +1,3 @@
-/*
- * Created on 2005. 4. 6
- */
 package org.manalith.model.dao;
 
 import java.sql.Connection;
@@ -16,10 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.manalith.db.ConnectionFactory;
 import org.manalith.resource.BlogBookmark;
 
-
-/**
- * @author setzer
- */
 public class BlogBookmarkDAO {
 	private Connection conn;
 	private static BlogBookmarkDAO manager = null;

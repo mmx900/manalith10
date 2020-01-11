@@ -1,6 +1,3 @@
-/*
- * Created on 2005. 3. 22
- */
 package org.manalith.model.dao;
 
 import java.sql.Connection;
@@ -21,10 +18,6 @@ import org.manalith.exception.ExistAuthorException;
 import org.manalith.resource.BlogAuthor;
 import org.manalith.resource.User;
 
-
-/**
- * @author setzer
- */
 public class BlogAuthorDAO {
 	private Connection conn;
 	private static BlogAuthorDAO manager = null;

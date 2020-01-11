@@ -1,11 +1,7 @@
-/*
- * Created on 2005. 3. 31
- */
 package org.manalith.action;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
@@ -18,10 +14,6 @@ import org.manalith.model.dao.TrackbackDAO;
 import org.manalith.resource.Article;
 import org.manalith.resource.Blog;
 
-
-/**
- * @author setzer
- */
 public class TrackbackPingAction extends Action {
 
 	public ActionForward execute(

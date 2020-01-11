@@ -17,7 +17,6 @@ import org.postgresql.util.PGobject;
  * postgresql8.0 드라이버에서는 반드시 PGobject로 저장해야 하기 때문입니다.
  * http://www.hibernate.org/76.html의 내용을 참고했습니다.
  * TODO 몇가지 함수가 미완 상태입니다.
- * @author setzer
  */
 public class InetType implements UserType {
 

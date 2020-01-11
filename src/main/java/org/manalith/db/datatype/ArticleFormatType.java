@@ -1,6 +1,3 @@
-/*
- * Created on 2005. 5. 10
- */
 package org.manalith.db.datatype;
 
 import java.io.Serializable;
@@ -16,7 +13,6 @@ import org.manalith.resource.ArticleFormat;
 
 /**
  * @see org.manalith.resource.ArticleFormat
- * @author setzer
  */
 public class ArticleFormatType implements UserType {
 

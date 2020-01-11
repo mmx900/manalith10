@@ -1,6 +1,3 @@
-/*
- * Created on 2005. 3. 28
- */
 package org.manalith.admin.action;
 
 import java.util.List;
@@ -8,7 +5,6 @@ import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -20,9 +16,6 @@ import org.manalith.model.dao.UserDAO;
 import org.manalith.resource.BlogAuthor;
 import org.manalith.resource.User;
 
-/**
- * @author setzer
- */
 public class AuthorAction extends DispatchAction {
 
 	private String blogOwnerId = null;

@@ -1,6 +1,3 @@
-/*
- * Created on 2005. 4. 20
- */
 package org.manalith.maingate.model.dao;
 
 import java.sql.Connection;
@@ -23,9 +20,6 @@ import org.manalith.util.rss.RSSChannelObject;
 import org.manalith.util.rss.RSSObject;
 import org.manalith.util.rss.parser.RSSDOMParser;
 
-/**
- * @author setzer
- */
 public class RSSItemDAO {
 	private Connection conn;
 	private static RSSItemDAO manager;

@@ -1,6 +1,3 @@
-/*
- * Created on 2005. 3. 26
- */
 package org.manalith.action;
 
 import javax.servlet.ServletException;
@@ -16,10 +13,6 @@ import org.apache.struts.actions.DispatchAction;
 import org.manalith.model.ArticleCommentManager;
 import org.manalith.resource.ArticleComment;
 
-
-/**
- * @author setzer
- */
 public class ArticleCommentAction extends DispatchAction {
 
 	private String blogOwnerId = null;

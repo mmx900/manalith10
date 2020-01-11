@@ -1,11 +1,7 @@
-/*
- * Created on 2005. 4. 1
- */
 package org.manalith.action;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
@@ -13,10 +9,6 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.manalith.model.dao.TrackbackDAO;
 
-
-/**
- * @author setzer
- */
 public class TrackbackDeleteAction extends Action {
 
 	public ActionForward execute(

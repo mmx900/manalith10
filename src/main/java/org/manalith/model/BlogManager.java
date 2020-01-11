@@ -1,6 +1,3 @@
-/*
- * Created on 2005. 9. 25
- */
 package org.manalith.model;
 
 import java.util.Date;
@@ -23,7 +20,6 @@ import org.manalith.resource.ArticleTrackback;
 import org.manalith.resource.Blog;
 import org.manalith.resource.User;
 import org.manalith.util.EscapeUtil;
-
 
 public class BlogManager {
 	private BlogManager() {

@@ -1,6 +1,3 @@
-/*
- * Created on 2005. 3. 29
- */
 package org.manalith.model.dao;
 
 import java.io.File;
@@ -23,10 +20,6 @@ import org.manalith.db.ConnectionFactory;
 import org.manalith.resource.ArticleFile;
 import org.manalith.resource.User;
 
-
-/**
- * @author setzer
- */
 public class FileDAO {
 
 	private Connection conn;

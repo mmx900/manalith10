@@ -1,6 +1,3 @@
-/*
- * Created on 2005. 3. 22
- */
 package org.manalith.model.dao;
 
 import java.util.ArrayList;
@@ -18,10 +15,6 @@ import org.manalith.db.HibernateUtil;
 import org.manalith.model.dao.entity.UserEntity;
 import org.manalith.resource.User;
 
-
-/**
- * @author setzer
- */
 public class UserDAO {
     private static UserDAO manager = null;
     private static Logger logger = LoggerFactory.getLogger(UserDAO.class);

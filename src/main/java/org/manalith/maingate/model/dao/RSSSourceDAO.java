@@ -1,6 +1,3 @@
-/*
- * Created on 2005. 4. 21
- */
 package org.manalith.maingate.model.dao;
 
 import java.sql.Connection;
@@ -16,10 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.manalith.db.ConnectionFactory;
 import org.manalith.maingate.resource.RSSSource;
 
-
-/**
- * @author setzer
- */
 public class RSSSourceDAO {
 	private Connection conn;
 	private static RSSSourceDAO manager;

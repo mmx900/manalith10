@@ -1,6 +1,3 @@
-/*
- * Created on 2005. 3. 22
- */
 package org.manalith.admin.action;
 
 import java.util.List;
@@ -21,9 +18,6 @@ import org.manalith.model.dao.TemplateDAO;
 import org.manalith.resource.Blog;
 import org.manalith.resource.Template;
 
-/**
- * @author setzer
- */
 public class AdminAction extends DispatchAction {
 
 	private String blogOwnerId = null;

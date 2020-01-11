@@ -1,6 +1,3 @@
-/*
- * Created on 2005. 3. 22
- */
 package org.manalith.model.dao;
 
 import java.sql.Connection;
@@ -21,9 +18,6 @@ import org.manalith.resource.Blog;
 import org.manalith.resource.Template;
 import org.manalith.resource.User;
 
-/**
- * @author setzer
- */
 public class BlogDAO {
 
 	private Connection conn;

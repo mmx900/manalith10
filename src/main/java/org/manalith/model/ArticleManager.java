@@ -1,12 +1,8 @@
-/*
- * Created on 2005. 9. 25
- */
 package org.manalith.model;
 
 import org.manalith.model.dao.ArticleDAO;
 import org.manalith.model.dao.FileDAO;
 import org.manalith.resource.Article;
-
 
 public class ArticleManager {
 	public static final String ARTICLE_CREATE_MODE = "create";

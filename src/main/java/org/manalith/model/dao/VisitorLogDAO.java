@@ -1,6 +1,3 @@
-/*
- * Created on 2005. 4. 20
- */
 package org.manalith.model.dao;
 
 import org.hibernate.HibernateException;
@@ -12,9 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.manalith.db.HibernateUtil;
 import org.manalith.resource.VisitorLog;
 
-/**
- * @author setzer
- */
 public class VisitorLogDAO {
     private static VisitorLogDAO manager;
     private static Logger logger = LoggerFactory.getLogger(VisitorLogDAO.class);

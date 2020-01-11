@@ -1,10 +1,6 @@
-/*
- * Created on 2005. 9. 25
- */
 package org.manalith.model;
 
 import org.manalith.model.dao.FileDAO;
-
 
 public class FileManager {
 

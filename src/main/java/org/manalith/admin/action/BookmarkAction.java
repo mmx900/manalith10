@@ -1,12 +1,8 @@
-/*
- * Created on 2005. 4. 6
- */
 package org.manalith.admin.action;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.struts.action.ActionForm;
@@ -17,10 +13,6 @@ import org.apache.struts.actions.DispatchAction;
 import org.manalith.model.dao.BlogBookmarkDAO;
 import org.manalith.resource.BlogBookmark;
 
-
-/**
- * @author setzer
- */
 public class BookmarkAction extends DispatchAction {
 
     private String blogOwnerId = null;

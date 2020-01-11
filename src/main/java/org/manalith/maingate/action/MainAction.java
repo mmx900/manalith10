@@ -1,13 +1,9 @@
-/*
- * Created on 2005. 3. 22
- */
 package org.manalith.maingate.action;
 
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
@@ -23,10 +19,6 @@ import org.manalith.maingate.resource.RSSSourceItem;
 import org.manalith.model.dao.UserDAO;
 import org.manalith.resource.User;
 
-
-/**
- * @author setzer
- */
 public class MainAction extends Action {
 
 	private static Logger logger = LoggerFactory.getLogger(MainAction.class);

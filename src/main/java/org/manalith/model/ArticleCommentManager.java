@@ -1,13 +1,9 @@
-/*
- * Created on 2005. 9. 25
- */
 package org.manalith.model;
 
 import javax.servlet.ServletException;
 
 import org.manalith.model.dao.ArticleCommentDAO;
 import org.manalith.resource.ArticleComment;
-
 
 public class ArticleCommentManager {
 	private ArticleCommentManager() {

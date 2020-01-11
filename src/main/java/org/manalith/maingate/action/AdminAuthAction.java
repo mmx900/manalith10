@@ -1,6 +1,3 @@
-/*
- * Created on 2005. 4. 21
- */
 package org.manalith.maingate.action;
 
 import java.io.IOException;
@@ -19,10 +16,6 @@ import org.apache.struts.actions.DispatchAction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
-/**
- * @author setzer
- */
 public class AdminAuthAction extends DispatchAction {
 
 	private static Logger logger = LoggerFactory.getLogger(AdminAuthAction.class);

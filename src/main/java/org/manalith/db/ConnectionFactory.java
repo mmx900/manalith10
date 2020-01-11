@@ -1,6 +1,3 @@
-/*
- * Created on 2005. 4. 3
- */
 package org.manalith.db;
 
 import java.sql.Connection;
@@ -16,9 +13,6 @@ import javax.sql.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * @author setzer
- */
 public class ConnectionFactory extends HttpServlet {
 
 	private static DataSource datasource = null;

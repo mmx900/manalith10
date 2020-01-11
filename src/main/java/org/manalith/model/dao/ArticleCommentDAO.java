@@ -1,6 +1,3 @@
-/*
- * Created on 2005. 3. 22
- */
 package org.manalith.model.dao;
 
 import java.sql.Connection;
@@ -18,9 +15,6 @@ import org.slf4j.LoggerFactory;
 import org.manalith.db.ConnectionFactory;
 import org.manalith.resource.ArticleComment;
 
-/**
- * @author setzer
- */
 public class ArticleCommentDAO {
 	private Connection conn;
 	private static ArticleCommentDAO manager = null;

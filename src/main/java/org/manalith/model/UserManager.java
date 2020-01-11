@@ -1,6 +1,3 @@
-/*
- * Created on 2005. 9. 25
- */
 package org.manalith.model;
 
 import java.util.Date;

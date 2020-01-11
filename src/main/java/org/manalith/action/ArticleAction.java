@@ -1,6 +1,3 @@
-/*
- * Created on 2005. 3. 23
- */
 package org.manalith.action;
 
 import java.text.SimpleDateFormat;
@@ -35,10 +32,6 @@ import org.manalith.resource.Blog;
 import org.manalith.resource.BlogAuthor;
 import org.manalith.resource.User;
 
-
-/**
- * @author setzer
- */
 public class ArticleAction extends DispatchAction {
 
 	private static Logger logger = LoggerFactory.getLogger(ArticleAction.class);

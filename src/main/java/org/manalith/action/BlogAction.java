@@ -1,6 +1,3 @@
-/*
- * Created on 2005. 3. 22
- */
 package org.manalith.action;
 
 import java.text.ParseException;
@@ -26,9 +23,6 @@ import org.manalith.model.VisitorLogManager;
 import org.manalith.resource.Blog;
 import org.manalith.resource.VisitorLog;
 
-/**
- * @author setzer
- */
 public class BlogAction extends DispatchAction {
 
 	private static Logger logger = LoggerFactory.getLogger(BlogAction.class);

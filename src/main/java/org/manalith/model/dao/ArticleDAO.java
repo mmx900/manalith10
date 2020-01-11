@@ -24,9 +24,6 @@ import org.manalith.resource.calendar.Day;
 import org.manalith.resource.calendar.Month;
 import org.manalith.resource.calendar.Year;
 
-/**
- * @author setzer
- */
 public class ArticleDAO {
 	private static ArticleDAO manager = null;
 	private static Logger logger = LoggerFactory.getLogger(ArticleDAO.class);

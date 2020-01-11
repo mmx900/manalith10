@@ -1,6 +1,3 @@
-/*
- * Created on 2005. 4. 19
- */
 package org.manalith.model.dao;
 
 import java.io.File;
@@ -15,10 +12,6 @@ import org.slf4j.LoggerFactory;
 
 import org.manalith.resource.Template;
 
-
-/**
- * @author setzer
- */
 public class TemplateDAO {
 	private static TemplateDAO manager = null;
 	private static Logger logger = LoggerFactory.getLogger(TemplateDAO.class);

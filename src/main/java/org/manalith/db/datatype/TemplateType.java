@@ -11,9 +11,6 @@ import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.usertype.UserType;
 import org.manalith.resource.Template;
 
-/**
- * @author setzer
- */
 public class TemplateType implements UserType {
 
 	@Override
