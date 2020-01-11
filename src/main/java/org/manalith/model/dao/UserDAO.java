@@ -41,7 +41,10 @@ public class UserDAO {
         Session session = HibernateUtil.currentSession();
 
         try {
-            UserEntity entity = (UserEntity) session.get(UserEntity.class, id);
+            UserEntity entity = session
+                    .createQuery("from UserEntity where id=:id", UserEntity.class)
+                    .setParameter("id", id)
+                    .getSingleResult();
             user = new ModelMapper().map(entity, User.class);
         } catch (HibernateException e) {
             logger.error(e.getMessage(), e);
@@ -58,7 +61,7 @@ public class UserDAO {
         ModelMapper mapper = new ModelMapper();
 
         try {
-            List<UserEntity> entities = (List<UserEntity>) session.createCriteria(UserEntity.class).list();
+            List<UserEntity> entities = session.createQuery("from UserEntity", UserEntity.class).list();
             userList = entities.stream().map(e -> mapper.map(e, User.class)).collect(Collectors.toList());
         } catch (HibernateException e) {
             logger.error(e.getMessage(), e);
@@ -75,9 +78,9 @@ public class UserDAO {
         ModelMapper mapper = new ModelMapper();
 
         try {
-            List<UserEntity> entities = (List<UserEntity>) session
-                    .createQuery("select u from UserEntity u where u.name like ?")
-                    .setString(0, "%" + name + "%")
+            List<UserEntity> entities = session
+                    .createQuery("select u from UserEntity u where u.name like :name", UserEntity.class)
+                    .setParameter("name", "%" + name + "%")
                     .list();
             userList = entities.stream().map(e -> mapper.map(e, User.class)).collect(Collectors.toList());
         } catch (HibernateException e) {
@@ -95,9 +98,9 @@ public class UserDAO {
         ModelMapper mapper = new ModelMapper();
 
         try {
-            List<UserEntity> entities = (List<UserEntity>) session
-                    .createQuery("select u from UserEntity u where u.id like ?")
-                    .setString(0, "%" + id + "%")
+            List<UserEntity> entities = session
+                    .createQuery("select u from UserEntity u where u.id like :id", UserEntity.class)
+                    .setParameter("id", "%" + id + "%")
                     .list();
             userList = entities.stream().map(e -> mapper.map(e, User.class)).collect(Collectors.toList());
         } catch (HibernateException e) {
@@ -115,10 +118,10 @@ public class UserDAO {
         ModelMapper mapper = new ModelMapper();
 
         try {
-            List<UserEntity> entities = (List<UserEntity>) session
-                    .createQuery("select u from UserEntity u where u.id like ? and not u.id=?")
-                    .setString(0, "%" + id + "%")
-                    .setString(1, exceptionId)
+            List<UserEntity> entities = session
+                    .createQuery("select u from UserEntity u where u.id like :id and not u.id=:eid", UserEntity.class)
+                    .setParameter("id", "%" + id + "%")
+                    .setParameter("eid", exceptionId)
                     .list();
             userList = entities.stream().map(e -> mapper.map(e, User.class)).collect(Collectors.toList());
         } catch (HibernateException e) {
@@ -136,9 +139,9 @@ public class UserDAO {
         ModelMapper mapper = new ModelMapper();
 
         try {
-            List<UserEntity> entities = (List<UserEntity>) session
-                    .createQuery("select u from UserEntity u where u.email like ?")
-                    .setString(0, "%" + email + "%")
+            List<UserEntity> entities = session
+                    .createQuery("select u from UserEntity u where u.email like :id", UserEntity.class)
+                    .setParameter("id", "%" + email + "%")
                     .list();
             userList = entities.stream().map(e -> mapper.map(e, User.class)).collect(Collectors.toList());
         } catch (HibernateException e) {
@@ -195,9 +198,9 @@ public class UserDAO {
 
         try {
             result = session
-                    .createQuery("select u from UserEntity u where u.id=? and u.password=?")
-                    .setParameter(0, user.getId())
-                    .setParameter(1, user.getPassword())
+                    .createQuery("select u from UserEntity u where u.id=:id and u.password=:pwd")
+                    .setParameter("id", user.getId())
+                    .setParameter("pwd", user.getPassword())
                     .uniqueResult() != null;
         } catch (HibernateException e) {
             logger.error(e.getMessage(), e);
@@ -214,8 +217,8 @@ public class UserDAO {
 
         try {
             result = session
-                    .createQuery("select u from UserEntity u where u.id=?")
-                    .setParameter(0, id)
+                    .createQuery("select u from UserEntity u where u.id=:id")
+                    .setParameter("id", id)
                     .uniqueResult() != null;
         } catch (HibernateException e) {
             logger.error(e.getMessage(), e);

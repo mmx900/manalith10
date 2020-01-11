@@ -1,6 +1,3 @@
-/*
- * Created on 2005. 3. 22
- */
 package org.manalith.model.dao;
 
 import java.sql.Date;
@@ -14,6 +11,7 @@ import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.internal.SessionImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +23,6 @@ import org.manalith.resource.calendar.BlogCalendar;
 import org.manalith.resource.calendar.Day;
 import org.manalith.resource.calendar.Month;
 import org.manalith.resource.calendar.Year;
-
 
 /**
  * @author setzer
@@ -58,8 +55,8 @@ public class ArticleDAO {
 
 			int num = 1;
 			Object max = session.createQuery(
-					"select max(article.num) from Article as article where article.blogOwnerId = ?")
-					.setString(0, article.getBlogOwnerId())
+					"select max(a.num) from Article a where a.blogOwnerId = :id")
+					.setParameter("id", article.getBlogOwnerId())
 					.uniqueResult();
 
 			if (max != null) num = num + ((Integer) max).intValue();
@@ -96,7 +93,7 @@ public class ArticleDAO {
 		ResultSet rs = null;
 
 		try {
-			pstmt = session.connection().prepareStatement(sb.toString());
+			pstmt = ((SessionImpl) session).connection().prepareStatement(sb.toString());
 			pstmt.setString(1, blogOwnerId);
 			rs = pstmt.executeQuery();
 
@@ -201,7 +198,7 @@ public class ArticleDAO {
 		sb.append("WHERE id = ?");
 
 		try {
-			pstmt = session.connection().prepareStatement(sb.toString());
+			pstmt = ((SessionImpl) session).connection().prepareStatement(sb.toString());
 
 			pstmt.setInt(1, articleId);
 
@@ -263,8 +260,8 @@ public class ArticleDAO {
 
 		try {
 			articles = session.createQuery(
-					"from Article as article where article.blogOwnerId = ? order by article.id desc")
-					.setString(0, blogOwnerId)
+					"from Article a where a.blogOwnerId = :id order by a.id desc", Article.class)
+					.setParameter("id", blogOwnerId)
 					.list();
 
 			int articleId = 0;
@@ -301,9 +298,9 @@ public class ArticleDAO {
 
 		try {
 			articles = session.createQuery(
-					"from Article as article where article.blogOwnerId = ? and article.category = ? order by article.id desc")
-					.setString(0, blogOwnerId)
-					.setString(1, category)
+					"from Article a where a.blogOwnerId = :id and a.category = :category order by a.id desc", Article.class)
+					.setParameter("id", blogOwnerId)
+					.setParameter("category", category)
 					.list();
 
 			for (int i = 0; i < articles.size(); i++) {
@@ -331,8 +328,8 @@ public class ArticleDAO {
 			int previous = pageSize * (page - 1);
 
 			articles = session.createQuery(
-					"from Article as article where article.blogOwnerId = ? order by article.id desc")
-					.setString(0, blogOwnerId)
+					"from Article a where a.blogOwnerId = :id order by a.id desc", Article.class)
+					.setParameter("id", blogOwnerId)
 					.setMaxResults(pageSize)
 					.setFirstResult(previous)
 					.list();
@@ -362,9 +359,9 @@ public class ArticleDAO {
 
 		try {
 			articles = session.createQuery(
-					"from Article as article where article.blogOwnerId = ? and article.id = ? order by article.id desc")
-					.setString(0, blogOwnerId)
-					.setInteger(1, article.getId())
+					"from Article a where a.blogOwnerId = :blogOwnerId and a.id = :id order by a.id desc", Article.class)
+					.setParameter("blogOwnerId", blogOwnerId)
+					.setParameter("id", article.getId())
 					.list();
 
 			int articleId = 0;
@@ -402,10 +399,10 @@ public class ArticleDAO {
 			cl.add(Calendar.DATE, 1);
 
 			articles = session.createQuery(
-					"from Article as article where article.blogOwnerId = ? and article.date > ? and article.date < ? order by article.id desc")
-					.setString(0, blogOwnerId)
-					.setDate(1, new Date(date.getTime()))
-					.setDate(2, new Date(cl.getTime().getTime()))
+					"from Article a where a.blogOwnerId = :id and a.date > :start and a.date < :end order by a.id desc", Article.class)
+					.setParameter("id", blogOwnerId)
+					.setParameter("start", new Date(date.getTime()))
+					.setParameter("end", new Date(cl.getTime().getTime()))
 					.list();
 
 			Article article = null;
@@ -441,8 +438,8 @@ public class ArticleDAO {
 
 		try {
 			articles = session.createQuery(
-					"from Article as article where article.blogOwnerId = ? order by article.id desc")
-					.setString(0, blogOwnerId)
+					"from Article a where a.blogOwnerId = :id order by a.id desc", Article.class)
+					.setParameter("id", blogOwnerId)
 					.setMaxResults(limitation)
 					.list();
 
@@ -478,9 +475,9 @@ public class ArticleDAO {
 
 		try {
 			articles = session.createQuery(
-					"from Article as article where article.blogOwnerId = ? and article.author = ? order by article.id desc")
-					.setString(0, blogOwnerId)
-					.setString(1, author.getId())
+					"from Article a where a.blogOwnerId = :id and a.author = :author order by a.id desc", Article.class)
+					.setParameter("id", blogOwnerId)
+					.setParameter("author", author.getId())
 					.list();
 
 			Article article = null;
@@ -575,13 +572,13 @@ public class ArticleDAO {
 
 		try {
 			session.createQuery(
-					"update Article set title = ?, category=?, date=?, contents=?, format=? where id = ?")
-					.setString(0, article.getTitle())
-					.setString(1, article.getCategory())
-					.setTimestamp(2, new Timestamp(article.getDate().getTime()))
-					.setString(3, article.getContents())
-					.setString(4, article.getFormat().toString())
-					.setLong(5, article.getId())
+					"update Article set title=:title, category=:category, date=:date, contents=:contents, format=:format where id = :id")
+					.setParameter("title", article.getTitle())
+					.setParameter("category", article.getCategory())
+					.setParameter("date", new Timestamp(article.getDate().getTime()))
+					.setParameter("contents", article.getContents())
+					.setParameter("format", article.getFormat().toString())
+					.setParameter("id", article.getId())
 					.executeUpdate();
 
 		} catch (HibernateException e) {
@@ -603,8 +600,8 @@ public class ArticleDAO {
 
 		try {
 			session.createQuery(
-					"delete Article where id = ?")
-					.setLong(0, articleId)
+					"delete Article where id = :id")
+					.setParameter("id", articleId)
 					.executeUpdate();
 
 			decreaseArticleCount(blogOwnerId);
@@ -626,8 +623,8 @@ public class ArticleDAO {
 
 		try {
 			session.createQuery(
-					"delete Article where blogOwnerId = ?")
-					.setString(0, blogOwnerId)
+					"delete Article where blogOwnerId = :id")
+					.setParameter("id", blogOwnerId)
 					.executeUpdate();
 
 			restoreArticleCount(blogOwnerId);
@@ -649,8 +646,8 @@ public class ArticleDAO {
 
 		try {
 			session.createQuery(
-					"update Blog set totalArticleCount = totalArticleCount + 1 where owner = ?")
-					.setString(0, blogOwnerId)
+					"update Blog set totalArticleCount = totalArticleCount + 1 where owner = :owner")
+					.setParameter("owner", blogOwnerId)
 					.executeUpdate();
 
 		} catch (HibernateException e) {
@@ -671,8 +668,8 @@ public class ArticleDAO {
 
 		try {
 			session.createQuery(
-					"update Blog set totalArticleCount = totalArticleCount - 1 where owner = ?")
-					.setString(0, blogOwnerId)
+					"update Blog set totalArticleCount = totalArticleCount - 1 where owner = :owner")
+					.setParameter("owner", blogOwnerId)
 					.executeUpdate();
 
 		} catch (HibernateException e) {
@@ -693,8 +690,8 @@ public class ArticleDAO {
 
 		try {
 			session.createQuery(
-					"update Blog set totalArticleCount = 0 where owner = ?")
-					.setString(0, blogOwnerId)
+					"update Blog set totalArticleCount = 0 where owner = :owner")
+					.setParameter("owner", blogOwnerId)
 					.executeUpdate();
 
 		} catch (HibernateException e) {
@@ -716,8 +713,8 @@ public class ArticleDAO {
 
 		try {
 			categories = session.createQuery(
-					"select article.category from Article as article where article.blogOwnerId = ? group by article.category order by article.category asc")
-					.setString(0, blogOwnerId)
+					"select a.category from Article a where a.blogOwnerId = :id group by a.category order by a.category asc", String.class)
+					.setParameter("id", blogOwnerId)
 					.list();
 
 		} catch (HibernateException e) {

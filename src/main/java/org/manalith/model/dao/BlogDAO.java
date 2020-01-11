@@ -280,14 +280,14 @@ public class BlogDAO {
 
 		try {
 			session.createQuery(
-					"update Blog set title = ?, description=?, template=?, pageSize=?, url=?, allowRSS=? where owner = ?")
-					.setString(0, blog.getTitle())
-					.setString(1, blog.getDescription())
-					.setString(2, blog.getTemplate().toString())
-					.setLong(3, blog.getPageSize())
-					.setString(4, blog.getUrl())
-					.setBoolean(5, blog.getAllowRSS())
-					.setString(6, blog.getOwner().toString())
+					"update Blog set title=:title, description=:desc, template=:template, pageSize=:size, url=:url, allowRSS=:rss where owner=:owner")
+					.setParameter("title", blog.getTitle())
+					.setParameter("desc", blog.getDescription())
+					.setParameter("template", blog.getTemplate().toString())
+					.setParameter("size", blog.getPageSize())
+					.setParameter("url", blog.getUrl())
+					.setParameter("rss", blog.getAllowRSS())
+					.setParameter("owner", blog.getOwner().toString())
 					.executeUpdate();
 
 		} catch (HibernateException e) {
@@ -308,13 +308,13 @@ public class BlogDAO {
 
 		try {
 			session.createQuery(
-					"delete Article where blogOwnerId = ?")
-					.setString(0, blogOwnerId)
+					"delete Article where blogOwnerId = :id")
+					.setParameter("id", blogOwnerId)
 					.executeUpdate();
 
 			session.createQuery(
-					"delete Blog where owner = ?")
-					.setString(0, blogOwnerId)
+					"delete Blog where owner = :owner")
+					.setParameter("owner", blogOwnerId)
 					.executeUpdate();
 
 		} catch (HibernateException e) {

@@ -4,57 +4,8 @@
     "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-	<!-- annotation으로의 이전이 완료됨 -->
-    <class name="org.manalith.resource.VisitorLog" table="manalith_blog_log" lazy="false">
 
-        <id name="id" unsaved-value="null">
-            <column name="id" not-null="true"/>
-            <generator class="sequence">
-            		<param name="sequence">manalith_blog_log_id_seq</param>
-            </generator>
-        </id>
-
-        <property name="blogOwnerId" type="string">
-            <column name="blogOwnerId" sql-type="varchar(12)" not-null="true"/>
-        </property>
-
-        <property name="ip" type="org.manalith.db.datatype.InetType" />
-        <property name="agent" />
-        <property name="referer" />
-        <property name="date" />
-
-    </class>
-
-	<!-- annotation으로의 이전이 완료됨 -->
-    <class name="org.manalith.resource.Blog" table="manalith_blog" lazy="false">
-
-        <id name="idx" type="int" unsaved-value="null">
-            <column name="idx" not-null="true"/>
-            <generator class="sequence">
-            		<param name="sequence">manalith_blog_idx_seq</param>
-            </generator>
-        </id>
-        
-        <property name="template" type="org.manalith.db.datatype.TemplateType" not-null="true" />
-        <property name="title" />
-        <property name="description" />
-
-        <!--one-to-one name="owner" class="org.manalith.model.dao.entity.UserEntity" property-ref="id" constrained="true" /-->
-        <property name="owner" type="string">
-            <column name="owner" sql-type="varchar(12)" not-null="true"/>
-        </property>
-        
-        <property name="created" />
-        <property name="totalArticleCount" />
-        <property name="pageSize" />
-        <property name="url" />
-        <property name="allowRSS" />
-        <property name="titleImage" />
-        <property name="backgroundImage" />
-
-    </class>
-
-	<!-- annotation으로의 이전이 완료되지 않음 -->
+	<!-- TODO: annotation으로 이전 -->
     <class name="org.manalith.resource.Article" table="manalith_blog_article" lazy="false">
 
         <id name="id" type="int" unsaved-value="null">
@@ -106,45 +57,5 @@
         <property name="date" />
 
     </class-->
-
-	<!-- annotation으로의 이전이 완료됨 -->
-    <class name="org.manalith.model.dao.entity.UserEntity" table="manalith_member" lazy="false">
-
-        <id name="idx" unsaved-value="null">
-            <column name="idx" not-null="true"/>
-            <generator class="sequence">
-            		<param name="sequence">manalith_member_idx_seq</param>
-            </generator>
-        </id>
-
-        <property name="id" type="string">
-            <column name="id" sql-type="varchar(12)" not-null="true"/>
-        </property>
-
-        <property name="password" />
-        <property name="name" />
-        <property name="email" />
-        <property name="date" />
-
-    </class>
-    
-    
-	<!-- annotation으로의 이전이 완료됨 -->
-    <class name="org.manalith.resource.BlogAuthor" table="manalith_blog_author" lazy="false">
-    
-        <id name="id" unsaved-value="null">
-            <column name="id" not-null="true"/>
-            <generator class="sequence">
-            		<param name="sequence">manalith_blog_author_id_seq</param>
-            </generator>
-        </id>
-        
-        <many-to-one name="blogOwnerId" class="org.manalith.resource.Blog" property-ref="owner" not-null="true" />
-        
-        <many-to-one name="userId" class="org.manalith.model.dao.entity.UserEntity" property-ref="id" not-null="true" />
-
-        <property name="date" />
-
-    </class>
 
 </hibernate-mapping>

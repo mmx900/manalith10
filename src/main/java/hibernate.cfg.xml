@@ -9,10 +9,14 @@
 
         <property name="connection.datasource">java:comp/env/jdbc/manalith</property>
         <property name="show_sql">false</property>
-        <property name="dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+        <property name="dialect">org.hibernate.dialect.PostgreSQL94Dialect</property>
 
         <!-- Mapping files -->
         <mapping resource="hbm.xml"/>
+        <mapping class="org.manalith.model.dao.entity.UserEntity" />
+        <mapping class="org.manalith.resource.VisitorLog" />
+        <mapping class="org.manalith.resource.Blog" />
+        <mapping class="org.manalith.resource.BlogAuthor" />
     </session-factory>
 
 </hibernate-configuration>

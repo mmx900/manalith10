@@ -10,9 +10,9 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 import org.hibernate.HibernateException;
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.usertype.UserType;
 import org.manalith.resource.ArticleFormat;
-
 
 /**
  * @see org.manalith.resource.ArticleFormat
@@ -55,7 +55,7 @@ public class ArticleFormatType implements UserType {
 	/* (non-Javadoc)
 	 * @see org.hibernate.usertype.UserType#nullSafeGet(java.sql.ResultSet, java.lang.String[], java.lang.Object)
 	 */
-	public Object nullSafeGet(ResultSet rs, String[] arg1, Object arg2)
+	public Object nullSafeGet(ResultSet rs, String[] arg1, SharedSessionContractImplementor sharedSessionContractImplementor, Object arg2)
 			throws HibernateException, SQLException {
 		ArticleFormat format = null;
 		try {
@@ -73,7 +73,7 @@ public class ArticleFormatType implements UserType {
 	/* (non-Javadoc)
 	 * @see org.hibernate.usertype.UserType#nullSafeSet(java.sql.PreparedStatement, java.lang.Object, int)
 	 */
-	public void nullSafeSet(PreparedStatement pstmt, Object format, int index)
+	public void nullSafeSet(PreparedStatement pstmt, Object format, int index, SharedSessionContractImplementor sharedSessionContractImplementor)
 			throws HibernateException, SQLException {
 		pstmt.setString(index, format.toString());
 

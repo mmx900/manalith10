@@ -1,6 +1,3 @@
-/*
- * Created on 2005. 5. 6
- */
 package org.manalith.db.datatype;
 
 import java.io.Serializable;
@@ -10,9 +7,9 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 import org.hibernate.HibernateException;
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.usertype.UserType;
 import org.postgresql.util.PGobject;
-
 
 /**
  * PostgreSQL의 Inet형 데이터타입을 매핑하기 위해 만들어진 클래스입니다.
@@ -59,21 +56,18 @@ public class InetType implements UserType {
 	/* (non-Javadoc)
 	 * @see org.hibernate.usertype.UserType#nullSafeGet(java.sql.ResultSet, java.lang.String[], java.lang.Object)
 	 */
-	public Object nullSafeGet(ResultSet rs, String[] arg1, Object arg2)
-			throws HibernateException, SQLException {
-		return rs.getString(arg1[0]);
+	public Object nullSafeGet(ResultSet resultSet, String[] strings, SharedSessionContractImplementor sharedSessionContractImplementor, Object o) throws HibernateException, SQLException {
+		return resultSet.getString(strings[0]);
 	}
 
 	/* (non-Javadoc)
 	 * @see org.hibernate.usertype.UserType#nullSafeSet(java.sql.PreparedStatement, java.lang.Object, int)
 	 */
-	public void nullSafeSet(PreparedStatement pstmt, Object obj, int index)
-			throws HibernateException, SQLException {
+	public void nullSafeSet(PreparedStatement preparedStatement, Object o, int i, SharedSessionContractImplementor sharedSessionContractImplementor) throws HibernateException, SQLException {
 		PGobject pobj = new PGobject();
 		pobj.setType("inet");
-		pobj.setValue((String) obj);
-		pstmt.setObject(index, pobj);
-
+		pobj.setValue((String) o);
+		preparedStatement.setObject(i, pobj);
 	}
 
 	/* (non-Javadoc)

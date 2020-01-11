@@ -103,9 +103,9 @@ public class BlogAuthorDAO {
 
 		try {
 			session.createQuery(
-					"delete BlogAuthor where blogOwnerId = ? and userId = ?")
-					.setString(0, user.getBlogOwnerId())
-					.setString(1, user.getUserId())
+					"delete BlogAuthor where blogOwnerId = :blogOwnerId and userId = :userId")
+					.setParameter("blogOwnerId", user.getBlogOwnerId())
+					.setParameter("userId", user.getUserId())
 					.executeUpdate();
 
 		} catch (HibernateException e) {
@@ -191,8 +191,8 @@ public class BlogAuthorDAO {
 
 		try {
 			session.createQuery(
-					"delete BlogAuthor where blogOwnerId = ?")
-					.setString(0, blogOwnerId)
+					"delete BlogAuthor where blogOwnerId = :id")
+					.setParameter("id", blogOwnerId)
 					.executeUpdate();
 
 		} catch (HibernateException e) {
