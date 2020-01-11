@@ -21,23 +21,17 @@ import org.postgresql.util.PGobject;
  */
 public class InetType implements UserType {
 
-	/* (non-Javadoc)
-	 * @see org.hibernate.usertype.UserType#sqlTypes()
-	 */
+	@Override
 	public int[] sqlTypes() {
 		return new int[]{Types.OTHER};
 	}
 
-	/* (non-Javadoc)
-	 * @see org.hibernate.usertype.UserType#returnedClass()
-	 */
+	@Override
 	public Class returnedClass() {
 		return String.class;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.hibernate.usertype.UserType#equals(java.lang.Object, java.lang.Object)
-	 */
+	@Override
 	public boolean equals(Object x, Object y) throws HibernateException {
 		return (x == y)
 				|| (x != null
@@ -45,24 +39,18 @@ public class InetType implements UserType {
 				&& (x.equals(y)));
 	}
 
-	/* (non-Javadoc)
-	 * @see org.hibernate.usertype.UserType#hashCode(java.lang.Object)
-	 */
+	@Override
 	public int hashCode(Object arg0) throws HibernateException {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.hibernate.usertype.UserType#nullSafeGet(java.sql.ResultSet, java.lang.String[], java.lang.Object)
-	 */
+	@Override
 	public Object nullSafeGet(ResultSet resultSet, String[] strings, SharedSessionContractImplementor sharedSessionContractImplementor, Object o) throws HibernateException, SQLException {
 		return resultSet.getString(strings[0]);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.hibernate.usertype.UserType#nullSafeSet(java.sql.PreparedStatement, java.lang.Object, int)
-	 */
+	@Override
 	public void nullSafeSet(PreparedStatement preparedStatement, Object o, int i, SharedSessionContractImplementor sharedSessionContractImplementor) throws HibernateException, SQLException {
 		PGobject pobj = new PGobject();
 		pobj.setType("inet");
@@ -70,41 +58,31 @@ public class InetType implements UserType {
 		preparedStatement.setObject(i, pobj);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.hibernate.usertype.UserType#deepCopy(java.lang.Object)
-	 */
+	@Override
 	public Object deepCopy(Object obj) throws HibernateException {
 		if (obj == null) return null;
 		return new String((String) obj);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.hibernate.usertype.UserType#isMutable()
-	 */
+	@Override
 	public boolean isMutable() {
 		return false;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.hibernate.usertype.UserType#disassemble(java.lang.Object)
-	 */
+	@Override
 	public Serializable disassemble(Object arg0) throws HibernateException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.hibernate.usertype.UserType#assemble(java.io.Serializable, java.lang.Object)
-	 */
+	@Override
 	public Object assemble(Serializable arg0, Object arg1)
 			throws HibernateException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.hibernate.usertype.UserType#replace(java.lang.Object, java.lang.Object, java.lang.Object)
-	 */
+	@Override
 	public Object replace(Object arg0, Object arg1, Object arg2)
 			throws HibernateException {
 		// TODO Auto-generated method stub

@@ -16,23 +16,17 @@ import org.manalith.resource.Template;
  */
 public class TemplateType implements UserType {
 
-	/* (non-Javadoc)
-	 * @see org.hibernate.usertype.UserType#sqlTypes()
-	 */
+	@Override
 	public int[] sqlTypes() {
 		return new int[]{Types.VARCHAR};
 	}
 
-	/* (non-Javadoc)
-	 * @see org.hibernate.usertype.UserType#returnedClass()
-	 */
+	@Override
 	public Class returnedClass() {
 		return String.class;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.hibernate.usertype.UserType#equals(java.lang.Object, java.lang.Object)
-	 */
+	@Override
 	public boolean equals(Object x, Object y) throws HibernateException {
 		return (x == y)
 				|| (x != null
@@ -40,17 +34,13 @@ public class TemplateType implements UserType {
 				&& (x.equals(y)));
 	}
 
-	/* (non-Javadoc)
-	 * @see org.hibernate.usertype.UserType#hashCode(java.lang.Object)
-	 */
+	@Override
 	public int hashCode(Object arg0) throws HibernateException {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.hibernate.usertype.UserType#nullSafeGet(java.sql.ResultSet, java.lang.String[], java.lang.Object)
-	 */
+	@Override
 	public Object nullSafeGet(ResultSet rs, String[] arg1, SharedSessionContractImplementor sharedSessionContractImplementor, Object arg2)
 			throws HibernateException, SQLException {
 		Template template = null;
@@ -66,51 +56,39 @@ public class TemplateType implements UserType {
 		return template;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.hibernate.usertype.UserType#nullSafeSet(java.sql.PreparedStatement, java.lang.Object, int)
-	 */
+	@Override
 	public void nullSafeSet(PreparedStatement pstmt, Object template, int index, SharedSessionContractImplementor sharedSessionContractImplementor)
 			throws HibernateException, SQLException {
 		pstmt.setString(index, template.toString());
 
 	}
 
-	/* (non-Javadoc)
-	 * @see org.hibernate.usertype.UserType#deepCopy(java.lang.Object)
-	 */
+	@Override
 	public Object deepCopy(Object arg0) throws HibernateException {
 		// TODO Auto-generated method stub
 		return arg0;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.hibernate.usertype.UserType#isMutable()
-	 */
+	@Override
 	public boolean isMutable() {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.hibernate.usertype.UserType#disassemble(java.lang.Object)
-	 */
+	@Override
 	public Serializable disassemble(Object arg0) throws HibernateException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.hibernate.usertype.UserType#assemble(java.io.Serializable, java.lang.Object)
-	 */
+	@Override
 	public Object assemble(Serializable arg0, Object arg1)
 			throws HibernateException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.hibernate.usertype.UserType#replace(java.lang.Object, java.lang.Object, java.lang.Object)
-	 */
+	@Override
 	public Object replace(Object original, Object target, Object owner)
 			throws HibernateException {
 		// TODO Auto-generated method stub
