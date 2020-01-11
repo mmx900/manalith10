@@ -39,7 +39,7 @@
         <property name="title" />
         <property name="description" />
 
-        <!--one-to-one name="owner" class="org.manalith.resource.User" property-ref="id" constrained="true" /-->
+        <!--one-to-one name="owner" class="org.manalith.model.dao.entity.UserEntity" property-ref="id" constrained="true" /-->
         <property name="owner" type="string">
             <column name="owner" sql-type="varchar(12)" not-null="true"/>
         </property>
@@ -72,7 +72,7 @@
 
         <property name="title" />
         
-        <many-to-one name="author" class="org.manalith.resource.User" property-ref="id" not-null="true" />
+        <many-to-one name="author" class="org.manalith.model.dao.entity.UserEntity" property-ref="id" not-null="true" />
         
         <property name="category" />
         <property name="date" />
@@ -108,7 +108,7 @@
     </class-->
 
 	<!-- annotation으로의 이전이 완료됨 -->
-    <class name="org.manalith.resource.User" table="manalith_member" lazy="false">
+    <class name="org.manalith.model.dao.entity.UserEntity" table="manalith_member" lazy="false">
 
         <id name="idx" unsaved-value="null">
             <column name="idx" not-null="true"/>
@@ -141,7 +141,7 @@
         
         <many-to-one name="blogOwnerId" class="org.manalith.resource.Blog" property-ref="owner" not-null="true" />
         
-        <many-to-one name="userId" class="org.manalith.resource.User" property-ref="id" not-null="true" />
+        <many-to-one name="userId" class="org.manalith.model.dao.entity.UserEntity" property-ref="id" not-null="true" />
 
         <property name="date" />
 

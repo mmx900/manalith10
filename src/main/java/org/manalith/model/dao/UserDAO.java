@@ -3,17 +3,19 @@
  */
 package org.manalith.model.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.manalith.db.ConnectionFactory;
+import org.manalith.db.HibernateUtil;
+import org.manalith.model.dao.entity.UserEntity;
 import org.manalith.resource.User;
 
 
@@ -21,20 +23,10 @@ import org.manalith.resource.User;
  * @author setzer
  */
 public class UserDAO {
-    private Connection conn;
     private static UserDAO manager = null;
     private static Logger logger = LoggerFactory.getLogger(UserDAO.class);
 
     private UserDAO() {
-        try {
-            conn = ConnectionFactory.getConnection();
-        } catch (SQLException ex) {
-            logger.error("SQLException: " + ex.getMessage());
-            logger.error("SQLState: " + ex.getSQLState());
-            logger.error("VendorError: " + ex.getErrorCode());
-            logger.error("detail :");
-            logger.error(ex.getMessage(), ex);
-        }
     }
 
     public static UserDAO instance() {
@@ -46,442 +38,208 @@ public class UserDAO {
 
     public User getUser(String id) {
         User user = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        StringBuffer sb = new StringBuffer();
-        sb.append("SELECT id,password,name,email FROM manalith_member ");
-        sb.append("WHERE id=?");
+        Session session = HibernateUtil.currentSession();
 
         try {
-            pstmt = conn.prepareStatement(sb.toString());
-            pstmt.setString(1, id);
-            rs = pstmt.executeQuery();
-
-            if (rs.next()) {
-                user = new User();
-                user.setId(rs.getString("id"));
-                user.setPassword(rs.getString("password"));
-                user.setName(rs.getString("name"));
-                user.setEmail(rs.getString("email"));
-            }
-        } catch (SQLException e) {
-            logger.error(e.toString());
+            UserEntity entity = (UserEntity) session.get(UserEntity.class, id);
+            user = new ModelMapper().map(entity, User.class);
+        } catch (HibernateException e) {
+            logger.error(e.getMessage(), e);
         } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    logger.error(e.toString());
-                }
-                rs = null;
-            }
-            if (pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                    logger.error(e.toString());
-                }
-                pstmt = null;
-            }
+            HibernateUtil.closeSession();
         }
+
         return user;
     }
 
     public List<User> getUsers() {
-        User user = null;
-        List<User> userList = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        StringBuffer sb = new StringBuffer();
-        sb.append("SELECT id,name,email FROM manalith_member ORDER BY id DESC");
+        List<User> userList = new ArrayList<>();
+        Session session = HibernateUtil.currentSession();
+        ModelMapper mapper = new ModelMapper();
 
         try {
-            pstmt = conn.prepareStatement(sb.toString());
-
-            logger.warn("다음 쿼리로 유저 정보를 가져옵니다 :");
-            logger.warn(pstmt.toString());
-
-            rs = pstmt.executeQuery();
-
-            userList = new ArrayList<User>();
-            while (rs.next()) {
-                user = new User();
-                user.setId(rs.getString("id"));
-                user.setName(rs.getString("name"));
-                user.setEmail(rs.getString("email"));
-                userList.add(user);
-            }
-        } catch (SQLException e) {
-            logger.error(e.toString());
+            List<UserEntity> entities = (List<UserEntity>) session.createCriteria(UserEntity.class).list();
+            userList = entities.stream().map(e -> mapper.map(e, User.class)).collect(Collectors.toList());
+        } catch (HibernateException e) {
+            logger.error(e.getMessage(), e);
         } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    logger.error(e.toString());
-                }
-                rs = null;
-            }
-            if (pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                    logger.error(e.toString());
-                }
-                pstmt = null;
-            }
+            HibernateUtil.closeSession();
         }
+
         return userList;
     }
 
     public List<User> getMatchedUsersByName(String name) {
-        User user = null;
-        List<User> userList = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        StringBuffer sb = new StringBuffer();
-        sb.append("SELECT id,name,email FROM manalith_member ");
-        sb.append("WHERE name LIKE '?'");
-        sb.append("ORDER BY id DESC");
+        List<User> userList = new ArrayList<>();
+        Session session = HibernateUtil.currentSession();
+        ModelMapper mapper = new ModelMapper();
 
         try {
-            pstmt = conn.prepareStatement(sb.toString());
-            pstmt.setString(1, "%" + name + "%");
-
-            rs = pstmt.executeQuery();
-
-            userList = new ArrayList<User>();
-            while (rs.next()) {
-                user = new User();
-                user.setId(rs.getString("id"));
-                user.setName(rs.getString("name"));
-                user.setEmail(rs.getString("email"));
-                userList.add(user);
-            }
-        } catch (SQLException e) {
-            logger.error(e.toString());
+            List<UserEntity> entities = (List<UserEntity>) session
+                    .createQuery("select u from UserEntity u where u.name like ?")
+                    .setString(0, "%" + name + "%")
+                    .list();
+            userList = entities.stream().map(e -> mapper.map(e, User.class)).collect(Collectors.toList());
+        } catch (HibernateException e) {
+            logger.error(e.getMessage(), e);
         } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    logger.error(e.toString());
-                }
-                rs = null;
-            }
-            if (pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                    logger.error(e.toString());
-                }
-                pstmt = null;
-            }
+            HibernateUtil.closeSession();
         }
+
         return userList;
     }
 
     public List<User> getMatchedUsersById(String id) {
-        User user = null;
-        List<User> userList = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        StringBuffer sb = new StringBuffer();
-        sb.append("SELECT id,name,email FROM manalith_member ");
-        sb.append("WHERE id LIKE ? ");
-        sb.append("ORDER BY id DESC");
+        List<User> userList = new ArrayList<>();
+        Session session = HibernateUtil.currentSession();
+        ModelMapper mapper = new ModelMapper();
 
         try {
-            pstmt = conn.prepareStatement(sb.toString());
-            pstmt.setString(1, "%" + id + "%");
-
-            rs = pstmt.executeQuery();
-
-            userList = new ArrayList<User>();
-            while (rs.next()) {
-                user = new User();
-                user.setId(rs.getString("id"));
-                user.setName(rs.getString("name"));
-                user.setEmail(rs.getString("email"));
-                userList.add(user);
-            }
-        } catch (SQLException e) {
-            logger.error(e.toString());
+            List<UserEntity> entities = (List<UserEntity>) session
+                    .createQuery("select u from UserEntity u where u.id like ?")
+                    .setString(0, "%" + id + "%")
+                    .list();
+            userList = entities.stream().map(e -> mapper.map(e, User.class)).collect(Collectors.toList());
+        } catch (HibernateException e) {
+            logger.error(e.getMessage(), e);
         } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    logger.error(e.toString());
-                }
-                rs = null;
-            }
-            if (pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                    logger.error(e.toString());
-                }
-                pstmt = null;
-            }
+            HibernateUtil.closeSession();
         }
+
         return userList;
     }
 
     public List<User> getMatchedUsersById(String id, String exceptionId) {
-        User user = null;
-        List<User> userList = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        StringBuffer sb = new StringBuffer();
-        sb.append("SELECT id,name,email FROM manalith_member ");
-        sb.append("WHERE id LIKE ? AND NOT id=?");
-        sb.append("ORDER BY id DESC");
+        List<User> userList = new ArrayList<>();
+        Session session = HibernateUtil.currentSession();
+        ModelMapper mapper = new ModelMapper();
 
         try {
-            pstmt = conn.prepareStatement(sb.toString());
-            pstmt.setString(1, "%" + id + "%");
-            pstmt.setString(2, exceptionId);
-
-            rs = pstmt.executeQuery();
-
-            userList = new ArrayList<User>();
-            while (rs.next()) {
-                user = new User();
-                user.setId(rs.getString("id"));
-                user.setName(rs.getString("name"));
-                user.setEmail(rs.getString("email"));
-                userList.add(user);
-            }
-        } catch (SQLException e) {
-            logger.error(e.toString());
+            List<UserEntity> entities = (List<UserEntity>) session
+                    .createQuery("select u from UserEntity u where u.id like ? and not u.id=?")
+                    .setString(0, "%" + id + "%")
+                    .setString(1, exceptionId)
+                    .list();
+            userList = entities.stream().map(e -> mapper.map(e, User.class)).collect(Collectors.toList());
+        } catch (HibernateException e) {
+            logger.error(e.getMessage(), e);
         } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    logger.error(e.toString());
-                }
-                rs = null;
-            }
-            if (pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                    logger.error(e.toString());
-                }
-                pstmt = null;
-            }
+            HibernateUtil.closeSession();
         }
+
         return userList;
     }
 
     public List<User> getMatchedUsersByEmail(String email) {
-        User user = null;
-        List<User> userList = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        StringBuffer sb = new StringBuffer();
-        sb.append("SELECT id,name,email FROM manalith_member ");
-        sb.append("WHERE email LIKE ? ");
-        sb.append("ORDER BY id DESC");
+        List<User> userList = new ArrayList<>();
+        Session session = HibernateUtil.currentSession();
+        ModelMapper mapper = new ModelMapper();
 
         try {
-            pstmt = conn.prepareStatement(sb.toString());
-            pstmt.setString(1, "%" + email + "%");
-
-            rs = pstmt.executeQuery();
-
-            userList = new ArrayList<User>();
-            while (rs.next()) {
-                user = new User();
-                user.setId(rs.getString("id"));
-                user.setName(rs.getString("name"));
-                user.setEmail(rs.getString("email"));
-                userList.add(user);
-            }
-        } catch (SQLException e) {
-            logger.error(e.toString());
+            List<UserEntity> entities = (List<UserEntity>) session
+                    .createQuery("select u from UserEntity u where u.email like ?")
+                    .setString(0, "%" + email + "%")
+                    .list();
+            userList = entities.stream().map(e -> mapper.map(e, User.class)).collect(Collectors.toList());
+        } catch (HibernateException e) {
+            logger.error(e.getMessage(), e);
         } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    logger.error(e.toString());
-                }
-                rs = null;
-            }
-            if (pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                    logger.error(e.toString());
-                }
-                pstmt = null;
-            }
+            HibernateUtil.closeSession();
         }
+
         return userList;
     }
 
     public void addUser(User user) {
-        PreparedStatement pstmt = null;
-        StringBuffer sb = new StringBuffer();
-        sb.append("INSERT INTO manalith_member(id,name,password,email) ");
-        sb.append("VALUES(?,?,?,?)");
+        Session session = HibernateUtil.currentSession();
+        Transaction tx = null;
 
         try {
-            pstmt = conn.prepareStatement(sb.toString());
-            pstmt.setString(1, user.getId());
-            pstmt.setString(2, user.getName());
-            pstmt.setString(3, user.getPassword());
-            pstmt.setString(4, user.getEmail());
-
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            logger.error(e.toString());
+            tx = session.beginTransaction();
+            UserEntity entity = new UserEntity();
+            new ModelMapper().map(user, entity);
+            session.save(entity);
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) tx.rollback();
+            logger.error(e.getMessage(), e);
         } finally {
-            if (pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                    logger.error(e.toString());
-                }
-                pstmt = null;
-            }
+            HibernateUtil.closeSession();
         }
     }
 
     public void updateUser(User user) {
-        PreparedStatement pstmt = null;
-        StringBuffer sb = new StringBuffer();
-        sb.append("UPDATE manalith_member ");
-        sb.append("SET name=?,password=?,email=? ");
-        sb.append("WHERE id=?");
+        Session session = HibernateUtil.currentSession();
+        Transaction tx = null;
 
         try {
-            pstmt = conn.prepareStatement(sb.toString());
-            pstmt.setString(1, user.getName());
-            pstmt.setString(2, user.getPassword());
-            pstmt.setString(3, user.getEmail());
-            pstmt.setString(4, user.getId());
-
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            logger.error(e.toString());
+            tx = session.beginTransaction();
+            session.createQuery("update UserEntity u set u.name = :name, u.password = :password, u.email = :email where u.id = :id")
+                    .setParameter("name", user.getName())
+                    .setParameter("password", user.getPassword())
+                    .setParameter("email", user.getEmail())
+                    .setParameter("id", user.getId())
+                    .executeUpdate();
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) tx.rollback();
+            logger.error(e.getMessage(), e);
         } finally {
-            if (pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                    logger.error(e.toString());
-                }
-                pstmt = null;
-            }
+            HibernateUtil.closeSession();
         }
     }
 
     public boolean validUser(User user) {
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
+        Session session = HibernateUtil.currentSession();
         boolean result = false;
-        StringBuffer sb = new StringBuffer();
-        sb.append("SELECT id,password,name,email FROM manalith_member ");
-        sb.append("WHERE id=? AND password=?");
 
         try {
-            pstmt = conn.prepareStatement(sb.toString());
-            pstmt.setString(1, user.getId());
-            pstmt.setString(2, user.getPassword());
-            rs = pstmt.executeQuery();
-
-            if (rs.next()) {
-                result = true;
-            }
-        } catch (SQLException e) {
-            logger.error(e.toString());
+            result = session
+                    .createQuery("select u from UserEntity u where u.id=? and u.password=?")
+                    .setParameter(0, user.getId())
+                    .setParameter(1, user.getPassword())
+                    .uniqueResult() != null;
+        } catch (HibernateException e) {
+            logger.error(e.getMessage(), e);
         } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    logger.error(e.toString());
-                }
-                rs = null;
-            }
-            if (pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                    logger.error(e.toString());
-                }
-                pstmt = null;
-            }
+            HibernateUtil.closeSession();
         }
+
         return result;
     }
 
     public boolean existUser(String id) {
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
+        Session session = HibernateUtil.currentSession();
         boolean result = false;
-        StringBuffer sb = new StringBuffer();
-        sb.append("SELECT id,password,name,email FROM manalith_member ");
-        sb.append("WHERE id=?");
 
         try {
-            pstmt = conn.prepareStatement(sb.toString());
-            pstmt.setString(1, id);
-            rs = pstmt.executeQuery();
-
-            if (rs.next()) {
-                result = true;
-            }
-        } catch (SQLException e) {
-            logger.error(e.toString());
+            result = session
+                    .createQuery("select u from UserEntity u where u.id=?")
+                    .setParameter(0, id)
+                    .uniqueResult() != null;
+        } catch (HibernateException e) {
+            logger.error(e.getMessage(), e);
         } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    logger.error(e.toString());
-                }
-                rs = null;
-            }
-            if (pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                    logger.error(e.toString());
-                }
-                pstmt = null;
-            }
+            HibernateUtil.closeSession();
         }
+
         return result;
     }
 
     //FIXME : user를 제거하기 위해서, user의 id를 foreign key로 사용하는 테이블들의 row를 먼저 삭제해야 함.
     public void removeUser(String id) {
-        PreparedStatement pstmt = null;
-        StringBuffer sb = new StringBuffer();
-        sb.append("DELETE FROM manalith_member ");
-        sb.append("WHERE id=?");
+        Session session = HibernateUtil.currentSession();
+        Transaction tx = null;
 
         try {
-            pstmt = conn.prepareStatement(sb.toString());
-            pstmt.setString(1, id);
-
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            logger.error(e.toString());
+            tx = session.beginTransaction();
+            session.delete(new UserEntity(id));
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) tx.rollback();
+            logger.error(e.getMessage(), e);
         } finally {
-            if (pstmt != null) {
-                try {
-                    pstmt.close();
-                } catch (SQLException e) {
-                    logger.error(e.toString());
-                }
-                pstmt = null;
-            }
+            HibernateUtil.closeSession();
         }
     }
 }

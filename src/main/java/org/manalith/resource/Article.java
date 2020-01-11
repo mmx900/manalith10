@@ -140,7 +140,7 @@ public class Article {
 	/**
 	 * @return Returns the owner.
 	 */
-	//@ManyToOne(targetEntity=org.manalith.resource.User.class, fetch=FetchType.EAGER)
+	//@ManyToOne(targetEntity=org.manalith.model.dao.entity.UserEntity.class, fetch=FetchType.EAGER)
 	@ManyToOne
 	@JoinColumn(name = "author", referencedColumnName = "id")
 	public User getAuthor() {

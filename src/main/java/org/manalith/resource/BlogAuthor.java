@@ -46,7 +46,7 @@ public class BlogAuthor {
 	/**
 	 * @return Returns the id.
 	 */
-	@ManyToOne(targetEntity = org.manalith.resource.User.class)
+	@ManyToOne(targetEntity = org.manalith.model.dao.entity.UserEntity.class)
 	public String getUserId() {
 		return userId;
 	}

@@ -1,26 +1,7 @@
-/*
- * Created on 2005. 3. 22
- */
 package org.manalith.resource;
 
 import java.util.Date;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-/**
- * @author setzer
- */
-@Entity
-@Access(AccessType.PROPERTY)
-@Table(name = "manalith_member")
-@javax.persistence.SequenceGenerator(name = "SEQ_GEN", sequenceName = "manalith_member_idx_seq")
 public class User {
 
 	private int idx;
@@ -45,7 +26,6 @@ public class User {
 	/**
 	 * @return Returns the id.
 	 */
-	@Column(updatable = false, name = "id", nullable = false, length = 12)
 	public String getId() {
 		return id;
 	}
@@ -102,8 +82,6 @@ public class User {
 	/**
 	 * @return Returns the idx.
 	 */
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_GEN")
 	public int getIdx() {
 		return idx;
 	}
