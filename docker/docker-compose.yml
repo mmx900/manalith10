@@ -1,5 +1,15 @@
 version: "2"
 services:
+  web:
+    build: .
+    #image: "tomcat:8-jdk11-openjdk"
+    ports:
+     - "8080:8080"
+    #volumes:
+    # - ./tomcat-users.xml:/usr/local/tomcat/conf/tomcat-users.xml
+    networks:
+      static-network:
+        ipv4_address: 172.20.128.1
   db:
     image: "postgres:9.4"
     ports:
@@ -8,3 +18,12 @@ services:
      - "POSTGRES_DB=manalith10"
      - "POSTGRES_USER=manalith10"
      - "POSTGRES_PASSWORD=manaadmin"
+    networks:
+      static-network:
+        ipv4_address: 172.20.128.2
+networks:
+  static-network:
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+          ip_range: 172.28.5.0/24

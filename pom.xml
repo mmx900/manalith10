@@ -9,7 +9,7 @@
 	<version>1.0-SNAPSHOT</version>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<database.hostname>localhost</database.hostname>
+		<database.hostname>172.20.128.2</database.hostname>
 		<database.port>5432</database.port>
 		<database.name>manalith10</database.name>
 		<database.username>manalith10</database.username>
@@ -202,6 +202,18 @@
 			<artifactId>junit-jupiter</artifactId>
 			<version>5.5.2</version>
 			<scope>test</scope>
+		</dependency>
+		<!-- API, java.xml.bind module -->
+		<dependency>
+			<groupId>jakarta.xml.bind</groupId>
+			<artifactId>jakarta.xml.bind-api</artifactId>
+			<version>2.3.2</version>
+		</dependency>
+		<!-- Runtime, com.sun.xml.bind module -->
+		<dependency>
+			<groupId>org.glassfish.jaxb</groupId>
+			<artifactId>jaxb-runtime</artifactId>
+			<version>2.3.2</version>
 		</dependency>
 	</dependencies>
 	<repositories>
