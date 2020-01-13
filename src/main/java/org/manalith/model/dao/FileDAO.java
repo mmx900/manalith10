@@ -116,7 +116,6 @@ public class FileDAO {
 				} catch (SQLException e) {
 					logger.error(e.toString());
 				}
-				rs = null;
 			}
 			if (pstmt != null) {
 				try {
@@ -124,7 +123,6 @@ public class FileDAO {
 				} catch (SQLException e) {
 					logger.error(e.toString());
 				}
-				pstmt = null;
 			}
 		}
 
@@ -166,7 +164,6 @@ public class FileDAO {
 				} catch (SQLException e) {
 					logger.error(e.toString());
 				}
-				rs = null;
 			}
 			if (pstmt != null) {
 				try {
@@ -174,10 +171,8 @@ public class FileDAO {
 				} catch (SQLException e) {
 					logger.error(e.toString());
 				}
-				pstmt = null;
 			}
 		}
-
 	}
 
 
@@ -224,7 +219,6 @@ public class FileDAO {
 				} catch (SQLException e) {
 					logger.error(e.toString());
 				}
-				rs = null;
 			}
 			if (pstmt != null) {
 				try {
@@ -232,7 +226,6 @@ public class FileDAO {
 				} catch (SQLException e) {
 					logger.error(e.toString());
 				}
-				pstmt = null;
 			}
 		}
 
@@ -274,7 +267,6 @@ public class FileDAO {
 				} catch (SQLException e) {
 					logger.error(e.toString());
 				}
-				rs = null;
 			}
 			if (pstmt != null) {
 				try {
@@ -282,10 +274,8 @@ public class FileDAO {
 				} catch (SQLException e) {
 					logger.error(e.toString());
 				}
-				pstmt = null;
 			}
 		}
-
 	}
 
 	public int setUnconnectedFile(
@@ -341,7 +331,6 @@ public class FileDAO {
 				} catch (SQLException e) {
 					logger.error(e.toString());
 				}
-				rs = null;
 			}
 			if (pstmt != null) {
 				try {
@@ -349,7 +338,6 @@ public class FileDAO {
 				} catch (SQLException e) {
 					logger.error(e.toString());
 				}
-				pstmt = null;
 			}
 		}
 
@@ -396,7 +384,6 @@ public class FileDAO {
 				} catch (SQLException e) {
 					logger.error(e.toString());
 				}
-				pstmt = null;
 			}
 		}
 	}
@@ -432,7 +419,6 @@ public class FileDAO {
 				} catch (SQLException e) {
 					logger.error(e.toString());
 				}
-				rs = null;
 			}
 			if (pstmt != null) {
 				try {
@@ -440,9 +426,9 @@ public class FileDAO {
 				} catch (SQLException e) {
 					logger.error(e.toString());
 				}
-				pstmt = null;
 			}
 		}
+
 		return files;
 	}
 
@@ -477,7 +463,6 @@ public class FileDAO {
 				} catch (SQLException e) {
 					logger.error(e.toString());
 				}
-				rs = null;
 			}
 			if (pstmt != null) {
 				try {
@@ -485,7 +470,6 @@ public class FileDAO {
 				} catch (SQLException e) {
 					logger.error(e.toString());
 				}
-				pstmt = null;
 			}
 		}
 
@@ -533,7 +517,6 @@ public class FileDAO {
 				} catch (SQLException e) {
 					logger.error(e.toString());
 				}
-				pstmt = null;
 			}
 		}
 	}

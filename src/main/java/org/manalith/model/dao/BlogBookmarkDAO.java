@@ -71,7 +71,6 @@ public class BlogBookmarkDAO {
 				} catch (SQLException e) {
 					logger.error(e.toString());
 				}
-				rs = null;
 			}
 			if (pstmt != null) {
 				try {
@@ -79,7 +78,6 @@ public class BlogBookmarkDAO {
 				} catch (SQLException e) {
 					logger.error(e.toString());
 				}
-				pstmt = null;
 			}
 		}
 	}
@@ -117,7 +115,6 @@ public class BlogBookmarkDAO {
 				} catch (SQLException e) {
 					logger.error(e.toString());
 				}
-				pstmt = null;
 			}
 		}
 	}
@@ -147,7 +144,6 @@ public class BlogBookmarkDAO {
 				} catch (SQLException e) {
 					logger.error(e.toString());
 				}
-				pstmt = null;
 			}
 		}
 	}
@@ -198,7 +194,6 @@ public class BlogBookmarkDAO {
 				} catch (SQLException e) {
 					logger.error(e.toString());
 				}
-				rs = null;
 			}
 			if (pstmt != null) {
 				try {
@@ -206,7 +201,6 @@ public class BlogBookmarkDAO {
 				} catch (SQLException e) {
 					logger.error(e.toString());
 				}
-				pstmt = null;
 			}
 		}
 
@@ -248,7 +242,6 @@ public class BlogBookmarkDAO {
 				} catch (SQLException e) {
 					logger.error(e.toString());
 				}
-				rs = null;
 			}
 			if (pstmt != null) {
 				try {
@@ -256,7 +249,6 @@ public class BlogBookmarkDAO {
 				} catch (SQLException e) {
 					logger.error(e.toString());
 				}
-				pstmt = null;
 			}
 		}
 

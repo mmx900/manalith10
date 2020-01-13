@@ -76,7 +76,6 @@ public class BlogAuthorDAO {
 				} catch (SQLException e) {
 					logger.error(e.toString());
 				}
-				rs = null;
 			}
 			if (pstmt != null) {
 				try {
@@ -84,7 +83,6 @@ public class BlogAuthorDAO {
 				} catch (SQLException e) {
 					logger.error(e.toString());
 				}
-				pstmt = null;
 			}
 		}
 	}
@@ -162,7 +160,6 @@ public class BlogAuthorDAO {
 				} catch (SQLException e) {
 					logger.error(e.toString());
 				}
-				rs = null;
 			}
 			if (pstmt != null) {
 				try {
@@ -170,9 +167,9 @@ public class BlogAuthorDAO {
 				} catch (SQLException e) {
 					logger.error(e.toString());
 				}
-				pstmt = null;
 			}
 		}
+
 		return authors;
 	}
 

@@ -139,7 +139,6 @@ public class ArticleDAO {
 				} catch (SQLException e) {
 					logger.error(e.toString());
 				}
-				rs = null;
 			}
 			if (pstmt != null) {
 				try {
@@ -147,10 +146,10 @@ public class ArticleDAO {
 				} catch (SQLException e) {
 					logger.error(e.toString());
 				}
-				pstmt = null;
 			}
 			HibernateUtil.closeSession();
 		}
+
 		return calendar;
 	}
 
@@ -226,7 +225,6 @@ public class ArticleDAO {
 				} catch (SQLException e) {
 					logger.error(e.toString());
 				}
-				rs = null;
 			}
 			if (pstmt != null) {
 				try {
@@ -234,7 +232,6 @@ public class ArticleDAO {
 				} catch (SQLException e) {
 					logger.error(e.toString());
 				}
-				pstmt = null;
 			}
 			session.close();
 		}
@@ -537,7 +534,6 @@ public class ArticleDAO {
 		 } catch (SQLException e) {
 		 logger.error(e.toString());
 		 }
-		 rs = null; 
 		 }
 		 if (pstmt != null) {
 		 try {
@@ -545,8 +541,7 @@ public class ArticleDAO {
 		 } catch (SQLException e) {
 		 logger.error(e.toString());
 		 }
-		 pstmt = null; 
-		 } 
+		 }
 		 }
 		 */
 

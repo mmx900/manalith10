@@ -141,7 +141,6 @@ public class TrackbackDAO {
 				} catch (SQLException e) {
 					logger.error(e.toString());
 				}
-				rs = null;
 			}
 			if (pstmt != null) {
 				try {
@@ -149,7 +148,6 @@ public class TrackbackDAO {
 				} catch (SQLException e) {
 					logger.error(e.toString());
 				}
-				pstmt = null;
 			}
 		}
 
@@ -198,7 +196,6 @@ public class TrackbackDAO {
 				} catch (SQLException e) {
 					logger.error(e.toString());
 				}
-				rs = null;
 			}
 			if (pstmt != null) {
 				try {
@@ -206,7 +203,6 @@ public class TrackbackDAO {
 				} catch (SQLException e) {
 					logger.error(e.toString());
 				}
-				pstmt = null;
 			}
 		}
 
@@ -256,7 +252,6 @@ public class TrackbackDAO {
 				} catch (SQLException e) {
 					logger.error(e.toString());
 				}
-				rs = null;
 			}
 			if (pstmt != null) {
 				try {
@@ -264,7 +259,6 @@ public class TrackbackDAO {
 				} catch (SQLException e) {
 					logger.error(e.toString());
 				}
-				pstmt = null;
 			}
 		}
 
@@ -320,7 +314,6 @@ public class TrackbackDAO {
 				} catch (SQLException e) {
 					logger.error(e.getMessage(), e);
 				}
-				pstmt = null;
 			}
 		}
 	}
@@ -346,7 +339,6 @@ public class TrackbackDAO {
 				} catch (SQLException e) {
 					logger.error(e.getMessage(), e);
 				}
-				pstmt = null;
 			}
 		}
 	}
@@ -373,7 +365,6 @@ public class TrackbackDAO {
 				} catch (SQLException e) {
 					logger.error(e.getMessage(), e);
 				}
-				pstmt = null;
 			}
 		}
 	}
@@ -400,7 +391,6 @@ public class TrackbackDAO {
 				} catch (SQLException e) {
 					logger.error(e.toString());
 				}
-				pstmt = null;
 			}
 		}
 	}
@@ -426,7 +416,6 @@ public class TrackbackDAO {
 				} catch (SQLException e) {
 					logger.error(e.toString());
 				}
-				pstmt = null;
 			}
 		}
 	}
@@ -452,7 +441,6 @@ public class TrackbackDAO {
 				} catch (SQLException e) {
 					logger.error(e.toString());
 				}
-				pstmt = null;
 			}
 		}
 	}

@@ -61,7 +61,6 @@ public class RSSSourceDAO {
 				} catch (SQLException e) {
 					logger.error(e.toString());
 				}
-				pstmt = null;
 			}
 		}
 	}
@@ -88,7 +87,6 @@ public class RSSSourceDAO {
 				} catch (SQLException e) {
 					logger.error(e.toString());
 				}
-				pstmt = null;
 			}
 		}
 	}
@@ -120,7 +118,6 @@ public class RSSSourceDAO {
 				} catch (SQLException e) {
 					logger.error(e.toString());
 				}
-				pstmt = null;
 			}
 		}
 	}
@@ -166,9 +163,9 @@ public class RSSSourceDAO {
 				} catch (SQLException e) {
 					logger.error(e.toString());
 				}
-				pstmt = null;
 			}
 		}
+
 		return source;
 	}
 
@@ -205,7 +202,6 @@ public class RSSSourceDAO {
 				} catch (SQLException e) {
 					logger.error(e.toString());
 				}
-				rs = null;
 			}
 			if (pstmt != null) {
 				try {
@@ -213,9 +209,9 @@ public class RSSSourceDAO {
 				} catch (SQLException e) {
 					logger.error(e.toString());
 				}
-				pstmt = null;
 			}
 		}
+
 		return sources;
 	}
 
@@ -243,7 +239,6 @@ public class RSSSourceDAO {
 				} catch (SQLException e) {
 					logger.error(e.toString());
 				}
-				rs = null;
 			}
 			if (pstmt != null) {
 				try {
@@ -251,9 +246,9 @@ public class RSSSourceDAO {
 				} catch (SQLException e) {
 					logger.error(e.toString());
 				}
-				pstmt = null;
 			}
 		}
+
 		return categories;
 	}
 }
