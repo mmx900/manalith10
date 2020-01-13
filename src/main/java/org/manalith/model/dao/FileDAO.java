@@ -364,11 +364,9 @@ public class FileDAO {
 
 	public void deleteFiles(List files) {
 		if (files != null) {
-			for (int i = 0; i < files.size(); i++) {
-				ArticleFile file = (ArticleFile) files.get(i);
-				deleteFile(
-						file.getId(),
-						file.getName());
+			for (Object o : files) {
+				ArticleFile file = (ArticleFile) o;
+				deleteFile(file.getId(), file.getName());
 			}
 		}
 	}

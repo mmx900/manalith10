@@ -216,15 +216,11 @@ public class ArticleDAO {
 					.setParameter("id", blogOwnerId)
 					.list();
 
-			int articleId = 0;
-			Article article = null;
-			for (int i = 0; i < articles.size(); i++) {
-				article = (Article) articles.get(i);
-				articleId = article.getId();
+			for (Article article : articles) {
+				int articleId = article.getId();
 				article.setComments(ArticleCommentDAO.instance().getComments(articleId));
 				article.setTrackbacks(TrackbackDAO.instance().getTrackbacks(articleId));
 				article.setFiles(FileDAO.instance().getConnectedFiles(article.getId()));
-				articles.set(i, article);
 			}
 		} catch (HibernateException e) {
 			logger.error(e.getMessage(), e);
@@ -243,9 +239,7 @@ public class ArticleDAO {
 	 * @return 구해진 아티클의 목록
 	 */
 	public List<Article> getArticles(String blogOwnerId, String category) {
-		Article article = null;
 		List<Article> articles = null;
-		int articleId = 0;
 		Session session = HibernateUtil.currentSession();
 
 		try {
@@ -255,13 +249,11 @@ public class ArticleDAO {
 					.setParameter("category", category)
 					.list();
 
-			for (int i = 0; i < articles.size(); i++) {
-				article = (Article) articles.get(i);
-				articleId = article.getId();
+			for (Article article : articles) {
+				int articleId = article.getId();
 				article.setComments(ArticleCommentDAO.instance().getComments(articleId));
 				article.setTrackbacks(TrackbackDAO.instance().getTrackbacks(articleId));
 				article.setFiles(FileDAO.instance().getConnectedFiles(article.getId()));
-				articles.set(i, article);
 			}
 		} catch (HibernateException e) {
 			logger.error(e.getMessage(), e);
@@ -286,15 +278,11 @@ public class ArticleDAO {
 					.setFirstResult(previous)
 					.list();
 
-			Article article = null;
-			int articleId = 0;
-			for (int i = 0; i < articles.size(); i++) {
-				article = (Article) articles.get(i);
-				articleId = article.getId();
+			for (Article article : articles) {
+				int articleId = article.getId();
 				article.setComments(ArticleCommentDAO.instance().getComments(articleId));
 				article.setTrackbacks(TrackbackDAO.instance().getTrackbacks(articleId));
 				article.setFiles(FileDAO.instance().getConnectedFiles(article.getId()));
-				articles.set(i, article);
 			}
 		} catch (HibernateException e) {
 			logger.error(e.getMessage(), e);
@@ -316,14 +304,11 @@ public class ArticleDAO {
 					.setParameter("id", article.getId())
 					.list();
 
-			int articleId = 0;
-			for (int i = 0; i < articles.size(); i++) {
-				article = (Article) articles.get(i);
-				articleId = article.getId();
+			for (Article fullArticle : articles) {
+				int articleId = fullArticle.getId();
 				article.setComments(ArticleCommentDAO.instance().getComments(articleId));
 				article.setTrackbacks(TrackbackDAO.instance().getTrackbacks(articleId));
-				article.setFiles(FileDAO.instance().getConnectedFiles(article.getId()));
-				articles.set(i, article);
+				article.setFiles(FileDAO.instance().getConnectedFiles(articleId));
 			}
 		} catch (HibernateException e) {
 			logger.error(e.getMessage(), e);
@@ -357,16 +342,11 @@ public class ArticleDAO {
 					.setParameter("end", new Date(cl.getTime().getTime()))
 					.list();
 
-			Article article = null;
-			int articleId = 0;
-
-			for (int i = 0; i < articles.size(); i++) {
-				article = (Article) articles.get(i);
-				articleId = article.getId();
+			for (Article article : articles) {
+				int articleId = article.getId();
 				article.setComments(ArticleCommentDAO.instance().getComments(articleId));
 				article.setTrackbacks(TrackbackDAO.instance().getTrackbacks(articleId));
 				article.setFiles(FileDAO.instance().getConnectedFiles(article.getId()));
-				articles.set(i, article);
 			}
 		} catch (HibernateException e) {
 			logger.error(e.getMessage(), e);
@@ -395,15 +375,11 @@ public class ArticleDAO {
 					.setMaxResults(limitation)
 					.list();
 
-			Article article = null;
-			int articleId = 0;
-			for (int i = 0; i < articles.size(); i++) {
-				article = (Article) articles.get(i);
-				articleId = article.getId();
+			for (Article article : articles) {
+				int articleId = article.getId();
 				article.setComments(ArticleCommentDAO.instance().getComments(articleId));
 				article.setTrackbacks(TrackbackDAO.instance().getTrackbacks(articleId));
 				article.setFiles(FileDAO.instance().getConnectedFiles(article.getId()));
-				articles.set(i, article);
 			}
 		} catch (HibernateException e) {
 			logger.error(e.getMessage(), e);
@@ -432,15 +408,11 @@ public class ArticleDAO {
 					.setParameter("author", author.getId())
 					.list();
 
-			Article article = null;
-			int articleId = 0;
-			for (int i = 0; i < articles.size(); i++) {
-				article = (Article) articles.get(i);
-				articleId = article.getId();
+			for (Article article : articles) {
+				int articleId = article.getId();
 				article.setComments(ArticleCommentDAO.instance().getComments(articleId));
 				article.setTrackbacks(TrackbackDAO.instance().getTrackbacks(articleId));
 				article.setFiles(FileDAO.instance().getConnectedFiles(article.getId()));
-				articles.set(i, article);
 			}
 		} catch (HibernateException e) {
 			logger.error(e.getMessage(), e);

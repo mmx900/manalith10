@@ -286,11 +286,13 @@ public class ArticleAction extends DispatchAction {
 
 	private boolean checkAuthor(String userId, List authors) {
 		boolean result = false;
-		for (int i = 0; i < authors.size(); i++)
-			if (((BlogAuthor) authors.get(i)).getUserId().equals(userId)) {
+
+		for (Object author : authors) {
+			if (((BlogAuthor) author).getUserId().equals(userId)) {
 				result = true;
 				break;
 			}
+		}
 
 		return result;
 	}

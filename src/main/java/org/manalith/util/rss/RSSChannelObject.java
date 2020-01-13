@@ -77,18 +77,19 @@ public class RSSChannelObject {
 		this.items.add(obj);
 	}
 	
-	public RSSChannelItemObject getItemByTitle(String title){
+	public RSSChannelItemObject getItemByTitle(String title) {
 		RSSChannelItemObject obj = null;
-		RSSChannelItemObject tmp = null;
-		for(int i=0;i<items.size();i++){
-			tmp = (RSSChannelItemObject) items.get(i);
-			if(tmp.getTitle().equals(title)){
-				obj = tmp;
+
+		for (RSSChannelItemObject item : items) {
+			if (item.getTitle().equals(title)) {
+				obj = item;
 				break;
 			}
 		}
+
 		return obj;
 	}
+
 	/**
 	 * @return Returns the language.
 	 */

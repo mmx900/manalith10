@@ -83,28 +83,22 @@ public class BlogManager {
 
 		if (blog != null) {
 			List<Article> articles = blog.getArticles();
-			Article article = null;
-			List<ArticleComment> comments = null;
-			ArticleComment comment = null;
 
-			for (int i = 0; i < articles.size(); i++) {
-				article = articles.get(i);
-
+			for (Article article : articles) {
 				if (article.getFormat().toString().equals("text"))
 					article.setContents(EscapeUtil.escapeHtml(article.getContents()));
 
 				article.setContents(EscapeUtil.convertLineFeed(article.getContents()));
-				comments = article.getComments();
+				List<ArticleComment> comments = article.getComments();
 
-				for (int y = 0; y < comments.size(); y++) {
-					comment = (ArticleComment) comments.get(y);
+				for (ArticleComment comment : comments) {
 					comment.setContents(EscapeUtil.escapeHtml(comment.getContents()));
 					comment.setContents(EscapeUtil.convertLineFeed(comment.getContents()));
-					comments.set(y, comment);
 				}
+
 				article.setComments(comments);
-				articles.set(i, article);
 			}
+
 			blog.setArticles(articles);
 
 			blog.setCalendar(ArticleDAO.instance().getArticleCalendar(blogOwnerId));
@@ -132,13 +126,11 @@ public class BlogManager {
 		}
 
 		List<Article> articles = blog.getArticles();
-		Article article = null;
 
-		for (int i = 0; i < articles.size(); i++) {
-			article = articles.get(i);
+		for (Article article : articles) {
 			article.setContents(EscapeUtil.escapeXml(article.getContents()));
-			articles.set(i, article);
 		}
+
 		blog.setArticles(articles);
 
 		return blog;
