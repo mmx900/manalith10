@@ -42,43 +42,21 @@ public class BlogBookmarkDAO {
 	 * @param b 생성할 북마크
 	 */
 	public void createBookmark(BlogBookmark b) {
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-
 		String query = "INSERT INTO manalith_blog_bookmark(blogOwnerId,category,title,url,rssUrl,imageUrl,description) " +
 				"VALUES(?,?,?,?,?,?,?)";
 
-		try {
-			pstmt = conn.prepareStatement(query);
+		try (PreparedStatement ps = conn.prepareStatement(query)) {
+			ps.setString(1, b.getBlogOwnerId());
+			ps.setString(2, b.getCategory());
+			ps.setString(3, b.getTitle());
+			ps.setString(4, b.getUrl());
+			ps.setString(5, b.getRssUrl());
+			ps.setString(6, b.getImageUrl());
+			ps.setString(7, b.getDescription());
 
-			pstmt.setString(1, b.getBlogOwnerId());
-			pstmt.setString(2, b.getCategory());
-			pstmt.setString(3, b.getTitle());
-			pstmt.setString(4, b.getUrl());
-			pstmt.setString(5, b.getRssUrl());
-			pstmt.setString(6, b.getImageUrl());
-			pstmt.setString(7, b.getDescription());
-
-			pstmt.executeUpdate();
-		} catch (SQLException e) {
+			ps.executeUpdate();
+		} catch (SQLException | ClassCastException e) {
 			logger.error(e.toString());
-		} catch (ClassCastException e) {
-			logger.error(e.toString());
-		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
 		}
 	}
 
@@ -88,34 +66,22 @@ public class BlogBookmarkDAO {
 	 * @param b 변경할 북마크
 	 */
 	public void updateBookmark(BlogBookmark b) {
-		PreparedStatement pstmt = null;
-
 		String query = "UPDATE manalith_blog_bookmark " +
 				"SET category=?, title=?, url=?, rssUrl=?, imageUrl=?, description=? " +
 				"WHERE id=? ";
 
-		try {
-			pstmt = conn.prepareStatement(query);
+		try (PreparedStatement ps = conn.prepareStatement(query)) {
+			ps.setString(1, b.getCategory());
+			ps.setString(2, b.getTitle());
+			ps.setString(3, b.getUrl());
+			ps.setString(4, b.getRssUrl());
+			ps.setString(5, b.getImageUrl());
+			ps.setString(6, b.getDescription());
+			ps.setInt(7, b.getId());
 
-			pstmt.setString(1, b.getCategory());
-			pstmt.setString(2, b.getTitle());
-			pstmt.setString(3, b.getUrl());
-			pstmt.setString(4, b.getRssUrl());
-			pstmt.setString(5, b.getImageUrl());
-			pstmt.setString(6, b.getDescription());
-			pstmt.setInt(7, b.getId());
-
-			pstmt.executeUpdate();
+			ps.executeUpdate();
 		} catch (SQLException e) {
 			logger.error(e.toString());
-		} finally {
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
 		}
 	}
 
@@ -125,26 +91,14 @@ public class BlogBookmarkDAO {
 	 * @param id 삭제할 북마크의 ID
 	 */
 	public void destroyBookmark(int id) {
-		PreparedStatement pstmt = null;
-
 		String query = "DELETE FROM manalith_blog_bookmark WHERE id=?";
 
-		try {
-			pstmt = conn.prepareStatement(query);
+		try (PreparedStatement ps = conn.prepareStatement(query)) {
+			ps.setInt(1, id);
 
-			pstmt.setInt(1, id);
-
-			pstmt.executeUpdate();
+			ps.executeUpdate();
 		} catch (SQLException e) {
 			logger.error(e.toString());
-		} finally {
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
 		}
 	}
 
@@ -156,52 +110,32 @@ public class BlogBookmarkDAO {
 	 */
 	public List<BlogBookmark> getBookmarks(String blogOwnerId) {
 		List<BlogBookmark> bookmarks = new ArrayList<BlogBookmark>();
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		BlogBookmark b = null;
 
 		String query = "SELECT id,category,title,url,rssUrl,imageUrl,description " +
 				"FROM manalith_blog_bookmark " +
 				"WHERE blogOwnerId=? " +
 				"ORDER BY category ASC ";
 
-		try {
-			pstmt = conn.prepareStatement(query);
+		try (PreparedStatement ps = conn.prepareStatement(query)) {
+			ps.setString(1, blogOwnerId);
 
-			pstmt.setString(1, blogOwnerId);
+			try (ResultSet rs = ps.executeQuery()) {
+				while (rs.next()) {
+					BlogBookmark b = new BlogBookmark();
+					b.setId(rs.getInt("id"));
+					b.setBlogOwnerId(blogOwnerId);
+					b.setCategory(rs.getString("category"));
+					b.setTitle(rs.getString("title"));
+					b.setUrl(rs.getString("url"));
+					b.setRssUrl(rs.getString("rssUrl"));
+					b.setImageUrl(rs.getString("imageUrl"));
+					b.setDescription(rs.getString("description"));
 
-			rs = pstmt.executeQuery();
-
-			while (rs.next()) {
-				b = new BlogBookmark();
-				b.setId(rs.getInt("id"));
-				b.setBlogOwnerId(blogOwnerId);
-				b.setCategory(rs.getString("category"));
-				b.setTitle(rs.getString("title"));
-				b.setUrl(rs.getString("url"));
-				b.setRssUrl(rs.getString("rssUrl"));
-				b.setImageUrl(rs.getString("imageUrl"));
-				b.setDescription(rs.getString("description"));
-
-				bookmarks.add(b);
+					bookmarks.add(b);
+				}
 			}
 		} catch (SQLException e) {
 			logger.error(e.toString());
-		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
 		}
 
 		return bookmarks;
@@ -215,41 +149,22 @@ public class BlogBookmarkDAO {
 	 */
 	public List<String> getCategories(String blogOwnerId) {
 		List<String> categories = new ArrayList<String>();
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
 
 		String query = "SELECT category " +
 				"FROM manalith_blog_bookmark " +
 				"WHERE blogOwnerId=? " +
 				"GROUP BY category";
 
-		try {
-			pstmt = conn.prepareStatement(query);
+		try (PreparedStatement ps = conn.prepareStatement(query)) {
+			ps.setString(1, blogOwnerId);
 
-			pstmt.setString(1, blogOwnerId);
-
-			rs = pstmt.executeQuery();
-
-			while (rs.next()) {
-				categories.add(rs.getString("category"));
+			try (ResultSet rs = ps.executeQuery()) {
+				while (rs.next()) {
+					categories.add(rs.getString("category"));
+				}
 			}
 		} catch (SQLException e) {
 			logger.error(e.toString());
-		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
 		}
 
 		return categories;

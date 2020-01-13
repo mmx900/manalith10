@@ -85,68 +85,49 @@ public class ArticleDAO {
 				"ORDER BY date ASC";
 
 		BlogCalendar calendar = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
 
-		try {
-			pstmt = ((SessionImpl) session).connection().prepareStatement(query);
-			pstmt.setString(1, blogOwnerId);
-			rs = pstmt.executeQuery();
+		try (PreparedStatement ps = ((SessionImpl) session).connection().prepareStatement(query)) {
+			ps.setString(1, blogOwnerId);
 
-			if (rs != null) calendar = new BlogCalendar();
+			try (ResultSet rs = ps.executeQuery()) {
+				calendar = new BlogCalendar();
 
-			Year year = null;
-			Month month = null;
-			Day day = null;
-			while (rs.next()) {
-				int curYear = rs.getInt("year");
-				int curMonth = rs.getInt("month");
-				int curDay = rs.getInt("day");
+				Year year = null;
+				Month month = null;
+				Day day = null;
+				while (rs.next()) {
+					int curYear = rs.getInt("year");
+					int curMonth = rs.getInt("month");
+					int curDay = rs.getInt("day");
 
-				if (year == null) {
-					year = new Year(curYear);
-					calendar.add(year);
-				} else if (year.toInt() != curYear) {
-					year = new Year(curYear);
-					calendar.add(year);
-				}
+					if (year == null) {
+						year = new Year(curYear);
+						calendar.add(year);
+					} else if (year.toInt() != curYear) {
+						year = new Year(curYear);
+						calendar.add(year);
+					}
 
-				if (month == null) {
-					month = new Month(curMonth);
-					year.add(month);
-				} else if (month.toInt() != curMonth) {
-					month = new Month(curMonth);
-					year.add(month);
-				}
+					if (month == null) {
+						month = new Month(curMonth);
+						year.add(month);
+					} else if (month.toInt() != curMonth) {
+						month = new Month(curMonth);
+						year.add(month);
+					}
 
-				if (day == null) {
-					day = new Day(curDay);
-					month.add(day);
-				} else if (day.toInt() != curDay) {
-					day = new Day(curDay);
-					month.add(day);
+					if (day == null) {
+						day = new Day(curDay);
+						month.add(day);
+					} else if (day.toInt() != curDay) {
+						day = new Day(curDay);
+						month.add(day);
+					}
 				}
 			}
 		} catch (SQLException e) {
 			logger.error(e.getMessage(), e);
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			e.printStackTrace();
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
 			HibernateUtil.closeSession();
 		}
 
@@ -184,55 +165,35 @@ public class ArticleDAO {
 		Article article = null;
 
 		Session session = HibernateUtil.currentSession();
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
 		String query = "SELECT num, blogOwnerId, title, author, category, date, contents, format, totalCommentCount, totalTrackbackCount " +
 				"FROM manalith_blog_article " +
 				"WHERE id = ?";
 
-		try {
-			pstmt = ((SessionImpl) session).connection().prepareStatement(query);
+		try (PreparedStatement ps = ((SessionImpl) session).connection().prepareStatement(query)) {
+			ps.setInt(1, articleId);
 
-			pstmt.setInt(1, articleId);
-
-			rs = pstmt.executeQuery();
-
-			if (rs.next()) {
-				article = new Article();
-				article.setId(articleId);
-				article.setNum(rs.getInt("num"));
-				article.setBlogOwnerId(rs.getString("blogOwnerId"));
-				article.setTitle(rs.getString("title"));
-				article.setAuthor(new User(rs.getString("author")));
-				article.setCategory(rs.getString("category"));
-				article.setDate(new Date(rs.getTimestamp("date").getTime()));
-				article.setContents(rs.getString("contents"));
-				article.setFormat(new ArticleFormat(rs.getString("format")));
-				article.setTotalCommentCount(rs.getInt("totalCommentCount"));
-				article.setTotalTrackbackCount(rs.getInt("totalTrackbackCount"));
-				article.setComments(ArticleCommentDAO.instance().getComments(articleId));
-				article.setTrackbacks(TrackbackDAO.instance().getTrackbacks(articleId));
-				article.setFiles(FileDAO.instance().getConnectedFiles(article.getId()));
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					article = new Article();
+					article.setId(articleId);
+					article.setNum(rs.getInt("num"));
+					article.setBlogOwnerId(rs.getString("blogOwnerId"));
+					article.setTitle(rs.getString("title"));
+					article.setAuthor(new User(rs.getString("author")));
+					article.setCategory(rs.getString("category"));
+					article.setDate(new Date(rs.getTimestamp("date").getTime()));
+					article.setContents(rs.getString("contents"));
+					article.setFormat(new ArticleFormat(rs.getString("format")));
+					article.setTotalCommentCount(rs.getInt("totalCommentCount"));
+					article.setTotalTrackbackCount(rs.getInt("totalTrackbackCount"));
+					article.setComments(ArticleCommentDAO.instance().getComments(articleId));
+					article.setTrackbacks(TrackbackDAO.instance().getTrackbacks(articleId));
+					article.setFiles(FileDAO.instance().getConnectedFiles(article.getId()));
+				}
 			}
 		} catch (SQLException e) {
 			logger.error(e.getMessage(), e);
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
 		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
 			session.close();
 		}
 
@@ -501,47 +462,27 @@ public class ArticleDAO {
 		int articleId = 0;
 		/*
 		 ArticleCommentDAO commentManager = ArticleCommentDAO.instance();
-		 
-		 PreparedStatement pstmt = null;
-		 ResultSet rs = null;
+
 		 String query = "SELECT id " +
 		 "FROM manalith_blog_article " +
 		 "WHERE blogOwnerId=? AND title=? AND author=? AND category=? AND date=? AND contents=? AND format=? " +
 		 "ORDER BY id DESC";
 		 
-		 try{
-		 pstmt = conn.prepareStatement(query);
-		 pstmt.setString(1,article.getBlogOwnerId());
-		 pstmt.setString(2,article.getTitle());
-		 pstmt.setString(3,article.getAuthor().toString());
-		 pstmt.setString(4,article.getCategory());
-		 pstmt.setTimestamp(5,new Timestamp(article.getDate().getTime()));
-		 pstmt.setString(6,article.getContents());
-		 pstmt.setString(7,article.getFormat().toString());
-		 rs = pstmt.executeQuery();
-		 
+		 try(PreparedStatement ps = conn.prepareStatement(query)){
+		 ps.setString(1,article.getBlogOwnerId());
+		 ps.setString(2,article.getTitle());
+		 ps.setString(3,article.getAuthor().toString());
+		 ps.setString(4,article.getCategory());
+		 ps.setTimestamp(5,new Timestamp(article.getDate().getTime()));
+		 ps.setString(6,article.getContents());
+		 ps.setString(7,article.getFormat().toString());
+
+		 try(ResultSet rs = ps.executeQuery()){
 		 if(rs.next())
 		 articleId = rs.getInt("id");
-		 
+		 }
 		 }catch(SQLException e){
 		 logger.error(e.toString());
-		 }catch(Exception e){
-		 logger.error(e.toString());            
-		 }finally {
-		 if (rs != null) {
-		 try {
-		 rs.close(); 
-		 } catch (SQLException e) {
-		 logger.error(e.toString());
-		 }
-		 }
-		 if (pstmt != null) {
-		 try {
-		 pstmt.close(); 
-		 } catch (SQLException e) {
-		 logger.error(e.toString());
-		 }
-		 }
 		 }
 		 */
 

@@ -41,9 +41,6 @@ public class BlogAuthorDAO {
 	}
 
 	public void addAuthor(BlogAuthor user) throws ExistAuthorException {
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-
 		String query1 = "SELECT userId FROM manalith_blog_author " +
 				"WHERE blogOwnerId = ? AND userId = ?";
 
@@ -51,39 +48,25 @@ public class BlogAuthorDAO {
 				"VALUES(?,?)";
 
 		try {
-			pstmt = conn.prepareStatement(query1);
-			pstmt.setString(1, user.getBlogOwnerId());
-			pstmt.setString(2, user.getUserId());
-			rs = pstmt.executeQuery();
+			try (PreparedStatement ps = conn.prepareStatement(query1)) {
+				ps.setString(1, user.getBlogOwnerId());
+				ps.setString(2, user.getUserId());
 
-			if (rs.next()) {
-				throw new ExistAuthorException();
-			}
-
-			pstmt = conn.prepareStatement(query2);
-			pstmt.setString(1, user.getBlogOwnerId());
-			pstmt.setString(2, user.getUserId());
-
-			pstmt.executeUpdate();
-		} catch (SQLException e) {
-			logger.error(e.toString());
-		} catch (ClassCastException e) {
-			logger.error(e.toString());
-		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
+				try (ResultSet rs = ps.executeQuery()) {
+					if (rs.next()) {
+						throw new ExistAuthorException();
+					}
 				}
 			}
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
+
+			try (PreparedStatement ps = conn.prepareStatement(query2)) {
+				ps.setString(1, user.getBlogOwnerId());
+				ps.setString(2, user.getUserId());
+
+				ps.executeUpdate();
 			}
+		} catch (SQLException | ClassCastException e) {
+			logger.error(e.toString());
 		}
 	}
 
@@ -124,50 +107,27 @@ public class BlogAuthorDAO {
 		 return authors;
 		 */
 
-		List authors = null;
-		User user = null;
-		ResultSet rs = null;
-		PreparedStatement pstmt = null;
+		List<User> authors = null;
 		String query = "SELECT a.userId,b.name,b.email FROM manalith_blog_author a " +
 				"INNER JOIN manalith_member b ON a.userId = b.id " +
 				"WHERE a.blogOwnerId=? ";
 
-		try {
-			pstmt = conn.prepareStatement(query);
+		try (PreparedStatement ps = conn.prepareStatement(query)) {
+			ps.setString(1, blogOwnerId);
 
-			pstmt.setString(1, blogOwnerId);
+			try (ResultSet rs = ps.executeQuery()) {
+				authors = new ArrayList<>();
 
-			rs = pstmt.executeQuery();
-
-			authors = new ArrayList();
-
-			while (rs.next()) {
-				user = new User();
-				user.setId(rs.getString("userId"));
-				user.setEmail(rs.getString("email"));
-				user.setName(rs.getString("name"));
-				authors.add(user);
-			}
-
-		} catch (SQLException e) {
-			logger.error(e.toString());
-		} catch (ClassCastException e) {
-			logger.error(e.toString());
-		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
+				while (rs.next()) {
+					User user = new User();
+					user.setId(rs.getString("userId"));
+					user.setEmail(rs.getString("email"));
+					user.setName(rs.getString("name"));
+					authors.add(user);
 				}
 			}
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
+		} catch (SQLException | ClassCastException e) {
+			logger.error(e.toString());
 		}
 
 		return authors;

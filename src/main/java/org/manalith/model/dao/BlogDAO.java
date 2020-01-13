@@ -48,37 +48,18 @@ public class BlogDAO {
 	public boolean isBlogOwner(String userId) {
 		boolean result = false;
 
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
 		String sql = "SELECT title FROM manalith_blog WHERE owner=?";
 
-		try {
-			pstmt = conn.prepareStatement(sql);
+		try (PreparedStatement ps = conn.prepareStatement(sql)) {
+			ps.setString(1, userId);
 
-			pstmt.setString(1, userId);
-
-			rs = pstmt.executeQuery();
-
-			if (rs.next()) {
-				result = true;
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					result = true;
+				}
 			}
 		} catch (SQLException e) {
 			logger.error(e.toString());
-		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
 		}
 
 		return result;
@@ -87,32 +68,21 @@ public class BlogDAO {
 	//FIXME : getAuthors() 이후 루핑하여 manalith_blog_author에 집어넣으며,
 	// manalith_blog_category와 연결되어 있어야 한다.
 	public void createBlog(Blog blog) {
-		PreparedStatement pstmt = null;
 		String query = "INSERT INTO manalith_blog(title, description, template, owner, pageSize, url, allowRSS) " +
 				"VALUES(?,?,?,?,?,?,?)";
 
-		try {
-			pstmt = conn.prepareStatement(query);
+		try (PreparedStatement ps = conn.prepareStatement(query)) {
+			ps.setString(1, blog.getTitle());
+			ps.setString(2, blog.getDescription());
+			ps.setString(3, blog.getTemplate().toString());
+			ps.setString(4, blog.getOwner().getId());
+			ps.setInt(5, blog.getPageSize());
+			ps.setString(6, blog.getUrl());
+			ps.setBoolean(7, blog.getAllowRSS());
 
-			pstmt.setString(1, blog.getTitle());
-			pstmt.setString(2, blog.getDescription());
-			pstmt.setString(3, blog.getTemplate().toString());
-			pstmt.setString(4, blog.getOwner().getId());
-			pstmt.setInt(5, blog.getPageSize());
-			pstmt.setString(6, blog.getUrl());
-			pstmt.setBoolean(7, blog.getAllowRSS());
-
-			pstmt.executeUpdate();
+			ps.executeUpdate();
 		} catch (SQLException e) {
 			logger.error(e.toString());
-		} finally {
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
 		}
 	}
 
@@ -208,50 +178,31 @@ public class BlogDAO {
 	 */
 	public Blog getBlogInfo(String blogOwnerId) {
 		Blog blog = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
 		String query = "SELECT title, description, template, created, totalArticleCount, pageSize, url, allowRSS, titleImage, backgroundImage " +
 				"FROM manalith_blog " +
 				"WHERE owner=?";
 
-		try {
-			pstmt = conn.prepareStatement(query);
+		try (PreparedStatement ps = conn.prepareStatement(query)) {
+			ps.setString(1, blogOwnerId);
 
-			pstmt.setString(1, blogOwnerId);
-
-			rs = pstmt.executeQuery();
-
-			if (rs.next()) {
-				blog = new Blog();
-				blog.setTitle(rs.getString("title"));
-				blog.setDescription(rs.getString("description"));
-				blog.setTemplate(new Template(rs.getString("template")));
-				blog.setOwner(new User(blogOwnerId));
-				blog.setCreated(new Date(rs.getTimestamp("created").getTime()));
-				blog.setTotalArticleCount(rs.getInt("totalArticleCount"));
-				blog.setPageSize(rs.getInt("pageSize"));
-				blog.setUrl(rs.getString("url"));
-				blog.setAllowRSS(rs.getBoolean("allowRSS"));
-				blog.setTitleImage(rs.getString("titleImage"));
-				blog.setBackgroundImage(rs.getString("backgroundImage"));
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					blog = new Blog();
+					blog.setTitle(rs.getString("title"));
+					blog.setDescription(rs.getString("description"));
+					blog.setTemplate(new Template(rs.getString("template")));
+					blog.setOwner(new User(blogOwnerId));
+					blog.setCreated(new Date(rs.getTimestamp("created").getTime()));
+					blog.setTotalArticleCount(rs.getInt("totalArticleCount"));
+					blog.setPageSize(rs.getInt("pageSize"));
+					blog.setUrl(rs.getString("url"));
+					blog.setAllowRSS(rs.getBoolean("allowRSS"));
+					blog.setTitleImage(rs.getString("titleImage"));
+					blog.setBackgroundImage(rs.getString("backgroundImage"));
+				}
 			}
 		} catch (SQLException e) {
 			logger.error(e.toString());
-		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
 		}
 
 		return blog;

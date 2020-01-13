@@ -105,161 +105,96 @@ public class TrackbackDAO {
 	public ArticleTrackback getTrackback(int trackbackId) {
 		ArticleTrackback trackback = null;
 
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
 		String query = "SELECT blogOwnerId, articleId, title, excerpt, url, blog_name, date, inetAddress " +
 				"FROM manalith_blog_article_trackback " +
 				"WHERE id=?";
 
-		try {
-			pstmt = conn.prepareStatement(query);
+		try (PreparedStatement ps = conn.prepareStatement(query)) {
+			ps.setInt(1, trackbackId);
 
-			pstmt.setInt(1, trackbackId);
-
-			rs = pstmt.executeQuery();
-
-			if (rs.next()) {
-				trackback = new ArticleTrackback();
-				trackback.setId(trackbackId);
-				trackback.setBlogOwnerId(rs.getString("blogOwnerId"));
-				trackback.setArticleId(rs.getInt("articleId"));
-				trackback.setTitle(rs.getString("title"));
-				trackback.setExcerpt(rs.getString("excerpt"));
-				trackback.setUrl(rs.getString("url"));
-				trackback.setBlog_name(rs.getString("blog_name"));
-				trackback.setDate(new Date(rs.getTimestamp("date").getTime()));
-				trackback.setInetAddress(rs.getString("inetAddress"));
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					trackback = new ArticleTrackback();
+					trackback.setId(trackbackId);
+					trackback.setBlogOwnerId(rs.getString("blogOwnerId"));
+					trackback.setArticleId(rs.getInt("articleId"));
+					trackback.setTitle(rs.getString("title"));
+					trackback.setExcerpt(rs.getString("excerpt"));
+					trackback.setUrl(rs.getString("url"));
+					trackback.setBlog_name(rs.getString("blog_name"));
+					trackback.setDate(new Date(rs.getTimestamp("date").getTime()));
+					trackback.setInetAddress(rs.getString("inetAddress"));
+				}
 			}
 		} catch (SQLException e) {
 			logger.error(e.toString());
-		} catch (Exception e) {
-			logger.error(e.toString());
-		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
 		}
 
 		return trackback;
 	}
 
 	public List<ArticleTrackback> getTrackbacks(int articleId) {
-		ArticleTrackback trackback = null;
 		List<ArticleTrackback> trackbacks = new ArrayList<ArticleTrackback>();
 
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
 		String query = "SELECT id, blogOwnerId, title, excerpt, url, blog_name, date, inetAddress " +
 				"FROM manalith_blog_article_trackback " +
 				"WHERE articleId=? " +
 				"ORDER BY id DESC";
 
-		try {
-			pstmt = conn.prepareStatement(query);
+		try (PreparedStatement ps = conn.prepareStatement(query)) {
+			ps.setInt(1, articleId);
 
-			pstmt.setInt(1, articleId);
-
-			rs = pstmt.executeQuery();
-
-			while (rs.next()) {
-				trackback = new ArticleTrackback();
-				trackback.setId(rs.getInt("id"));
-				trackback.setBlogOwnerId(rs.getString("blogOwnerId"));
-				trackback.setArticleId(articleId);
-				trackback.setTitle(rs.getString("title"));
-				trackback.setExcerpt(rs.getString("excerpt"));
-				trackback.setUrl(rs.getString("url"));
-				trackback.setBlog_name(rs.getString("blog_name"));
-				trackback.setDate(new Date(rs.getTimestamp("date").getTime()));
-				trackback.setInetAddress(rs.getString("inetAddress"));
-				trackbacks.add(trackback);
+			try (ResultSet rs = ps.executeQuery()) {
+				while (rs.next()) {
+					ArticleTrackback trackback = new ArticleTrackback();
+					trackback.setId(rs.getInt("id"));
+					trackback.setBlogOwnerId(rs.getString("blogOwnerId"));
+					trackback.setArticleId(articleId);
+					trackback.setTitle(rs.getString("title"));
+					trackback.setExcerpt(rs.getString("excerpt"));
+					trackback.setUrl(rs.getString("url"));
+					trackback.setBlog_name(rs.getString("blog_name"));
+					trackback.setDate(new Date(rs.getTimestamp("date").getTime()));
+					trackback.setInetAddress(rs.getString("inetAddress"));
+					trackbacks.add(trackback);
+				}
 			}
 		} catch (SQLException e) {
 			logger.error(e.toString());
-		} catch (Exception e) {
-			logger.error(e.toString());
-		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
 		}
 
 		return trackbacks;
 	}
 
 	public List<ArticleTrackback> getRecentTrackbacks(String blogOwnerId, int limitation) {
-		ArticleTrackback trackback = null;
 		List<ArticleTrackback> trackbacks = new ArrayList<ArticleTrackback>();
 
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
 		String query = "SELECT id, articleId, title, excerpt, url, blog_name, date, inetAddress " +
 				"FROM manalith_blog_article_trackback " +
 				"WHERE blogOwnerId=? " +
 				"ORDER BY id DESC LIMIT ?";
 
-		try {
-			pstmt = conn.prepareStatement(query);
+		try (PreparedStatement ps = conn.prepareStatement(query)) {
+			ps.setString(1, blogOwnerId);
+			ps.setInt(2, limitation);
 
-			pstmt.setString(1, blogOwnerId);
-			pstmt.setInt(2, limitation);
-
-			rs = pstmt.executeQuery();
-
-			while (rs.next()) {
-				trackback = new ArticleTrackback();
-				trackback.setId(rs.getInt("id"));
-				trackback.setBlogOwnerId(blogOwnerId);
-				trackback.setArticleId(rs.getInt("articleId"));
-				trackback.setTitle(rs.getString("title"));
-				trackback.setExcerpt(rs.getString("excerpt"));
-				trackback.setUrl(rs.getString("url"));
-				trackback.setBlog_name(rs.getString("blog_name"));
-				trackback.setDate(new Date(rs.getTimestamp("date").getTime()));
-				trackback.setInetAddress(rs.getString("inetAddress"));
-				trackbacks.add(trackback);
+			try (ResultSet rs = ps.executeQuery()) {
+				while (rs.next()) {
+					ArticleTrackback trackback = new ArticleTrackback();
+					trackback.setId(rs.getInt("id"));
+					trackback.setBlogOwnerId(blogOwnerId);
+					trackback.setArticleId(rs.getInt("articleId"));
+					trackback.setTitle(rs.getString("title"));
+					trackback.setExcerpt(rs.getString("excerpt"));
+					trackback.setUrl(rs.getString("url"));
+					trackback.setBlog_name(rs.getString("blog_name"));
+					trackback.setDate(new Date(rs.getTimestamp("date").getTime()));
+					trackback.setInetAddress(rs.getString("inetAddress"));
+					trackbacks.add(trackback);
+				}
 			}
 		} catch (SQLException e) {
 			logger.error(e.toString());
-		} catch (Exception e) {
-			logger.error(e.toString());
-		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
 		}
 
 		return trackbacks;
@@ -281,167 +216,101 @@ public class TrackbackDAO {
 	}
 
 	private void addTrackback(ArticleTrackback trackback) {
-		PreparedStatement pstmt = null;
 		String query = "INSERT INTO manalith_blog_article_trackback(blogOwnerId, articleId, title, excerpt, url, blog_name, inetAddress) " +
 				"VALUES(?,?,?,?,?,?,?)";
 
-		try {
-			pstmt = conn.prepareStatement(query);
-
-			pstmt.setString(1, trackback.getBlogOwnerId());
-			pstmt.setInt(2, trackback.getArticleId());
-			pstmt.setString(3, trackback.getTitle());
-			pstmt.setString(4, trackback.getExcerpt());
-			pstmt.setString(5, trackback.getUrl());
-			pstmt.setString(6, trackback.getBlog_name());
+		try (PreparedStatement ps = conn.prepareStatement(query)) {
+			ps.setString(1, trackback.getBlogOwnerId());
+			ps.setInt(2, trackback.getArticleId());
+			ps.setString(3, trackback.getTitle());
+			ps.setString(4, trackback.getExcerpt());
+			ps.setString(5, trackback.getUrl());
+			ps.setString(6, trackback.getBlog_name());
 
 			//FIXME inet형을 pgsql7.4대의 jdbc 드라이버처럼 string 으로 입력하도록
 			PGobject inet = new PGobject();
 			inet.setType("inet");
 			inet.setValue(trackback.getInetAddress());
 
-			pstmt.setObject(7, inet);
+			ps.setObject(7, inet);
 
-			pstmt.executeUpdate();
+			ps.executeUpdate();
 
 			this.increaseTrackbackCount(trackback.getArticleId());
 		} catch (SQLException e) {
 			logger.error(e.getMessage(), e);
-		} finally {
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-					logger.error(e.getMessage(), e);
-				}
-			}
 		}
 	}
 
 	public void deleteTrackback(int articleId, int trackbackId) {
-		PreparedStatement pstmt = null;
 		String query = "DELETE FROM manalith_blog_article_trackback WHERE id = ?";
 
-		try {
-			pstmt = conn.prepareStatement(query);
+		try (PreparedStatement ps = conn.prepareStatement(query)) {
+			ps.setInt(1, trackbackId);
 
-			pstmt.setInt(1, trackbackId);
-
-			pstmt.executeUpdate();
+			ps.executeUpdate();
 
 			this.decreaseTrackbackCount(articleId);
 		} catch (SQLException e) {
 			logger.error(e.getMessage(), e);
-		} finally {
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-					logger.error(e.getMessage(), e);
-				}
-			}
 		}
 	}
 
 	public void deleteTrackbacks(int articleId) {
-		PreparedStatement pstmt = null;
 		String query = "DELETE FROM manalith_blog_article_trackback " +
 				"WHERE articleId = ?";
 
-		try {
-			pstmt = conn.prepareStatement(query);
+		try (PreparedStatement ps = conn.prepareStatement(query)) {
+			ps.setInt(1, articleId);
 
-			pstmt.setInt(1, articleId);
-
-			pstmt.executeUpdate();
+			ps.executeUpdate();
 
 			this.decreaseTrackbackCount(articleId);
 		} catch (SQLException e) {
 			logger.error(e.getMessage(), e);
-		} finally {
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-					logger.error(e.getMessage(), e);
-				}
-			}
 		}
 	}
 
 
 	private void increaseTrackbackCount(int articleId) throws SQLException {
-		PreparedStatement pstmt = null;
 		String query = "UPDATE manalith_blog_article " +
 				"SET totalTrackbackCount = totalTrackbackCount + 1 " +
 				"WHERE id = ?";
 
-		try {
-			pstmt = conn.prepareStatement(query);
+		try (PreparedStatement ps = conn.prepareStatement(query)) {
+			ps.setInt(1, articleId);
 
-			pstmt.setInt(1, articleId);
-
-			pstmt.executeUpdate();
+			ps.executeUpdate();
 		} catch (SQLException e) {
 			throw e;
-		} finally {
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
 		}
 	}
 
 	private void decreaseTrackbackCount(int articleId) throws SQLException {
-		PreparedStatement pstmt = null;
 		String query = "UPDATE manalith_blog_article " +
 				"SET totalTrackbackCount = totalTrackbackCount - 1 " +
 				"WHERE id = ?";
 
-		try {
-			pstmt = conn.prepareStatement(query);
+		try (PreparedStatement ps = conn.prepareStatement(query)) {
+			ps.setInt(1, articleId);
 
-			pstmt.setInt(1, articleId);
-
-			pstmt.executeUpdate();
+			ps.executeUpdate();
 		} catch (SQLException e) {
 			throw e;
-		} finally {
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
 		}
 	}
 
 	private void restoreTrackbackCount(int articleId) throws SQLException {
-		PreparedStatement pstmt = null;
 		String query = "UPDATE manalith_blog_article " +
 				"SET totalTrackbackCount = 0 " +
 				"WHERE id = ?";
 
-		try {
-			pstmt = conn.prepareStatement(query);
+		try (PreparedStatement ps = conn.prepareStatement(query)) {
+			ps.setInt(1, articleId);
 
-			pstmt.setInt(1, articleId);
-
-			pstmt.executeUpdate();
+			ps.executeUpdate();
 		} catch (SQLException e) {
 			throw e;
-		} finally {
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
 		}
 	}
 }

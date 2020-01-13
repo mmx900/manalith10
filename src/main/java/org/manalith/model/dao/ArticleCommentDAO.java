@@ -38,200 +38,121 @@ public class ArticleCommentDAO {
 	}
 
 	public void createComment(ArticleComment comment) {
-		PreparedStatement pstmt = null;
 		String query = "INSERT INTO manalith_blog_article_comment(blogOwnerId,articleId,name,password,homepage,contents,inetAddress) " +
 				"VALUES(?,?,?,?,?,?,?)";
 
-		try {
-			pstmt = conn.prepareStatement(query);
-
-			pstmt.setString(1, comment.getBlogOwnerId());
-			pstmt.setInt(2, comment.getArticleId());
-			pstmt.setString(3, comment.getName());
-			pstmt.setString(4, comment.getPassword());
-			pstmt.setString(5, comment.getHomepage());
-			pstmt.setString(6, comment.getContents());
-
+		try (PreparedStatement ps = conn.prepareStatement(query)) {
+			ps.setString(1, comment.getBlogOwnerId());
+			ps.setInt(2, comment.getArticleId());
+			ps.setString(3, comment.getName());
+			ps.setString(4, comment.getPassword());
+			ps.setString(5, comment.getHomepage());
+			ps.setString(6, comment.getContents());
 
 			//FIXME inet형을 pgsql7.4대의 jdbc 드라이버처럼 string 으로 입력하도록
 			PGobject inet = new PGobject();
 			inet.setType("inet");
 			inet.setValue(comment.getInetAddress());
 
-			pstmt.setObject(7, inet);
+			ps.setObject(7, inet);
 
-			pstmt.executeUpdate();
+			ps.executeUpdate();
 
 			increaseCommentCount(comment.getArticleId());
 		} catch (SQLException e) {
 			logger.error(e.toString());
-		} catch (ClassCastException e) {
-			logger.error(e.toString());
-		} finally {
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
 		}
 	}
 
 	public ArticleComment getComment(int id) {
 		ArticleComment comment = null;
 
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
 		String query = "SELECT id, blogOwnerId, name, date, homepage, contents, inetAddress " +
 				"FROM manalith_blog_article_comment " +
 				"WHERE id=?";
 
-		try {
-			pstmt = conn.prepareStatement(query);
+		try (PreparedStatement ps = conn.prepareStatement(query)) {
+			ps.setInt(1, id);
 
-			pstmt.setInt(1, id);
-
-			rs = pstmt.executeQuery();
-
-			if (rs.next()) {
-				comment = new ArticleComment();
-				comment.setId(rs.getInt("id"));
-				comment.setBlogOwnerId(rs.getString("blogOwnerId"));
-				comment.setName(rs.getString("name"));
-				comment.setDate(new Date(rs.getTimestamp("date").getTime()));
-				comment.setHomepage(rs.getString("homepage"));
-				comment.setContents(rs.getString("contents"));
-				comment.setInetAddress(rs.getString("inetAddress"));
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					comment = new ArticleComment();
+					comment.setId(rs.getInt("id"));
+					comment.setBlogOwnerId(rs.getString("blogOwnerId"));
+					comment.setName(rs.getString("name"));
+					comment.setDate(new Date(rs.getTimestamp("date").getTime()));
+					comment.setHomepage(rs.getString("homepage"));
+					comment.setContents(rs.getString("contents"));
+					comment.setInetAddress(rs.getString("inetAddress"));
+				}
 			}
 		} catch (SQLException e) {
 			logger.error(e.toString());
-		} catch (Exception e) {
-			logger.error(e.toString());
-		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
 		}
 
 		return comment;
 	}
 
 	public List<ArticleComment> getComments(int articleId) {
-		ArticleComment comment = null;
 		List<ArticleComment> commentList = new ArrayList<ArticleComment>();
 
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
 		String query = "SELECT id, blogOwnerId, name, date, homepage, contents, inetAddress " +
 				"FROM manalith_blog_article_comment " +
 				"WHERE articleId=? " +
 				"ORDER BY id DESC";
 
-		try {
-			pstmt = conn.prepareStatement(query);
+		try (PreparedStatement ps = conn.prepareStatement(query)) {
+			ps.setInt(1, articleId);
 
-			pstmt.setInt(1, articleId);
-
-			rs = pstmt.executeQuery();
-
-			while (rs.next()) {
-				comment = new ArticleComment();
-				comment.setId(rs.getInt("id"));
-				comment.setBlogOwnerId(rs.getString("blogOwnerId"));
-				comment.setArticleId(articleId);
-				comment.setName(rs.getString("name"));
-				comment.setDate(new Date(rs.getTimestamp("date").getTime()));
-				comment.setHomepage(rs.getString("homepage"));
-				comment.setContents(rs.getString("contents"));
-				comment.setInetAddress(rs.getString("inetAddress"));
-				commentList.add(comment);
+			try (ResultSet rs = ps.executeQuery()) {
+				while (rs.next()) {
+					ArticleComment comment = new ArticleComment();
+					comment.setId(rs.getInt("id"));
+					comment.setBlogOwnerId(rs.getString("blogOwnerId"));
+					comment.setArticleId(articleId);
+					comment.setName(rs.getString("name"));
+					comment.setDate(new Date(rs.getTimestamp("date").getTime()));
+					comment.setHomepage(rs.getString("homepage"));
+					comment.setContents(rs.getString("contents"));
+					comment.setInetAddress(rs.getString("inetAddress"));
+					commentList.add(comment);
+				}
 			}
 		} catch (SQLException e) {
 			logger.error(e.toString());
-		} catch (Exception e) {
-			logger.error(e.toString());
-		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
 		}
 
 		return commentList;
 	}
 
 	public List<ArticleComment> getRecentComments(String blogOwnerId, int limitation) {
-		ArticleComment comment = null;
 		List<ArticleComment> commentList = new ArrayList<ArticleComment>();
 
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
 		String query = "SELECT id, articleId, name, date, homepage, contents, inetAddress " +
 				"FROM manalith_blog_article_comment " +
 				"WHERE blogOwnerId=? " +
 				"ORDER BY id DESC LIMIT ?";
 
-		try {
-			pstmt = conn.prepareStatement(query);
+		try (PreparedStatement ps = conn.prepareStatement(query)) {
+			ps.setString(1, blogOwnerId);
+			ps.setInt(2, limitation);
 
-			pstmt.setString(1, blogOwnerId);
-			pstmt.setInt(2, limitation);
-
-			rs = pstmt.executeQuery();
-
-			while (rs.next()) {
-				comment = new ArticleComment();
-				comment.setId(rs.getInt("id"));
-				comment.setBlogOwnerId(blogOwnerId);
-				comment.setArticleId(rs.getInt("articleId"));
-				comment.setName(rs.getString("name"));
-				comment.setDate(new Date(rs.getTimestamp("date").getTime()));
-				comment.setHomepage(rs.getString("homepage"));
-				comment.setContents(rs.getString("contents"));
-				comment.setInetAddress(rs.getString("inetAddress"));
-				commentList.add(comment);
+			try (ResultSet rs = ps.executeQuery()) {
+				while (rs.next()) {
+					ArticleComment comment = new ArticleComment();
+					comment.setId(rs.getInt("id"));
+					comment.setBlogOwnerId(blogOwnerId);
+					comment.setArticleId(rs.getInt("articleId"));
+					comment.setName(rs.getString("name"));
+					comment.setDate(new Date(rs.getTimestamp("date").getTime()));
+					comment.setHomepage(rs.getString("homepage"));
+					comment.setContents(rs.getString("contents"));
+					comment.setInetAddress(rs.getString("inetAddress"));
+					commentList.add(comment);
+				}
 			}
 		} catch (SQLException e) {
 			logger.error(e.toString());
-		} catch (Exception e) {
-			logger.error(e.toString());
-		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
 		}
 
 		return commentList;
@@ -239,165 +160,92 @@ public class ArticleCommentDAO {
 
 	public boolean isValidPassword(int id, String password) {
 		boolean result = false;
-		ResultSet rs = null;
-		PreparedStatement pstmt = null;
 		String query = "SELECT id FROM manalith_blog_article_comment " +
 				"WHERE id = ? AND password = ?";
 
-		try {
-			pstmt = conn.prepareStatement(query);
+		try (PreparedStatement ps = conn.prepareStatement(query)) {
+			ps.setInt(1, id);
+			ps.setString(2, password);
 
-			pstmt.setInt(1, id);
-			pstmt.setString(2, password);
-
-			rs = pstmt.executeQuery();
-
-			if (rs.next()) {
-				result = true;
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					result = true;
+				}
 			}
 		} catch (SQLException e) {
 			logger.error(e.toString());
-		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
 		}
+
 		return result;
 	}
 
 	public void destroyComment(int articleId, int id) {
-		PreparedStatement pstmt = null;
 		String query = "DELETE FROM manalith_blog_article_comment WHERE id = ?";
 
-		try {
-			pstmt = conn.prepareStatement(query);
+		try (PreparedStatement ps = conn.prepareStatement(query)) {
+			ps.setInt(1, id);
 
-			pstmt.setInt(1, id);
-
-			pstmt.executeUpdate();
+			ps.executeUpdate();
 
 			decreaseCommentCount(articleId);
 		} catch (SQLException e) {
 			logger.error(e.toString());
-		} finally {
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
 		}
 	}
 
 	public void destroyAllComments(int articleId) {
-		PreparedStatement pstmt = null;
 		String query = "DELETE FROM manalith_blog_article_comment WHERE articleId = ?";
 
-		try {
-			pstmt = conn.prepareStatement(query);
+		try (PreparedStatement ps = conn.prepareStatement(query)) {
+			ps.setInt(1, articleId);
 
-			pstmt.setInt(1, articleId);
-
-			pstmt.executeUpdate();
+			ps.executeUpdate();
 
 			restoreCommentCount(articleId);
 		} catch (SQLException e) {
 			logger.error(e.toString());
-		} finally {
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
 		}
 	}
 
 	private void increaseCommentCount(int articleId) throws SQLException {
-		PreparedStatement pstmt = null;
 		String query = "UPDATE manalith_blog_article " +
 				"SET totalCommentCount = totalCommentCount + 1 " +
 				"WHERE id = ?";
 
-		try {
-			pstmt = conn.prepareStatement(query);
+		try (PreparedStatement ps = conn.prepareStatement(query)) {
+			ps.setInt(1, articleId);
 
-			pstmt.setInt(1, articleId);
-
-			pstmt.executeUpdate();
+			ps.executeUpdate();
 		} catch (SQLException e) {
 			throw e;
-		} finally {
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
 		}
 	}
 
 	private void decreaseCommentCount(int articleId) throws SQLException {
-		PreparedStatement pstmt = null;
 		String query = "UPDATE manalith_blog_article " +
 				"SET totalCommentCount = totalCommentCount - 1 " +
 				"WHERE id = ?";
 
-		try {
-			pstmt = conn.prepareStatement(query);
+		try (PreparedStatement ps = conn.prepareStatement(query)) {
+			ps.setInt(1, articleId);
 
-			pstmt.setInt(1, articleId);
-
-			pstmt.executeUpdate();
+			ps.executeUpdate();
 		} catch (SQLException e) {
 			throw e;
-		} finally {
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
 		}
 	}
 
 	private void restoreCommentCount(int articleId) throws SQLException {
-		PreparedStatement pstmt = null;
 		String query = "UPDATE manalith_blog_article " +
 				"SET totalCommentCount = 0 " +
 				"WHERE id = ?";
 
-		try {
-			pstmt = conn.prepareStatement(query);
+		try (PreparedStatement ps = conn.prepareStatement(query)) {
+			ps.setInt(1, articleId);
 
-			pstmt.setInt(1, articleId);
-
-			pstmt.executeUpdate();
+			ps.executeUpdate();
 		} catch (SQLException e) {
 			throw e;
-		} finally {
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
 		}
 	}
 }

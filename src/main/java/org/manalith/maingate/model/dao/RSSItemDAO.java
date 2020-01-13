@@ -44,21 +44,17 @@ public class RSSItemDAO {
 
 	public List<RSSSourceItem> getItems() {
 		List<RSSSourceItem> items = new ArrayList<RSSSourceItem>();
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		RSSSourceItem item = null;
 		String query = "SELECT id, source, rssVersion, rssCharset, channelTitle, channelDescription, " +
 				"channelLanguage, channelCopyright, channelGenerator, channelPubDate, channelLink, " +
 				"itemTitle, itemDescription, itemCategory, itemPubDate, itemLink " +
 				"FROM manalith_maingate_rss_item " +
 				"ORDER BY itemPubDate DESC";
 
-		try {
-			pstmt = conn.prepareStatement(query);
-			rs = pstmt.executeQuery();
+		try (PreparedStatement ps = conn.prepareStatement(query);
+			 ResultSet rs = ps.executeQuery()) {
 
 			while (rs.next()) {
-				item = new RSSSourceItem();
+				RSSSourceItem item = new RSSSourceItem();
 				item.setId(rs.getInt("id"));
 				item.setSource(rs.getInt("source"));
 				item.setRssVersion(rs.getString("rssVersion"));
@@ -81,21 +77,6 @@ public class RSSItemDAO {
 			}
 		} catch (SQLException e) {
 			logger.error(e.getMessage(), e);
-		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
 		}
 
 		return items;
@@ -103,66 +84,48 @@ public class RSSItemDAO {
 
 	public List<RSSSourceItem> getItems(int limitation) {
 		List<RSSSourceItem> items = new ArrayList<RSSSourceItem>();
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		RSSSourceItem item = null;
+
 		String query = "SELECT id, source, rssVersion, rssCharset, channelTitle, channelDescription, " +
 				"channelLanguage, channelCopyright, channelGenerator, channelPubDate, channelLink, " +
 				"itemTitle, itemDescription, itemCategory, itemPubDate, itemLink " +
 				"FROM manalith_maingate_rss_item " +
 				"ORDER BY itemPubDate DESC LIMIT ?";
 
-		try {
-			pstmt = conn.prepareStatement(query);
-			pstmt.setInt(1, limitation);
-			rs = pstmt.executeQuery();
+		try (PreparedStatement ps = conn.prepareStatement(query)) {
+			ps.setInt(1, limitation);
 
-			while (rs.next()) {
-				item = new RSSSourceItem();
-				item.setId(rs.getInt("id"));
-				item.setSource(rs.getInt("source"));
-				item.setRssVersion(rs.getString("rssVersion"));
-				item.setRssCharset(rs.getString("rssCharset"));
-				item.setChannelTitle(rs.getString("channelTitle"));
-				item.setChannelDescription(rs.getString("channelDescription"));
-				item.setChannelLanguage(rs.getString("channelLanguage"));
-				item.setChannelCopyright(rs.getString("channelCopyright"));
-				item.setChannelGenerator(rs.getString("channelGenerator"));
-				if (rs.getTimestamp("channelPubDate") != null)
-					item.setChannelPubDate(new Date(rs.getTimestamp("channelPubDate").getTime()));
-				item.setChannelLink(rs.getString("channelLink"));
-				item.setItemTitle(rs.getString("itemTitle"));
-				item.setItemDescription(rs.getString("itemDescription"));
-				item.setItemCategory(rs.getString("itemCategory"));
-				if (rs.getTimestamp("itemPubDate") != null)
-					item.setItemPubDate(new Date(rs.getTimestamp("itemPubDate").getTime()));
-				item.setItemLink(rs.getString("itemLink"));
-				items.add(item);
+			try (ResultSet rs = ps.executeQuery()) {
+				while (rs.next()) {
+					RSSSourceItem item = new RSSSourceItem();
+					item.setId(rs.getInt("id"));
+					item.setSource(rs.getInt("source"));
+					item.setRssVersion(rs.getString("rssVersion"));
+					item.setRssCharset(rs.getString("rssCharset"));
+					item.setChannelTitle(rs.getString("channelTitle"));
+					item.setChannelDescription(rs.getString("channelDescription"));
+					item.setChannelLanguage(rs.getString("channelLanguage"));
+					item.setChannelCopyright(rs.getString("channelCopyright"));
+					item.setChannelGenerator(rs.getString("channelGenerator"));
+					if (rs.getTimestamp("channelPubDate") != null)
+						item.setChannelPubDate(new Date(rs.getTimestamp("channelPubDate").getTime()));
+					item.setChannelLink(rs.getString("channelLink"));
+					item.setItemTitle(rs.getString("itemTitle"));
+					item.setItemDescription(rs.getString("itemDescription"));
+					item.setItemCategory(rs.getString("itemCategory"));
+					if (rs.getTimestamp("itemPubDate") != null)
+						item.setItemPubDate(new Date(rs.getTimestamp("itemPubDate").getTime()));
+					item.setItemLink(rs.getString("itemLink"));
+					items.add(item);
+				}
 			}
 		} catch (SQLException e) {
 			logger.error(e.getMessage(), e);
-		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
 		}
 
 		return items;
 	}
 
 	public void storeFromSources() {
-		PreparedStatement pstmt = null;
 		String query = "INSERT INTO manalith_maingate_rss_item(" +
 				"source, rssVersion, rssCharset, channelTitle, channelDescription, " +
 				"channelLanguage, channelCopyright, channelGenerator, channelPubDate, channelLink, " +
@@ -170,57 +133,43 @@ public class RSSItemDAO {
 				") VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
 		List<RSSSource> sources = RSSSourceDAO.instance().getSources();
-		List<RSSChannelObject> channels = null;
-		List<RSSChannelItemObject> items = null;
 
-		RSSObject rss = null;
 		for (RSSSource source : sources) {
-			rss = RSSDOMParser.instance().parse(source.getRssUrl());
-			try {
-				pstmt = conn.prepareStatement(query);
+			RSSObject rss = RSSDOMParser.instance().parse(source.getRssUrl());
 
-				channels = rss.getChannels();
+			try (PreparedStatement ps = conn.prepareStatement(query)) {
+				List<RSSChannelObject> channels = rss.getChannels();
 				for (RSSChannelObject channel : channels) {
-					items = channel.getItems();
+					List<RSSChannelItemObject> items = channel.getItems();
 					for (RSSChannelItemObject item : items) {
-						pstmt.setInt(1, source.getId());
-						pstmt.setString(2, rss.getVersion());
-						pstmt.setString(3, rss.getCharset());
+						ps.setInt(1, source.getId());
+						ps.setString(2, rss.getVersion());
+						ps.setString(3, rss.getCharset());
 
-						pstmt.setString(4, channel.getTitle());
-						pstmt.setString(5, channel.getDescription());
-						pstmt.setString(6, channel.getLanguage());
-						pstmt.setString(7, channel.getCopyright());
-						pstmt.setString(8, channel.getGenerator());
+						ps.setString(4, channel.getTitle());
+						ps.setString(5, channel.getDescription());
+						ps.setString(6, channel.getLanguage());
+						ps.setString(7, channel.getCopyright());
+						ps.setString(8, channel.getGenerator());
 						if (channel.getPubDate() != null)
-							pstmt.setTimestamp(9, new Timestamp(channel.getPubDate().getTime()));
+							ps.setTimestamp(9, new Timestamp(channel.getPubDate().getTime()));
 						else
-							pstmt.setTimestamp(9, null);
-						pstmt.setString(10, channel.getLink());
-						pstmt.setString(11, item.getTitle());
-						pstmt.setString(12, item.getDescription());
-						pstmt.setString(13, item.getCategory());
+							ps.setTimestamp(9, null);
+						ps.setString(10, channel.getLink());
+						ps.setString(11, item.getTitle());
+						ps.setString(12, item.getDescription());
+						ps.setString(13, item.getCategory());
 						if (item.getPubDate() != null)
-							pstmt.setTimestamp(14, new Timestamp(item.getPubDate().getTime()));
+							ps.setTimestamp(14, new Timestamp(item.getPubDate().getTime()));
 						else
-							pstmt.setTimestamp(14, null);
-						pstmt.setString(15, item.getLink());
+							ps.setTimestamp(14, null);
+						ps.setString(15, item.getLink());
 
-						pstmt.executeUpdate();
+						ps.executeUpdate();
 					}
 				}
-			} catch (SQLException e) {
+			} catch (SQLException | NullPointerException e) {
 				logger.error(e.getMessage(), e);
-			} catch (NullPointerException e) {
-				logger.error(e.getMessage(), e);
-			} finally {
-				if (pstmt != null) {
-					try {
-						pstmt.close();
-					} catch (SQLException e) {
-						logger.error(e.toString());
-					}
-				}
 			}
 		}
 	}
@@ -231,43 +180,23 @@ public class RSSItemDAO {
 	}
 
 	public void clearSourceList() {
-		PreparedStatement pstmt = null;
 		String query = "DELETE FROM manalith_maingate_rss_item";
 
-		try {
-			pstmt = conn.prepareStatement(query);
-			pstmt.executeUpdate();
+		try (PreparedStatement ps = conn.prepareStatement(query)) {
+			ps.executeUpdate();
 		} catch (SQLException e) {
 			logger.error(e.getMessage(), e);
-		} finally {
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
 		}
 	}
 
 	public void deleteItemsBySource(int sourceId) {
-		PreparedStatement pstmt = null;
 		String query = "DELETE FROM manalith_maingate_rss_item WHERE source=?";
 
-		try {
-			pstmt = conn.prepareStatement(query);
-			pstmt.setInt(1, sourceId);
-			pstmt.executeUpdate();
+		try (PreparedStatement ps = conn.prepareStatement(query)) {
+			ps.setInt(1, sourceId);
+			ps.executeUpdate();
 		} catch (SQLException e) {
 			logger.error(e.getMessage(), e);
-		} finally {
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
 		}
 	}
 }

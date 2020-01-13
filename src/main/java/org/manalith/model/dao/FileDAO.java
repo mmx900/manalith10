@@ -78,8 +78,6 @@ public class FileDAO {
 	}
 
 	public void setBlogBackgroundImage(String blogOwnerId, FormFile formFile) {
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
 		String path = CONTEXT_REAL_PATH + BLOG_BACKGROUND_IMAGE_PATH;
 		String fileName = blogOwnerId + "_" + formFile.getFileName();
 
@@ -88,90 +86,60 @@ public class FileDAO {
 		String query2 = "UPDATE manalith_blog SET backgroundImage = ? WHERE owner = ?";
 
 		try {
-			pstmt = conn.prepareStatement(query1);
-			pstmt.setString(1, blogOwnerId);
-			rs = pstmt.executeQuery();
+			try (PreparedStatement ps = conn.prepareStatement(query1)) {
+				ps.setString(1, blogOwnerId);
 
-			rs.next();
-			if (rs.getString("backgroundImage") != null) {
-				if (!rs.getString("backgroundImage").equals("")) {
-					File file = new File(path + blogOwnerId + "_" + rs.getString("backgroundImage"));
-					file.delete();
+				try (ResultSet rs = ps.executeQuery()) {
+					rs.next();
+					if (rs.getString("backgroundImage") != null) {
+						if (!rs.getString("backgroundImage").equals("")) {
+							File file = new File(path + blogOwnerId + "_" + rs.getString("backgroundImage"));
+							file.delete();
+						}
+					}
 				}
 			}
 
-			pstmt = conn.prepareStatement(query2);
-			pstmt.setString(1, formFile.getFileName());
-			pstmt.setString(2, blogOwnerId);
-			pstmt.executeUpdate();
+			try (PreparedStatement ps = conn.prepareStatement(query2)) {
+				ps.setString(1, formFile.getFileName());
+				ps.setString(2, blogOwnerId);
+				ps.executeUpdate();
+			}
 
 			writeFile(fileName, formFile, path);
 
 		} catch (SQLException e) {
 			logger.error(e.getMessage(), e);
-		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
 		}
-
 	}
 
 	public void deleteBlogBackgroundImage(String blogOwnerId) {
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
 		String path = CONTEXT_REAL_PATH + BLOG_BACKGROUND_IMAGE_PATH;
 
 		String query1 = "SELECT backgroundImage FROM manalith_blog WHERE owner = ?";
 
 		String query2 = "UPDATE manalith_blog SET backgroundImage = ? WHERE owner = ?";
 
-		try {
-			pstmt = conn.prepareStatement(query1);
-			pstmt.setString(1, blogOwnerId);
-			rs = pstmt.executeQuery();
+		try (PreparedStatement ps = conn.prepareStatement(query1)) {
+			ps.setString(1, blogOwnerId);
 
-			rs.next();
-			if (rs.getString("backgroundImage") != null) {
-				if (!rs.getString("backgroundImage").equals("")) {
-					File file = new File(path + blogOwnerId + "_" + rs.getString("backgroundImage"));
-					file.delete();
+			try (ResultSet rs = ps.executeQuery()) {
+				rs.next();
+				if (rs.getString("backgroundImage") != null) {
+					if (!rs.getString("backgroundImage").equals("")) {
+						File file = new File(path + blogOwnerId + "_" + rs.getString("backgroundImage"));
+						file.delete();
+					}
 				}
 			}
 
-			pstmt = conn.prepareStatement(query2);
-			pstmt.setString(1, null);
-			pstmt.setString(2, blogOwnerId);
-			pstmt.executeUpdate();
-
+			try (PreparedStatement ps2 = conn.prepareStatement(query2)) {
+				ps2.setString(1, null);
+				ps2.setString(2, blogOwnerId);
+				ps2.executeUpdate();
+			}
 		} catch (SQLException e) {
 			logger.error(e.getMessage(), e);
-		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
 		}
 	}
 
@@ -181,8 +149,6 @@ public class FileDAO {
 	}
 
 	public void setBlogTitleImage(String blogOwnerId, FormFile formFile) {
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
 		String path = CONTEXT_REAL_PATH + BLOG_TITLE_IMAGE_PATH;
 		String fileName = blogOwnerId + "_" + formFile.getFileName();
 
@@ -191,49 +157,35 @@ public class FileDAO {
 		String query2 = "UPDATE manalith_blog SET titleImage = ? WHERE owner = ?";
 
 		try {
-			pstmt = conn.prepareStatement(query1);
-			pstmt.setString(1, blogOwnerId);
-			rs = pstmt.executeQuery();
+			try (PreparedStatement ps = conn.prepareStatement(query1)) {
+				ps.setString(1, blogOwnerId);
 
-			rs.next();
-			if (rs.getString("titleImage") != null) {
-				if (!rs.getString("titleImage").equals("")) {
-					File file = new File(path + blogOwnerId + "_" + rs.getString("titleImage"));
-					file.delete();
+				try (ResultSet rs = ps.executeQuery()) {
+					rs.next();
+
+					if (rs.getString("titleImage") != null) {
+						if (!rs.getString("titleImage").equals("")) {
+							File file = new File(path + blogOwnerId + "_" + rs.getString("titleImage"));
+							file.delete();
+						}
+					}
 				}
 			}
 
-			pstmt = conn.prepareStatement(query2);
-			pstmt.setString(1, formFile.getFileName());
-			pstmt.setString(2, blogOwnerId);
-			pstmt.executeUpdate();
+			try (PreparedStatement ps = conn.prepareStatement(query2)) {
+				ps.setString(1, formFile.getFileName());
+				ps.setString(2, blogOwnerId);
+				ps.executeUpdate();
+			}
 
 			writeFile(fileName, formFile, path);
 
 		} catch (SQLException e) {
 			logger.error(e.getMessage(), e);
-		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
 		}
-
 	}
 
 	public void deleteBlogTitleImage(String blogOwnerId) {
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
 		String path = CONTEXT_REAL_PATH + BLOG_TITLE_IMAGE_PATH;
 
 		String query1 = "SELECT titleImage FROM manalith_blog WHERE owner = ?";
@@ -241,40 +193,28 @@ public class FileDAO {
 		String query2 = "UPDATE manalith_blog SET titleImage = ? WHERE owner = ?";
 
 		try {
-			pstmt = conn.prepareStatement(query1);
-			pstmt.setString(1, blogOwnerId);
-			rs = pstmt.executeQuery();
+			try (PreparedStatement ps = conn.prepareStatement(query1)) {
+				ps.setString(1, blogOwnerId);
 
-			rs.next();
-			if (rs.getString("titleImage") != null) {
-				if (!rs.getString("titleImage").equals("")) {
-					File file = new File(path + blogOwnerId + "_" + rs.getString("titleImage"));
-					file.delete();
+				try (ResultSet rs = ps.executeQuery()) {
+					rs.next();
+
+					if (rs.getString("titleImage") != null) {
+						if (!rs.getString("titleImage").equals("")) {
+							File file = new File(path + blogOwnerId + "_" + rs.getString("titleImage"));
+							file.delete();
+						}
+					}
 				}
 			}
 
-			pstmt = conn.prepareStatement(query2);
-			pstmt.setString(1, null);
-			pstmt.setString(2, blogOwnerId);
-			pstmt.executeUpdate();
-
+			try (PreparedStatement ps = conn.prepareStatement(query2)) {
+				ps.setString(1, null);
+				ps.setString(2, blogOwnerId);
+				ps.executeUpdate();
+			}
 		} catch (SQLException e) {
 			logger.error(e.getMessage(), e);
-		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
 		}
 	}
 
@@ -291,54 +231,38 @@ public class FileDAO {
 	}
 
 	private int setUnconnectedFileInfo(String blogOwnerId, FormFile file) {
-		PreparedStatement pstmt = null;
-		String query = null;
 		int fileNum = -1;
-		ResultSet rs = null;
+		Timestamp date = null;
 
 		try {
-			query = "SELECT NOW() AS now";
-			pstmt = conn.prepareStatement(query);
-			rs = pstmt.executeQuery();
-			rs.next();
-			Timestamp date = rs.getTimestamp("now");
-			rs.close();
-			pstmt.close();
+			try (PreparedStatement ps = conn.prepareStatement("SELECT NOW() AS now");
+				 ResultSet rs = ps.executeQuery()) {
+				rs.next();
+				rs.getTimestamp("now");
+			}
 
-			query = "INSERT INTO manalith_blog_file(blogOwnerId,name,size,date) " +
+			String query = "INSERT INTO manalith_blog_file(blogOwnerId,name,size,date) " +
 					"VALUES(?,?,?,?)";
-			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1, blogOwnerId);
-			pstmt.setString(2, file.getFileName());
-			pstmt.setInt(3, file.getFileSize());
-			pstmt.setTimestamp(4, date);
-			pstmt.executeUpdate();
-			pstmt.close();
 
-			query = "SELECT id FROM manalith_blog_file WHERE date = ?";
-			pstmt = conn.prepareStatement(query);
-			pstmt.setTimestamp(1, date);
-			rs = pstmt.executeQuery();
-			rs.next();
-			fileNum = rs.getInt("id");
+			try (PreparedStatement ps = conn.prepareStatement(query)) {
+				ps.setString(1, blogOwnerId);
+				ps.setString(2, file.getFileName());
+				ps.setInt(3, file.getFileSize());
+				ps.setTimestamp(4, date);
+				ps.executeUpdate();
+			}
 
+			String query2 = "SELECT id FROM manalith_blog_file WHERE date = ?";
+			try (PreparedStatement ps = conn.prepareStatement(query2)) {
+				ps.setTimestamp(1, date);
+
+				try (ResultSet rs = ps.executeQuery()) {
+					rs.next();
+					fileNum = rs.getInt("id");
+				}
+			}
 		} catch (SQLException e) {
 			logger.error(e.getMessage(), e);
-		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
 		}
 
 		return fileNum;
@@ -365,68 +289,42 @@ public class FileDAO {
 
 	//이미 업로드된 파일을 특정 Article과 연결시킨다.
 	public void setConnectedFile(int fileId, int articleId) {
-		PreparedStatement pstmt = null;
 		String query = "UPDATE manalith_blog_file " +
 				"SET articleId = ? " +
 				"WHERE id = ? ";
 
-		try {
-			pstmt = conn.prepareStatement(query);
-			pstmt.setInt(1, articleId);
-			pstmt.setInt(2, fileId);
-			pstmt.executeUpdate();
+		try (PreparedStatement ps = conn.prepareStatement(query)) {
+			ps.setInt(1, articleId);
+			ps.setInt(2, fileId);
+			ps.executeUpdate();
 		} catch (SQLException e) {
 			logger.error(e.getMessage(), e);
-		} finally {
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
 		}
 	}
 
 	public List<ArticleFile> getConnectedFiles(int articleId) {
 		List<ArticleFile> files = new ArrayList<ArticleFile>();
 		ArticleFile file = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
 
 		String query = "SELECT id, name, size, date " +
 				"FROM manalith_blog_file " +
 				"WHERE articleId = ?";
 
-		try {
-			pstmt = conn.prepareStatement(query);
-			pstmt.setInt(1, articleId);
-			rs = pstmt.executeQuery();
-			while (rs.next()) {
-				file = new ArticleFile();
-				file.setId(rs.getInt("id"));
-				file.setArticleId(articleId);
-				file.setName(rs.getInt("id") + "_" + rs.getString("name"));
-				file.setSize(rs.getInt("size"));
-				files.add(file);
+		try (PreparedStatement ps = conn.prepareStatement(query)) {
+			ps.setInt(1, articleId);
+
+			try (ResultSet rs = ps.executeQuery()) {
+				while (rs.next()) {
+					file = new ArticleFile();
+					file.setId(rs.getInt("id"));
+					file.setArticleId(articleId);
+					file.setName(rs.getInt("id") + "_" + rs.getString("name"));
+					file.setSize(rs.getInt("size"));
+					files.add(file);
+				}
 			}
 		} catch (SQLException e) {
 			logger.error(e.getMessage(), e);
-		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
 		}
 
 		return files;
@@ -434,43 +332,26 @@ public class FileDAO {
 
 	public List<ArticleFile> getUnconnectedFiles(String blogOwnerId) {
 		List<ArticleFile> files = new ArrayList<ArticleFile>();
-		ArticleFile file = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
 
 		String query = "SELECT id, name, size, date " +
 				"FROM manalith_blog_file " +
 				"WHERE blogOwnerId=? AND articleId=0";
 
-		try {
-			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1, blogOwnerId);
-			rs = pstmt.executeQuery();
-			while (rs.next()) {
-				file = new ArticleFile();
-				file.setId(rs.getInt("id"));
-				file.setBlogOwnerId(blogOwnerId);
-				file.setName(rs.getInt("id") + "_" + rs.getString("name"));
-				file.setSize(rs.getInt("size"));
-				files.add(file);
+		try (PreparedStatement ps = conn.prepareStatement(query)) {
+			ps.setString(1, blogOwnerId);
+
+			try (ResultSet rs = ps.executeQuery()) {
+				while (rs.next()) {
+					ArticleFile file = new ArticleFile();
+					file.setId(rs.getInt("id"));
+					file.setBlogOwnerId(blogOwnerId);
+					file.setName(rs.getInt("id") + "_" + rs.getString("name"));
+					file.setSize(rs.getInt("size"));
+					files.add(file);
+				}
 			}
 		} catch (SQLException e) {
 			logger.error(e.getMessage(), e);
-		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
 		}
 
 		return files;
@@ -500,24 +381,13 @@ public class FileDAO {
 	}
 
 	private void deleteFileInfo(int fileId) {
-		PreparedStatement pstmt = null;
-
 		String query = "DELETE FROM manalith_blog_file WHERE id=?";
 
-		try {
-			pstmt = conn.prepareStatement(query);
-			pstmt.setInt(1, fileId);
-			pstmt.executeUpdate();
+		try (PreparedStatement ps = conn.prepareStatement(query)) {
+			ps.setInt(1, fileId);
+			ps.executeUpdate();
 		} catch (SQLException e) {
 			logger.error(e.getMessage(), e);
-		} finally {
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-					logger.error(e.toString());
-				}
-			}
 		}
 	}
 }
