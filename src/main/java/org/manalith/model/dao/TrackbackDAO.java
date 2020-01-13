@@ -107,14 +107,12 @@ public class TrackbackDAO {
 
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		StringBuffer sb = new StringBuffer();
-
-		sb.append("SELECT blogOwnerId, articleId, title, excerpt, url, blog_name, date, inetAddress ");
-		sb.append("FROM manalith_blog_article_trackback ");
-		sb.append("WHERE id=?");
+		String query = "SELECT blogOwnerId, articleId, title, excerpt, url, blog_name, date, inetAddress " +
+				"FROM manalith_blog_article_trackback " +
+				"WHERE id=?";
 
 		try {
-			pstmt = conn.prepareStatement(sb.toString());
+			pstmt = conn.prepareStatement(query);
 
 			pstmt.setInt(1, trackbackId);
 
@@ -164,15 +162,13 @@ public class TrackbackDAO {
 
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		StringBuffer sb = new StringBuffer();
-
-		sb.append("SELECT id, blogOwnerId, title, excerpt, url, blog_name, date, inetAddress ");
-		sb.append("FROM manalith_blog_article_trackback ");
-		sb.append("WHERE articleId=? ");
-		sb.append("ORDER BY id DESC");
+		String query = "SELECT id, blogOwnerId, title, excerpt, url, blog_name, date, inetAddress " +
+				"FROM manalith_blog_article_trackback " +
+				"WHERE articleId=? " +
+				"ORDER BY id DESC";
 
 		try {
-			pstmt = conn.prepareStatement(sb.toString());
+			pstmt = conn.prepareStatement(query);
 
 			pstmt.setInt(1, articleId);
 
@@ -223,15 +219,13 @@ public class TrackbackDAO {
 
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		StringBuffer sb = new StringBuffer();
-
-		sb.append("SELECT id, articleId, title, excerpt, url, blog_name, date, inetAddress ");
-		sb.append("FROM manalith_blog_article_trackback ");
-		sb.append("WHERE blogOwnerId=? ");
-		sb.append("ORDER BY id DESC LIMIT ?");
+		String query = "SELECT id, articleId, title, excerpt, url, blog_name, date, inetAddress " +
+				"FROM manalith_blog_article_trackback " +
+				"WHERE blogOwnerId=? " +
+				"ORDER BY id DESC LIMIT ?";
 
 		try {
-			pstmt = conn.prepareStatement(sb.toString());
+			pstmt = conn.prepareStatement(query);
 
 			pstmt.setString(1, blogOwnerId);
 			pstmt.setInt(2, limitation);
@@ -294,12 +288,11 @@ public class TrackbackDAO {
 
 	private void addTrackback(ArticleTrackback trackback) {
 		PreparedStatement pstmt = null;
-		StringBuffer sb = new StringBuffer();
-		sb.append("INSERT INTO manalith_blog_article_trackback(blogOwnerId, articleId, title, excerpt, url, blog_name, inetAddress) ");
-		sb.append("VALUES(?,?,?,?,?,?,?)");
+		String query = "INSERT INTO manalith_blog_article_trackback(blogOwnerId, articleId, title, excerpt, url, blog_name, inetAddress) " +
+				"VALUES(?,?,?,?,?,?,?)";
 
 		try {
-			pstmt = conn.prepareStatement(sb.toString());
+			pstmt = conn.prepareStatement(query);
 
 			pstmt.setString(1, trackback.getBlogOwnerId());
 			pstmt.setInt(2, trackback.getArticleId());
@@ -334,12 +327,10 @@ public class TrackbackDAO {
 
 	public void deleteTrackback(int articleId, int trackbackId) {
 		PreparedStatement pstmt = null;
-		StringBuffer sb = new StringBuffer();
-		sb.append("DELETE FROM manalith_blog_article_trackback ");
-		sb.append("WHERE id = ?");
+		String query = "DELETE FROM manalith_blog_article_trackback WHERE id = ?";
 
 		try {
-			pstmt = conn.prepareStatement(sb.toString());
+			pstmt = conn.prepareStatement(query);
 
 			pstmt.setInt(1, trackbackId);
 
@@ -362,12 +353,11 @@ public class TrackbackDAO {
 
 	public void deleteTrackbacks(int articleId) {
 		PreparedStatement pstmt = null;
-		StringBuffer sb = new StringBuffer();
-		sb.append("DELETE FROM manalith_blog_article_trackback ");
-		sb.append("WHERE articleId = ?");
+		String query = "DELETE FROM manalith_blog_article_trackback " +
+				"WHERE articleId = ?";
 
 		try {
-			pstmt = conn.prepareStatement(sb.toString());
+			pstmt = conn.prepareStatement(query);
 
 			pstmt.setInt(1, articleId);
 
@@ -391,13 +381,12 @@ public class TrackbackDAO {
 
 	private void increaseTrackbackCount(int articleId) throws SQLException {
 		PreparedStatement pstmt = null;
-		StringBuffer sb = new StringBuffer();
-		sb.append("UPDATE manalith_blog_article ");
-		sb.append("SET totalTrackbackCount = totalTrackbackCount + 1 ");
-		sb.append("WHERE id = ?");
+		String query = "UPDATE manalith_blog_article " +
+				"SET totalTrackbackCount = totalTrackbackCount + 1 " +
+				"WHERE id = ?";
 
 		try {
-			pstmt = conn.prepareStatement(sb.toString());
+			pstmt = conn.prepareStatement(query);
 
 			pstmt.setInt(1, articleId);
 
@@ -418,13 +407,12 @@ public class TrackbackDAO {
 
 	private void decreaseTrackbackCount(int articleId) throws SQLException {
 		PreparedStatement pstmt = null;
-		StringBuffer sb = new StringBuffer();
-		sb.append("UPDATE manalith_blog_article ");
-		sb.append("SET totalTrackbackCount = totalTrackbackCount - 1 ");
-		sb.append("WHERE id = ?");
+		String query = "UPDATE manalith_blog_article " +
+				"SET totalTrackbackCount = totalTrackbackCount - 1 " +
+				"WHERE id = ?";
 
 		try {
-			pstmt = conn.prepareStatement(sb.toString());
+			pstmt = conn.prepareStatement(query);
 
 			pstmt.setInt(1, articleId);
 
@@ -445,13 +433,12 @@ public class TrackbackDAO {
 
 	private void restoreTrackbackCount(int articleId) throws SQLException {
 		PreparedStatement pstmt = null;
-		StringBuffer sb = new StringBuffer();
-		sb.append("UPDATE manalith_blog_article ");
-		sb.append("SET totalTrackbackCount = 0 ");
-		sb.append("WHERE id = ?");
+		String query = "UPDATE manalith_blog_article " +
+				"SET totalTrackbackCount = 0 " +
+				"WHERE id = ?";
 
 		try {
-			pstmt = conn.prepareStatement(sb.toString());
+			pstmt = conn.prepareStatement(query);
 
 			pstmt.setInt(1, articleId);
 

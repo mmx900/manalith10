@@ -90,12 +90,11 @@ public class BlogDAO {
 	// manalith_blog_category와 연결되어 있어야 한다.
 	public void createBlog(Blog blog) {
 		PreparedStatement pstmt = null;
-		StringBuffer sb = new StringBuffer();
-		sb.append("INSERT INTO manalith_blog(title, description, template, owner, pageSize, url, allowRSS) ");
-		sb.append("VALUES(?,?,?,?,?,?,?)");
+		String query = "INSERT INTO manalith_blog(title, description, template, owner, pageSize, url, allowRSS) " +
+				"VALUES(?,?,?,?,?,?,?)";
 
 		try {
-			pstmt = conn.prepareStatement(sb.toString());
+			pstmt = conn.prepareStatement(query);
 
 			pstmt.setString(1, blog.getTitle());
 			pstmt.setString(2, blog.getDescription());
@@ -214,13 +213,12 @@ public class BlogDAO {
 		Blog blog = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		StringBuffer sb = new StringBuffer();
-		sb.append("SELECT title, description, template, created, totalArticleCount, pageSize, url, allowRSS, titleImage, backgroundImage ");
-		sb.append("FROM manalith_blog ");
-		sb.append("WHERE owner=?");
+		String query = "SELECT title, description, template, created, totalArticleCount, pageSize, url, allowRSS, titleImage, backgroundImage " +
+				"FROM manalith_blog " +
+				"WHERE owner=?";
 
 		try {
-			pstmt = conn.prepareStatement(sb.toString());
+			pstmt = conn.prepareStatement(query);
 
 			pstmt.setString(1, blogOwnerId);
 

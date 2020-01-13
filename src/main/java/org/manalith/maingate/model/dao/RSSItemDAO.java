@@ -47,15 +47,14 @@ public class RSSItemDAO {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		RSSSourceItem item = null;
-		StringBuffer sb = new StringBuffer();
-		sb.append("SELECT id, source, rssVersion, rssCharset, channelTitle, channelDescription, ");
-		sb.append("channelLanguage, channelCopyright, channelGenerator, channelPubDate, channelLink, ");
-		sb.append("itemTitle, itemDescription, itemCategory, itemPubDate, itemLink ");
-		sb.append("FROM manalith_maingate_rss_item ");
-		sb.append("ORDER BY itemPubDate DESC");
+		String query = "SELECT id, source, rssVersion, rssCharset, channelTitle, channelDescription, " +
+				"channelLanguage, channelCopyright, channelGenerator, channelPubDate, channelLink, " +
+				"itemTitle, itemDescription, itemCategory, itemPubDate, itemLink " +
+				"FROM manalith_maingate_rss_item " +
+				"ORDER BY itemPubDate DESC";
 
 		try {
-			pstmt = conn.prepareStatement(sb.toString());
+			pstmt = conn.prepareStatement(query);
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
@@ -109,15 +108,14 @@ public class RSSItemDAO {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		RSSSourceItem item = null;
-		StringBuffer sb = new StringBuffer();
-		sb.append("SELECT id, source, rssVersion, rssCharset, channelTitle, channelDescription, ");
-		sb.append("channelLanguage, channelCopyright, channelGenerator, channelPubDate, channelLink, ");
-		sb.append("itemTitle, itemDescription, itemCategory, itemPubDate, itemLink ");
-		sb.append("FROM manalith_maingate_rss_item ");
-		sb.append("ORDER BY itemPubDate DESC LIMIT ?");
+		String query = "SELECT id, source, rssVersion, rssCharset, channelTitle, channelDescription, " +
+				"channelLanguage, channelCopyright, channelGenerator, channelPubDate, channelLink, " +
+				"itemTitle, itemDescription, itemCategory, itemPubDate, itemLink " +
+				"FROM manalith_maingate_rss_item " +
+				"ORDER BY itemPubDate DESC LIMIT ?";
 
 		try {
-			pstmt = conn.prepareStatement(sb.toString());
+			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, limitation);
 			rs = pstmt.executeQuery();
 
@@ -169,12 +167,11 @@ public class RSSItemDAO {
 
 	public void storeFromSources() {
 		PreparedStatement pstmt = null;
-		StringBuffer sb = new StringBuffer();
-		sb.append("INSERT INTO manalith_maingate_rss_item(");
-		sb.append("source, rssVersion, rssCharset, channelTitle, channelDescription, ");
-		sb.append("channelLanguage, channelCopyright, channelGenerator, channelPubDate, channelLink, ");
-		sb.append("itemTitle, itemDescription, itemCategory, itemPubDate, itemLink");
-		sb.append(") VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+		String query = "INSERT INTO manalith_maingate_rss_item(" +
+				"source, rssVersion, rssCharset, channelTitle, channelDescription, " +
+				"channelLanguage, channelCopyright, channelGenerator, channelPubDate, channelLink, " +
+				"itemTitle, itemDescription, itemCategory, itemPubDate, itemLink" +
+				") VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
 		List<RSSSource> sources = RSSSourceDAO.instance().getSources();
 		List<RSSChannelObject> channels = null;
@@ -184,7 +181,7 @@ public class RSSItemDAO {
 		for (RSSSource source : sources) {
 			rss = RSSDOMParser.instance().parse(source.getRssUrl());
 			try {
-				pstmt = conn.prepareStatement(sb.toString());
+				pstmt = conn.prepareStatement(query);
 
 				channels = rss.getChannels();
 				for (RSSChannelObject channel : channels) {
@@ -240,11 +237,10 @@ public class RSSItemDAO {
 
 	public void clearSourceList() {
 		PreparedStatement pstmt = null;
-		StringBuffer clearQuery = new StringBuffer();
-		clearQuery.append("DELETE FROM manalith_maingate_rss_item");
+		String query = "DELETE FROM manalith_maingate_rss_item";
 
 		try {
-			pstmt = conn.prepareStatement(clearQuery.toString());
+			pstmt = conn.prepareStatement(query);
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			logger.error(e.getMessage(), e);
@@ -262,12 +258,10 @@ public class RSSItemDAO {
 
 	public void deleteItemsBySource(int sourceId) {
 		PreparedStatement pstmt = null;
-		StringBuffer clearQuery = new StringBuffer();
-		clearQuery.append("DELETE FROM manalith_maingate_rss_item ");
-		clearQuery.append("WHERE source=?");
+		String query = "DELETE FROM manalith_maingate_rss_item WHERE source=?";
 
 		try {
-			pstmt = conn.prepareStatement(clearQuery.toString());
+			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, sourceId);
 			pstmt.executeUpdate();
 		} catch (SQLException e) {

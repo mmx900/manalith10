@@ -44,16 +44,14 @@ public class BlogAuthorDAO {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 
-		StringBuffer sb1 = new StringBuffer();
-		sb1.append("SELECT userId FROM manalith_blog_author ");
-		sb1.append("WHERE blogOwnerId = ? AND userId = ?");
+		String query1 = "SELECT userId FROM manalith_blog_author " +
+				"WHERE blogOwnerId = ? AND userId = ?";
 
-		StringBuffer sb2 = new StringBuffer();
-		sb2.append("INSERT INTO manalith_blog_author(blogOwnerId,userId) ");
-		sb2.append("VALUES(?,?)");
+		String query2 = "INSERT INTO manalith_blog_author(blogOwnerId,userId) " +
+				"VALUES(?,?)";
 
 		try {
-			pstmt = conn.prepareStatement(sb1.toString());
+			pstmt = conn.prepareStatement(query1);
 			pstmt.setString(1, user.getBlogOwnerId());
 			pstmt.setString(2, user.getUserId());
 			rs = pstmt.executeQuery();
@@ -62,7 +60,7 @@ public class BlogAuthorDAO {
 				throw new ExistAuthorException();
 			}
 
-			pstmt = conn.prepareStatement(sb2.toString());
+			pstmt = conn.prepareStatement(query2);
 			pstmt.setString(1, user.getBlogOwnerId());
 			pstmt.setString(2, user.getUserId());
 
@@ -132,13 +130,12 @@ public class BlogAuthorDAO {
 		User user = null;
 		ResultSet rs = null;
 		PreparedStatement pstmt = null;
-		StringBuffer sb = new StringBuffer();
-		sb.append("SELECT a.userId,b.name,b.email FROM manalith_blog_author a ");
-		sb.append("INNER JOIN manalith_member b ON a.userId = b.id ");
-		sb.append("WHERE a.blogOwnerId=? ");
+		String query = "SELECT a.userId,b.name,b.email FROM manalith_blog_author a " +
+				"INNER JOIN manalith_member b ON a.userId = b.id " +
+				"WHERE a.blogOwnerId=? ";
 
 		try {
-			pstmt = conn.prepareStatement(sb.toString());
+			pstmt = conn.prepareStatement(query);
 
 			pstmt.setString(1, blogOwnerId);
 

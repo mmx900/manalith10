@@ -37,12 +37,12 @@ public class RSSSourceDAO {
 
 	public void add(RSSSource source) {
 		PreparedStatement pstmt = null;
-		StringBuffer sb = new StringBuffer();
-		sb.append("INSERT INTO manalith_maingate_rss_source(title,webUrl,rssUrl,category,description) ");
-		sb.append("VALUES(?,?,?,?,?) ");
+		String query =
+				"INSERT INTO manalith_maingate_rss_source(title,webUrl,rssUrl,category,description) " +
+						"VALUES(?,?,?,?,?) ";
 
 		try {
-			pstmt = conn.prepareStatement(sb.toString());
+			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, source.getTitle());
 			pstmt.setString(2, source.getWebUrl());
 			pstmt.setString(3, source.getRssUrl());
@@ -70,12 +70,10 @@ public class RSSSourceDAO {
 		RSSItemDAO.instance().deleteItemsBySource(sourceId);
 
 		PreparedStatement pstmt = null;
-		StringBuffer sb = new StringBuffer();
-		sb.append("DELETE FROM manalith_maingate_rss_source ");
-		sb.append("WHERE id=? ");
+		String query = "DELETE FROM manalith_maingate_rss_source WHERE id=?";
 
 		try {
-			pstmt = conn.prepareStatement(sb.toString());
+			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, sourceId);
 			pstmt.executeUpdate();
 
@@ -97,13 +95,12 @@ public class RSSSourceDAO {
 
 	public void update(RSSSource source) {
 		PreparedStatement pstmt = null;
-		StringBuffer sb = new StringBuffer();
-		sb.append("UPDATE manalith_maingate_rss_source ");
-		sb.append("SET title=?,webUrl=?,rssUrl=?,category=?,description=? ");
-		sb.append("WHERE id=? ");
+		String query = "UPDATE manalith_maingate_rss_source " +
+				"SET title=?,webUrl=?,rssUrl=?,category=?,description=? " +
+				"WHERE id=? ";
 
 		try {
-			pstmt = conn.prepareStatement(sb.toString());
+			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, source.getTitle());
 			pstmt.setString(2, source.getWebUrl());
 			pstmt.setString(3, source.getRssUrl());
@@ -131,14 +128,13 @@ public class RSSSourceDAO {
 	public RSSSource get(int sourceId) {
 		PreparedStatement pstmt = null;
 		RSSSource source = null;
-		StringBuffer sb = new StringBuffer();
 		ResultSet rs = null;
-		sb.append("SELECT title, description, webURL, rssUrl, category ");
-		sb.append("FROM manalith_maingate_rss_source ");
-		sb.append("WHERE id=?");
+		String query = "SELECT title, description, webURL, rssUrl, category " +
+				"FROM manalith_maingate_rss_source " +
+				"WHERE id=?";
 
 		try {
-			pstmt = conn.prepareStatement(sb.toString());
+			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, sourceId);
 			rs = pstmt.executeQuery();
 
@@ -180,13 +176,12 @@ public class RSSSourceDAO {
 		PreparedStatement pstmt = null;
 		List<RSSSource> sources = new ArrayList<RSSSource>();
 		RSSSource source = null;
-		StringBuffer sb = new StringBuffer();
 		ResultSet rs = null;
-		sb.append("SELECT id, title, description, webURL, rssUrl, category ");
-		sb.append("FROM manalith_maingate_rss_source");
+		String query = "SELECT id, title, description, webURL, rssUrl, category " +
+				"FROM manalith_maingate_rss_source";
 
 		try {
-			pstmt = conn.prepareStatement(sb.toString());
+			pstmt = conn.prepareStatement(query);
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
@@ -229,13 +224,10 @@ public class RSSSourceDAO {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 
-		StringBuffer sb = new StringBuffer();
-		sb.append("SELECT category ");
-		sb.append("FROM manalith_maingate_rss_source ");
-		sb.append("GROUP BY category");
+		String query = "SELECT category FROM manalith_maingate_rss_source GROUP BY category";
 
 		try {
-			pstmt = conn.prepareStatement(sb.toString());
+			pstmt = conn.prepareStatement(query);
 
 			rs = pstmt.executeQuery();
 

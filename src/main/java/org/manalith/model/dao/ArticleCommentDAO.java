@@ -39,12 +39,11 @@ public class ArticleCommentDAO {
 
 	public void createComment(ArticleComment comment) {
 		PreparedStatement pstmt = null;
-		StringBuffer sb = new StringBuffer();
-		sb.append("INSERT INTO manalith_blog_article_comment(blogOwnerId,articleId,name,password,homepage,contents,inetAddress) ");
-		sb.append("VALUES(?,?,?,?,?,?,?)");
+		String query = "INSERT INTO manalith_blog_article_comment(blogOwnerId,articleId,name,password,homepage,contents,inetAddress) " +
+				"VALUES(?,?,?,?,?,?,?)";
 
 		try {
-			pstmt = conn.prepareStatement(sb.toString());
+			pstmt = conn.prepareStatement(query);
 
 			pstmt.setString(1, comment.getBlogOwnerId());
 			pstmt.setInt(2, comment.getArticleId());
@@ -85,14 +84,12 @@ public class ArticleCommentDAO {
 
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		StringBuffer sb = new StringBuffer();
-
-		sb.append("SELECT id, blogOwnerId, name, date, homepage, contents, inetAddress ");
-		sb.append("FROM manalith_blog_article_comment ");
-		sb.append("WHERE id=?");
+		String query = "SELECT id, blogOwnerId, name, date, homepage, contents, inetAddress " +
+				"FROM manalith_blog_article_comment " +
+				"WHERE id=?";
 
 		try {
-			pstmt = conn.prepareStatement(sb.toString());
+			pstmt = conn.prepareStatement(query);
 
 			pstmt.setInt(1, id);
 
@@ -140,15 +137,13 @@ public class ArticleCommentDAO {
 
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		StringBuffer sb = new StringBuffer();
-
-		sb.append("SELECT id, blogOwnerId, name, date, homepage, contents, inetAddress ");
-		sb.append("FROM manalith_blog_article_comment ");
-		sb.append("WHERE articleId=? ");
-		sb.append("ORDER BY id DESC");
+		String query = "SELECT id, blogOwnerId, name, date, homepage, contents, inetAddress " +
+				"FROM manalith_blog_article_comment " +
+				"WHERE articleId=? " +
+				"ORDER BY id DESC";
 
 		try {
-			pstmt = conn.prepareStatement(sb.toString());
+			pstmt = conn.prepareStatement(query);
 
 			pstmt.setInt(1, articleId);
 
@@ -198,15 +193,13 @@ public class ArticleCommentDAO {
 
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		StringBuffer sb = new StringBuffer();
-
-		sb.append("SELECT id, articleId, name, date, homepage, contents, inetAddress ");
-		sb.append("FROM manalith_blog_article_comment ");
-		sb.append("WHERE blogOwnerId=? ");
-		sb.append("ORDER BY id DESC LIMIT ?");
+		String query = "SELECT id, articleId, name, date, homepage, contents, inetAddress " +
+				"FROM manalith_blog_article_comment " +
+				"WHERE blogOwnerId=? " +
+				"ORDER BY id DESC LIMIT ?";
 
 		try {
-			pstmt = conn.prepareStatement(sb.toString());
+			pstmt = conn.prepareStatement(query);
 
 			pstmt.setString(1, blogOwnerId);
 			pstmt.setInt(2, limitation);
@@ -255,12 +248,11 @@ public class ArticleCommentDAO {
 		boolean result = false;
 		ResultSet rs = null;
 		PreparedStatement pstmt = null;
-		StringBuffer sb = new StringBuffer();
-		sb.append("SELECT id FROM manalith_blog_article_comment ");
-		sb.append("WHERE id = ? AND password = ?");
+		String query = "SELECT id FROM manalith_blog_article_comment " +
+				"WHERE id = ? AND password = ?";
 
 		try {
-			pstmt = conn.prepareStatement(sb.toString());
+			pstmt = conn.prepareStatement(query);
 
 			pstmt.setInt(1, id);
 			pstmt.setString(2, password);
@@ -295,12 +287,10 @@ public class ArticleCommentDAO {
 
 	public void destroyComment(int articleId, int id) {
 		PreparedStatement pstmt = null;
-		StringBuffer sb = new StringBuffer();
-		sb.append("DELETE FROM manalith_blog_article_comment ");
-		sb.append("WHERE id = ?");
+		String query = "DELETE FROM manalith_blog_article_comment WHERE id = ?";
 
 		try {
-			pstmt = conn.prepareStatement(sb.toString());
+			pstmt = conn.prepareStatement(query);
 
 			pstmt.setInt(1, id);
 
@@ -323,12 +313,10 @@ public class ArticleCommentDAO {
 
 	public void destroyAllComments(int articleId) {
 		PreparedStatement pstmt = null;
-		StringBuffer sb = new StringBuffer();
-		sb.append("DELETE FROM manalith_blog_article_comment ");
-		sb.append("WHERE articleId = ?");
+		String query = "DELETE FROM manalith_blog_article_comment WHERE articleId = ?";
 
 		try {
-			pstmt = conn.prepareStatement(sb.toString());
+			pstmt = conn.prepareStatement(query);
 
 			pstmt.setInt(1, articleId);
 
@@ -351,13 +339,12 @@ public class ArticleCommentDAO {
 
 	private void increaseCommentCount(int articleId) throws SQLException {
 		PreparedStatement pstmt = null;
-		StringBuffer sb = new StringBuffer();
-		sb.append("UPDATE manalith_blog_article ");
-		sb.append("SET totalCommentCount = totalCommentCount + 1 ");
-		sb.append("WHERE id = ?");
+		String query = "UPDATE manalith_blog_article " +
+				"SET totalCommentCount = totalCommentCount + 1 " +
+				"WHERE id = ?";
 
 		try {
-			pstmt = conn.prepareStatement(sb.toString());
+			pstmt = conn.prepareStatement(query);
 
 			pstmt.setInt(1, articleId);
 
@@ -378,13 +365,12 @@ public class ArticleCommentDAO {
 
 	private void decreaseCommentCount(int articleId) throws SQLException {
 		PreparedStatement pstmt = null;
-		StringBuffer sb = new StringBuffer();
-		sb.append("UPDATE manalith_blog_article ");
-		sb.append("SET totalCommentCount = totalCommentCount - 1 ");
-		sb.append("WHERE id = ?");
+		String query = "UPDATE manalith_blog_article " +
+				"SET totalCommentCount = totalCommentCount - 1 " +
+				"WHERE id = ?";
 
 		try {
-			pstmt = conn.prepareStatement(sb.toString());
+			pstmt = conn.prepareStatement(query);
 
 			pstmt.setInt(1, articleId);
 
@@ -405,13 +391,12 @@ public class ArticleCommentDAO {
 
 	private void restoreCommentCount(int articleId) throws SQLException {
 		PreparedStatement pstmt = null;
-		StringBuffer sb = new StringBuffer();
-		sb.append("UPDATE manalith_blog_article ");
-		sb.append("SET totalCommentCount = 0 ");
-		sb.append("WHERE id = ?");
+		String query = "UPDATE manalith_blog_article " +
+				"SET totalCommentCount = 0 " +
+				"WHERE id = ?";
 
 		try {
-			pstmt = conn.prepareStatement(sb.toString());
+			pstmt = conn.prepareStatement(query);
 
 			pstmt.setInt(1, articleId);
 

@@ -83,15 +83,12 @@ public class FileDAO {
 		String path = CONTEXT_REAL_PATH + BLOG_BACKGROUND_IMAGE_PATH;
 		String fileName = blogOwnerId + "_" + formFile.getFileName();
 
-		StringBuffer sb1 = new StringBuffer();
-		sb1.append("SELECT backgroundImage FROM manalith_blog ");
-		sb1.append("WHERE owner = ?");
+		String query1 = "SELECT backgroundImage FROM manalith_blog WHERE owner = ?";
 
-		StringBuffer sb2 = new StringBuffer();
-		sb2.append("UPDATE manalith_blog SET backgroundImage = ? WHERE owner = ?");
+		String query2 = "UPDATE manalith_blog SET backgroundImage = ? WHERE owner = ?";
 
 		try {
-			pstmt = conn.prepareStatement(sb1.toString());
+			pstmt = conn.prepareStatement(query1);
 			pstmt.setString(1, blogOwnerId);
 			rs = pstmt.executeQuery();
 
@@ -103,7 +100,7 @@ public class FileDAO {
 				}
 			}
 
-			pstmt = conn.prepareStatement(sb2.toString());
+			pstmt = conn.prepareStatement(query2);
 			pstmt.setString(1, formFile.getFileName());
 			pstmt.setString(2, blogOwnerId);
 			pstmt.executeUpdate();
@@ -138,15 +135,12 @@ public class FileDAO {
 		ResultSet rs = null;
 		String path = CONTEXT_REAL_PATH + BLOG_BACKGROUND_IMAGE_PATH;
 
-		StringBuffer sb1 = new StringBuffer();
-		sb1.append("SELECT backgroundImage FROM manalith_blog ");
-		sb1.append("WHERE owner = ?");
+		String query1 = "SELECT backgroundImage FROM manalith_blog WHERE owner = ?";
 
-		StringBuffer sb2 = new StringBuffer();
-		sb2.append("UPDATE manalith_blog SET backgroundImage = ? WHERE owner = ?");
+		String query2 = "UPDATE manalith_blog SET backgroundImage = ? WHERE owner = ?";
 
 		try {
-			pstmt = conn.prepareStatement(sb1.toString());
+			pstmt = conn.prepareStatement(query1);
 			pstmt.setString(1, blogOwnerId);
 			rs = pstmt.executeQuery();
 
@@ -158,7 +152,7 @@ public class FileDAO {
 				}
 			}
 
-			pstmt = conn.prepareStatement(sb2.toString());
+			pstmt = conn.prepareStatement(query2);
 			pstmt.setString(1, null);
 			pstmt.setString(2, blogOwnerId);
 			pstmt.executeUpdate();
@@ -197,15 +191,12 @@ public class FileDAO {
 		String path = CONTEXT_REAL_PATH + BLOG_TITLE_IMAGE_PATH;
 		String fileName = blogOwnerId + "_" + formFile.getFileName();
 
-		StringBuffer sb1 = new StringBuffer();
-		sb1.append("SELECT titleImage FROM manalith_blog ");
-		sb1.append("WHERE owner = ?");
+		String query1 = "SELECT titleImage FROM manalith_blog WHERE owner = ?";
 
-		StringBuffer sb2 = new StringBuffer();
-		sb2.append("UPDATE manalith_blog SET titleImage = ? WHERE owner = ?");
+		String query2 = "UPDATE manalith_blog SET titleImage = ? WHERE owner = ?";
 
 		try {
-			pstmt = conn.prepareStatement(sb1.toString());
+			pstmt = conn.prepareStatement(query1);
 			pstmt.setString(1, blogOwnerId);
 			rs = pstmt.executeQuery();
 
@@ -217,7 +208,7 @@ public class FileDAO {
 				}
 			}
 
-			pstmt = conn.prepareStatement(sb2.toString());
+			pstmt = conn.prepareStatement(query2);
 			pstmt.setString(1, formFile.getFileName());
 			pstmt.setString(2, blogOwnerId);
 			pstmt.executeUpdate();
@@ -252,15 +243,12 @@ public class FileDAO {
 		ResultSet rs = null;
 		String path = CONTEXT_REAL_PATH + BLOG_TITLE_IMAGE_PATH;
 
-		StringBuffer sb1 = new StringBuffer();
-		sb1.append("SELECT titleImage FROM manalith_blog ");
-		sb1.append("WHERE owner = ?");
+		String query1 = "SELECT titleImage FROM manalith_blog WHERE owner = ?";
 
-		StringBuffer sb2 = new StringBuffer();
-		sb2.append("UPDATE manalith_blog SET titleImage = ? WHERE owner = ?");
+		String query2 = "UPDATE manalith_blog SET titleImage = ? WHERE owner = ?";
 
 		try {
-			pstmt = conn.prepareStatement(sb1.toString());
+			pstmt = conn.prepareStatement(query1);
 			pstmt.setString(1, blogOwnerId);
 			rs = pstmt.executeQuery();
 
@@ -272,7 +260,7 @@ public class FileDAO {
 				}
 			}
 
-			pstmt = conn.prepareStatement(sb2.toString());
+			pstmt = conn.prepareStatement(query2);
 			pstmt.setString(1, null);
 			pstmt.setString(2, blogOwnerId);
 			pstmt.executeUpdate();
@@ -314,24 +302,22 @@ public class FileDAO {
 
 	private int setUnconnectedFileInfo(String blogOwnerId, FormFile file) {
 		PreparedStatement pstmt = null;
-		StringBuffer sb = null;
+		String query = null;
 		int fileNum = -1;
 		ResultSet rs = null;
 
 		try {
-			sb = new StringBuffer();
-			sb.append("SELECT NOW() AS now");
-			pstmt = conn.prepareStatement(sb.toString());
+			query = "SELECT NOW() AS now";
+			pstmt = conn.prepareStatement(query);
 			rs = pstmt.executeQuery();
 			rs.next();
 			Timestamp date = rs.getTimestamp("now");
 			rs.close();
 			pstmt.close();
 
-			sb = new StringBuffer();
-			sb.append("INSERT INTO manalith_blog_file(blogOwnerId,name,size,date) ");
-			sb.append("VALUES(?,?,?,?)");
-			pstmt = conn.prepareStatement(sb.toString());
+			query = "INSERT INTO manalith_blog_file(blogOwnerId,name,size,date) " +
+					"VALUES(?,?,?,?)";
+			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, blogOwnerId);
 			pstmt.setString(2, file.getFileName());
 			pstmt.setInt(3, file.getFileSize());
@@ -339,9 +325,8 @@ public class FileDAO {
 			pstmt.executeUpdate();
 			pstmt.close();
 
-			sb = new StringBuffer();
-			sb.append("SELECT id FROM manalith_blog_file WHERE date = ?");
-			pstmt = conn.prepareStatement(sb.toString());
+			query = "SELECT id FROM manalith_blog_file WHERE date = ?";
+			pstmt = conn.prepareStatement(query);
 			pstmt.setTimestamp(1, date);
 			rs = pstmt.executeQuery();
 			rs.next();
@@ -393,14 +378,12 @@ public class FileDAO {
 	//이미 업로드된 파일을 특정 Article과 연결시킨다.
 	public void setConnectedFile(int fileId, int articleId) {
 		PreparedStatement pstmt = null;
-		StringBuffer sb = null;
+		String query = "UPDATE manalith_blog_file " +
+				"SET articleId = ? " +
+				"WHERE id = ? ";
 
 		try {
-			sb = new StringBuffer();
-			sb.append("UPDATE manalith_blog_file ");
-			sb.append("SET articleId = ? ");
-			sb.append("WHERE id = ? ");
-			pstmt = conn.prepareStatement(sb.toString());
+			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, articleId);
 			pstmt.setInt(2, fileId);
 			pstmt.executeUpdate();
@@ -424,13 +407,12 @@ public class FileDAO {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 
-		StringBuffer sb = new StringBuffer();
-		sb.append("SELECT id, name, size, date ");
-		sb.append("FROM manalith_blog_file ");
-		sb.append("WHERE articleId = ?");
+		String query = "SELECT id, name, size, date " +
+				"FROM manalith_blog_file " +
+				"WHERE articleId = ?";
 
 		try {
-			pstmt = conn.prepareStatement(sb.toString());
+			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, articleId);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
@@ -470,13 +452,12 @@ public class FileDAO {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 
-		StringBuffer sb = new StringBuffer();
-		sb.append("SELECT id, name, size, date ");
-		sb.append("FROM manalith_blog_file ");
-		sb.append("WHERE blogOwnerId = ? AND articleId=0");
+		String query = "SELECT id, name, size, date " +
+				"FROM manalith_blog_file " +
+				"WHERE blogOwnerId=? AND articleId=0";
 
 		try {
-			pstmt = conn.prepareStatement(sb.toString());
+			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, blogOwnerId);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
@@ -537,12 +518,10 @@ public class FileDAO {
 	private void deleteFileInfo(int fileId) {
 		PreparedStatement pstmt = null;
 
-		StringBuffer sb = new StringBuffer();
-		sb.append("DELETE FROM manalith_blog_file ");
-		sb.append("WHERE id=?");
+		String query = "DELETE FROM manalith_blog_file WHERE id=?";
 
 		try {
-			pstmt = conn.prepareStatement(sb.toString());
+			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, fileId);
 			pstmt.executeUpdate();
 		} catch (SQLException e) {

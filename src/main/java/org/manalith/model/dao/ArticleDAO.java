@@ -78,19 +78,18 @@ public class ArticleDAO {
 	public BlogCalendar getArticleCalendar(String blogOwnerId) {
 		Session session = HibernateUtil.currentSession();
 
-		StringBuffer sb = new StringBuffer();
-		sb.append("SELECT EXTRACT(YEAR FROM date) as year, EXTRACT(MONTH FROM date) as month, EXTRACT(DAY FROM date) as day ");
-		sb.append("FROM manalith_blog_article ");
-		sb.append("WHERE blogOwnerId=? ");
-		sb.append("GROUP BY date ");
-		sb.append("ORDER BY date ASC");
+		String query = "SELECT EXTRACT(YEAR FROM date) as year, EXTRACT(MONTH FROM date) as month, EXTRACT(DAY FROM date) as day " +
+				"FROM manalith_blog_article " +
+				"WHERE blogOwnerId=? " +
+				"GROUP BY date " +
+				"ORDER BY date ASC";
 
 		BlogCalendar calendar = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 
 		try {
-			pstmt = ((SessionImpl) session).connection().prepareStatement(sb.toString());
+			pstmt = ((SessionImpl) session).connection().prepareStatement(query);
 			pstmt.setString(1, blogOwnerId);
 			rs = pstmt.executeQuery();
 
@@ -188,14 +187,12 @@ public class ArticleDAO {
 		Session session = HibernateUtil.currentSession();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		StringBuffer sb = new StringBuffer();
-
-		sb.append("SELECT num, blogOwnerId, title, author, category, date, contents, format, totalCommentCount, totalTrackbackCount ");
-		sb.append("FROM manalith_blog_article ");
-		sb.append("WHERE id = ?");
+		String query = "SELECT num, blogOwnerId, title, author, category, date, contents, format, totalCommentCount, totalTrackbackCount " +
+				"FROM manalith_blog_article " +
+				"WHERE id = ?";
 
 		try {
-			pstmt = ((SessionImpl) session).connection().prepareStatement(sb.toString());
+			pstmt = ((SessionImpl) session).connection().prepareStatement(query);
 
 			pstmt.setInt(1, articleId);
 
@@ -510,15 +507,13 @@ public class ArticleDAO {
 		 
 		 PreparedStatement pstmt = null;
 		 ResultSet rs = null;
-		 StringBuffer sb = new StringBuffer();
-		 
-		 sb.append("SELECT id ");
-		 sb.append("FROM manalith_blog_article ");
-		 sb.append("WHERE blogOwnerId=? AND title=? AND author=? AND category=? AND date=? AND contents=? AND format=? ");
-		 sb.append("ORDER BY id DESC");
+		 String query = "SELECT id " +
+		 "FROM manalith_blog_article " +
+		 "WHERE blogOwnerId=? AND title=? AND author=? AND category=? AND date=? AND contents=? AND format=? " +
+		 "ORDER BY id DESC";
 		 
 		 try{
-		 pstmt = conn.prepareStatement(sb.toString());
+		 pstmt = conn.prepareStatement(query);
 		 pstmt.setString(1,article.getBlogOwnerId());
 		 pstmt.setString(2,article.getTitle());
 		 pstmt.setString(3,article.getAuthor().toString());

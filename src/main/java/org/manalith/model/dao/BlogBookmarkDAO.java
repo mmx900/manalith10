@@ -45,12 +45,11 @@ public class BlogBookmarkDAO {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 
-		StringBuffer sb = new StringBuffer();
-		sb.append("INSERT INTO manalith_blog_bookmark(blogOwnerId,category,title,url,rssUrl,imageUrl,description) ");
-		sb.append("VALUES(?,?,?,?,?,?,?)");
+		String query = "INSERT INTO manalith_blog_bookmark(blogOwnerId,category,title,url,rssUrl,imageUrl,description) " +
+				"VALUES(?,?,?,?,?,?,?)";
 
 		try {
-			pstmt = conn.prepareStatement(sb.toString());
+			pstmt = conn.prepareStatement(query);
 
 			pstmt.setString(1, b.getBlogOwnerId());
 			pstmt.setString(2, b.getCategory());
@@ -93,13 +92,12 @@ public class BlogBookmarkDAO {
 	public void updateBookmark(BlogBookmark b) {
 		PreparedStatement pstmt = null;
 
-		StringBuffer sb = new StringBuffer();
-		sb.append("UPDATE manalith_blog_bookmark ");
-		sb.append("SET category=?, title=?, url=?, rssUrl=?, imageUrl=?, description=? ");
-		sb.append("WHERE id=? ");
+		String query = "UPDATE manalith_blog_bookmark " +
+				"SET category=?, title=?, url=?, rssUrl=?, imageUrl=?, description=? " +
+				"WHERE id=? ";
 
 		try {
-			pstmt = conn.prepareStatement(sb.toString());
+			pstmt = conn.prepareStatement(query);
 
 			pstmt.setString(1, b.getCategory());
 			pstmt.setString(2, b.getTitle());
@@ -132,12 +130,10 @@ public class BlogBookmarkDAO {
 	public void destroyBookmark(int id) {
 		PreparedStatement pstmt = null;
 
-		StringBuffer sb = new StringBuffer();
-		sb.append("DELETE FROM manalith_blog_bookmark ");
-		sb.append("WHERE id=? ");
+		String query = "DELETE FROM manalith_blog_bookmark WHERE id=?";
 
 		try {
-			pstmt = conn.prepareStatement(sb.toString());
+			pstmt = conn.prepareStatement(query);
 
 			pstmt.setInt(1, id);
 
@@ -168,14 +164,13 @@ public class BlogBookmarkDAO {
 		ResultSet rs = null;
 		BlogBookmark b = null;
 
-		StringBuffer sb = new StringBuffer();
-		sb.append("SELECT id,category,title,url,rssUrl,imageUrl,description ");
-		sb.append("FROM manalith_blog_bookmark ");
-		sb.append("WHERE blogOwnerId=? ");
-		sb.append("ORDER BY category ASC ");
+		String query = "SELECT id,category,title,url,rssUrl,imageUrl,description " +
+				"FROM manalith_blog_bookmark " +
+				"WHERE blogOwnerId=? " +
+				"ORDER BY category ASC ";
 
 		try {
-			pstmt = conn.prepareStatement(sb.toString());
+			pstmt = conn.prepareStatement(query);
 
 			pstmt.setString(1, blogOwnerId);
 
@@ -229,14 +224,13 @@ public class BlogBookmarkDAO {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 
-		StringBuffer sb = new StringBuffer();
-		sb.append("SELECT category ");
-		sb.append("FROM manalith_blog_bookmark ");
-		sb.append("WHERE blogOwnerId=? ");
-		sb.append("GROUP BY category");
+		String query = "SELECT category " +
+				"FROM manalith_blog_bookmark " +
+				"WHERE blogOwnerId=? " +
+				"GROUP BY category";
 
 		try {
-			pstmt = conn.prepareStatement(sb.toString());
+			pstmt = conn.prepareStatement(query);
 
 			pstmt.setString(1, blogOwnerId);
 
