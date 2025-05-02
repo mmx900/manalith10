@@ -5,6 +5,14 @@ http://kldp.net/projects/manalith/ 에서 운용되던 프로젝트를 옮겨 �
 2005.04.30 에 시작되었으며 현재는 참고 용으로만 존재합니다.
 블로그를 실사용하실 분들은 manalith20 프로젝트를 활용해주세요. 감사합니다.
 
+## 개발환경 구축
+
+docker, asdf가 설치되어 있어야 합니다.
+
+```shell
+asdf install
+```
+
 ## 실행
 
 다음 명령 실행 후 http://localhost:8080/ 에 접속합니다.
